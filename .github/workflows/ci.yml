@@ -3,9 +3,9 @@ name: CI
 on:
   push:
     branches:
-      - 'jetty-9.4.x'
-      - 'jetty-10.0.x'
-      - 'jetty-11.0.x'
+      - '9.4.x'
+      - '10.0.x'
+      - '11.0.x'
   pull_request:
 
 jobs:
