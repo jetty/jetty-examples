@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - 'jetty-9.4.x'
+      - 'jetty-10.0.x'
+      - 'jetty-11.0.x'
   pull_request:
 
 jobs:
@@ -11,4 +13,4 @@ jobs:
     name: Build
     uses: jetty/.github/.github/workflows/maven-ci.yml@main
     with:
-      jdk-matrix: '[ "8", "21" ]'
+      jdk-matrix: '[ "11", "21" ]'
