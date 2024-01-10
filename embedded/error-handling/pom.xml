@@ -9,7 +9,7 @@
   <artifactId>error-handling</artifactId>
   <version>10.0.x</version>
   <packaging>jar</packaging>
-  <name>Jetty Examples :: Jetty 9.4.x :: Embedded :: Error Handling</name>
+  <name>Jetty Examples :: Jetty 10.0.x :: Embedded :: Error Handling</name>
 
   <dependencies>
     <dependency>

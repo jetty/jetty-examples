@@ -9,6 +9,6 @@
   <artifactId>jetty-standalone-examples</artifactId>
   <version>10.0.x</version>
   <packaging>pom</packaging>
-  <name>Jetty Examples :: Jetty 9.4.x :: Standalone</name>
+  <name>Jetty Examples :: Jetty 10.0.x :: Standalone</name>
 
 </project>

@@ -9,7 +9,7 @@
   <artifactId>servlet-config</artifactId>
   <version>10.0.x</version>
   <packaging>jar</packaging>
-  <name>Jetty Examples :: Jetty 9.4.x :: Embedded :: Servlet Configuration</name>
+  <name>Jetty Examples :: Jetty 10.0.x :: Embedded :: Servlet Configuration</name>
 
   <dependencies>
     <dependency>

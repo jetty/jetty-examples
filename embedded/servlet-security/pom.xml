@@ -9,7 +9,7 @@
   <artifactId>servlet-security</artifactId>
   <version>10.0.x</version>
   <packaging>jar</packaging>
-  <name>Jetty Examples :: Jetty 9.4.x :: Embedded :: Servlet Security Constraints</name>
+  <name>Jetty Examples :: Jetty 10.0.x :: Embedded :: Servlet Security Constraints</name>
 
   <dependencies>
     <dependency>
