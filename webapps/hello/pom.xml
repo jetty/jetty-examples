@@ -4,12 +4,12 @@
   <parent>
     <groupId>org.eclipse.jetty.examples.webapps</groupId>
     <artifactId>jetty-webapp-examples</artifactId>
-    <version>10.0.x</version>
+    <version>11.0.x</version>
   </parent>
   <artifactId>hello</artifactId>
-  <version>10.0.x</version>
+  <version>11.0.x</version>
   <packaging>war</packaging>
-  <name>Jetty Examples :: Jetty 9.4.x :: Hello WebApp</name>
+  <name>Jetty Examples :: Jetty 11.0.x :: Hello WebApp</name>
 
   <build>
     <finalName>hello</finalName>

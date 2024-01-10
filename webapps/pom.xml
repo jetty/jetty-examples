@@ -4,13 +4,13 @@
   <parent>
     <groupId>org.eclipse.jetty.examples</groupId>
     <artifactId>jetty-examples</artifactId>
-    <version>10.0.x</version>
+    <version>11.0.x</version>
   </parent>
   <groupId>org.eclipse.jetty.examples.webapps</groupId>
   <artifactId>jetty-webapp-examples</artifactId>
-  <version>10.0.x</version>
+  <version>11.0.x</version>
   <packaging>pom</packaging>
-  <name>Jetty Examples :: Jetty 9.4.x :: WebApps</name>
+  <name>Jetty Examples :: Jetty 11.0.x :: WebApps</name>
 
   <modules>
     <module>hello</module>
@@ -18,9 +18,10 @@
 
   <dependencies>
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>3.1.0</version>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>5.0.0</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 

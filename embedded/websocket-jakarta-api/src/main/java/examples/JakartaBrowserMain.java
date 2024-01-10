@@ -29,7 +29,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
-import org.eclipse.jetty.websocket.javax.server.config.JavaxWebSocketServletContainerInitializer;
+import org.eclipse.jetty.websocket.jakarta.server.config.JakartaWebSocketServletContainerInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -126,7 +126,7 @@ public class JakartaBrowserMain
         holder.setInitParameter("dirAllowed", "true");
         server.setHandler(context);
 
-        JavaxWebSocketServletContainerInitializer.configure(context,
+        JakartaWebSocketServletContainerInitializer.configure(context,
             (servletContext, wsContainer) -> wsContainer.addEndpoint(JakartaBrowserSocket.class));
 
         LOG.info("{} setup on (http) port {} and (https) port {}", this.getClass().getName(), port, sslPort);
