@@ -17,9 +17,13 @@
     <module>connectors</module>
     <module>error-handling</module>
     <module>file-server</module>
+    <module>file-upload</module>
+    <module>form-post</module>
+    <module>http-config</module>
     <module>jndi</module>
     <module>redirect</module>
     <module>rewrite</module>
+    <module>servlet-security</module>
     <module>simple-server</module>
     <module>virtual-hosts</module>
     <module>webapp-context</module>

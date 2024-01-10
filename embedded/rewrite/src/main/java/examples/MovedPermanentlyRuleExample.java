@@ -91,7 +91,7 @@ public class MovedPermanentlyRuleExample
         Path webRootPath = Paths.get("webapps/alt-root/").toAbsolutePath().normalize();
         if (!Files.isDirectory(webRootPath))
         {
-            System.err.println("Unable to find " + webRootPath + ".");
+            System.err.println("ERROR: Unable to find " + webRootPath + ".");
             System.exit(-1);
         }
 

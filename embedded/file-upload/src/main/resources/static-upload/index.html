@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>Forms for Upload Example</title>
+</head>
+<body>
+    <h1>Upload to Handler version</h1>
+    <form action="/handler/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="image"/></br>
+        <input type="submit" value="Upload Image" name="submit">
+    </form>
+
+    <hr>
+    <h1>Upload to Servlet version</h1>
+    <form action="/servlet/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="image"/></br>
+        <input type="submit" value="Upload Image" name="submit">
+    </form>
+</body>
+</html>
