@@ -6,23 +6,22 @@
     <artifactId>jetty-examples</artifactId>
     <version>9.4.x</version>
   </parent>
-  <groupId>org.eclipse.jetty.examples.embedded</groupId>
-  <artifactId>jetty-embedded-examples</artifactId>
+  <groupId>org.eclipse.jetty.examples.webapps</groupId>
+  <artifactId>jetty-webapp-examples</artifactId>
   <version>9.4.x</version>
   <packaging>pom</packaging>
-  <name>Jetty Examples :: Jetty 9.4.x :: Embedded</name>
+  <name>Jetty Examples :: Jetty 9.4.x :: WebApps</name>
 
   <modules>
-    <module>client-certificates</module>
-    <module>connectors</module>
-    <module>error-handling</module>
-    <module>file-server</module>
-    <module>jndi</module>
-    <module>redirect</module>
-    <module>rewrite</module>
-    <module>simple-server</module>
-    <module>virtual-hosts</module>
-    <module>webapp-context</module>
+    <module>hello</module>
   </modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+    </dependency>
+  </dependencies>
 
 </project>

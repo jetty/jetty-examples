@@ -15,6 +15,7 @@
   <modules>
     <module>embedded</module>
     <module>standalone</module>
+    <module>webapps</module>
   </modules>
   <scm>
     <connection>scm:git:https://github.com/jetty/${jetty.git.repo}.git</connection>
