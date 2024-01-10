@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>jetty-parent</artifactId>
+    <version>26</version>
+  </parent>
+  <groupId>org.eclipse.jetty.examples</groupId>
+  <artifactId>jetty-examples</artifactId>
+  <version>9.4.x</version>
+  <packaging>pom</packaging>
+  <name>Jetty Examples :: Jetty 9.4.x</name>
+
+  <modules>
+    <module>embedded</module>
+    <module>standalone</module>
+  </modules>
+  <scm>
+    <connection>scm:git:https://github.com/jetty/${jetty.git.repo}.git</connection>
+    <developerConnection>scm:git:git@github.com:jetty/${jetty.git.repo}.git</developerConnection>
+    <tag>HEAD</tag>
+    <url>https://github.com/jetty/${jetty.git.repo}</url>
+  </scm>
+
+  <properties>
+    <jdk.version.minimum>8</jdk.version.minimum>
+    <jetty-test-helper.version>6.0</jetty-test-helper.version>
+    <jetty.git.repo>jetty-examples</jetty.git.repo>
+    <jetty.version>9.4.53.v20231009</jetty.version>
+  </properties>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <compilerArgument>-Xlint:all</compilerArgument>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>
