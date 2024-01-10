@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN"
+  "http://www.eclipse.org/jetty/configure_9_3.dtd">
+<Configure id="httpConfig" class="org.eclipse.jetty.server.HttpConfiguration">
+  <Set name="secureScheme">https</Set>
+  <Set name="securePort">8443</Set>
+  <Set name="outputBufferSize">32768</Set>
+  <Set name="requestHeaderSize">8192</Set>
+  <Set name="responseHeaderSize">8192</Set>
+  <Set name="sendServerVersion">true</Set>
+</Configure>

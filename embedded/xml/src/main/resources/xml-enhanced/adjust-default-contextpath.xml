@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN"
+  "http://www.eclipse.org/jetty/configure_9_3.dtd">
+<Configure id="Context" class="org.eclipse.jetty.servlet.ServletContextHandler">
+  <Set name="contextPath">/foobar</Set>
+</Configure>

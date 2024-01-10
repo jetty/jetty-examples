@@ -14,7 +14,9 @@
 
   <modules>
     <module>client-certificates</module>
+    <module>compressed-encoding</module>
     <module>connectors</module>
+    <module>deploying</module>
     <module>error-handling</module>
     <module>file-server</module>
     <module>file-upload</module>
@@ -23,10 +25,14 @@
     <module>jndi</module>
     <module>redirect</module>
     <module>rewrite</module>
+    <module>servlet-config</module>
     <module>servlet-security</module>
     <module>simple-server</module>
     <module>virtual-hosts</module>
     <module>webapp-context</module>
+    <module>websocket-jakarta-api</module>
+    <module>websocket-jetty-api</module>
+    <module>xml</module>
   </modules>
 
 </project>
