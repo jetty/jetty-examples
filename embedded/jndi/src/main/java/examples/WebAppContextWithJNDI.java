@@ -30,15 +30,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.jetty.plus.webapp.EnvConfiguration;
-import org.eclipse.jetty.plus.webapp.PlusConfiguration;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.IO;
 import org.eclipse.jetty.util.component.LifeCycle;
 import org.eclipse.jetty.util.resource.PathResource;
-import org.eclipse.jetty.webapp.Configuration;
-import org.eclipse.jetty.webapp.FragmentConfiguration;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 public class WebAppContextWithJNDI
@@ -91,11 +87,6 @@ public class WebAppContextWithJNDI
         ServerConnector connector = new ServerConnector(server);
         connector.setPort(port);
         server.addConnector(connector);
-
-        Configuration.ClassList classList = Configuration.ClassList.setServerDefault(server);
-        classList.addAfter(FragmentConfiguration.class.getName(),
-            EnvConfiguration.class.getName(),
-            PlusConfiguration.class.getName());
 
         WebAppContext context = new WebAppContext();
         context.setContextPath("/");

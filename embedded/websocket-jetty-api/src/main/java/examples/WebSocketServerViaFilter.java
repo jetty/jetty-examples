@@ -13,38 +13,35 @@
 
 package examples;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import javax.servlet.ServletException;
+import java.time.Duration;
 
-import org.eclipse.jetty.http.pathmap.ServletPathSpec;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
-import org.eclipse.jetty.websocket.server.WebSocketUpgradeFilter;
-import org.eclipse.jetty.websocket.servlet.ServletUpgradeRequest;
-import org.eclipse.jetty.websocket.servlet.ServletUpgradeResponse;
-import org.eclipse.jetty.websocket.servlet.WebSocketCreator;
+import org.eclipse.jetty.websocket.server.JettyServerUpgradeRequest;
+import org.eclipse.jetty.websocket.server.JettyServerUpgradeResponse;
+import org.eclipse.jetty.websocket.server.JettyWebSocketCreator;
+import org.eclipse.jetty.websocket.server.config.JettyWebSocketServletContainerInitializer;
 
 public class WebSocketServerViaFilter
 {
-    public static class TimeSocketCreator implements WebSocketCreator
+    public static class TimeSocketCreator implements JettyWebSocketCreator
     {
         @Override
-        public Object createWebSocket(ServletUpgradeRequest req, ServletUpgradeResponse resp)
+        public Object createWebSocket(JettyServerUpgradeRequest jettyServerUpgradeRequest, JettyServerUpgradeResponse jettyServerUpgradeResponse)
         {
             return new JettyTimeSocket();
         }
     }
 
-    public static void main(String[] args) throws ServletException, URISyntaxException, MalformedURLException
+    public static void main(String[] args) throws URISyntaxException, MalformedURLException
     {
         Server server = new Server();
         ServerConnector connector = new ServerConnector(server);
@@ -65,26 +62,26 @@ public class WebSocketServerViaFilter
 
         // Setup the basic application "context" for this application at "/"
         // This is also known as the handler tree (in jetty speak)
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.setContextPath("/");
-        context.setBaseResource(Resource.newResource(webRootUri));
-        context.setWelcomeFiles(new String[]{"index.html"});
-        server.setHandler(context);
+        ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        contextHandler.setContextPath("/");
+        contextHandler.setBaseResource(Resource.newResource(webRootUri));
+        contextHandler.setWelcomeFiles(new String[]{"index.html"});
+        server.setHandler(contextHandler);
 
         // Add the websocket filter
-        WebSocketUpgradeFilter wsfilter = WebSocketUpgradeFilter.configure(context);
-        // Configure websocket behavior
-        wsfilter.getFactory().getPolicy().setIdleTimeout(5000);
-        // Add websocket mapping
-        wsfilter.addMapping(new ServletPathSpec("/time/"), new TimeSocketCreator());
+        JettyWebSocketServletContainerInitializer.configure(contextHandler, (context, configurator) ->
+        {
+            configurator.setIdleTimeout(Duration.ofMillis(5000));
+            configurator.addMapping("/time/", new TimeSocketCreator());
+        });
 
         // Add time servlet
-        context.addServlet(TimeServlet.class, "/time/");
+        contextHandler.addServlet(TimeServlet.class, "/time/");
 
         // Add default servlet
         ServletHolder holderDefault = new ServletHolder("default", DefaultServlet.class);
         holderDefault.setInitParameter("dirAllowed", "true");
-        context.addServlet(holderDefault, "/");
+        contextHandler.addServlet(holderDefault, "/");
 
         try
         {

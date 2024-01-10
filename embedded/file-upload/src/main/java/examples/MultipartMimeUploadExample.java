@@ -73,7 +73,7 @@ public class MultipartMimeUploadExample
         server.addConnector(httpConnector);
 
         // Setup SSL
-        SslContextFactory sslContextFactory = new SslContextFactory.Server();
+        SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
         sslContextFactory.setKeyStoreResource(findKeyStore());
         sslContextFactory.setKeyStorePassword("OBF:1vny1zlo1x8e1vnw1vn61x8g1zlu1vn4");
         sslContextFactory.setKeyManagerPassword("OBF:1u2u1wml1z7s1z7a1wnl1u2g");
@@ -253,7 +253,7 @@ public class MultipartMimeUploadExample
             }
 
             // Ensure request knows about MultiPartConfigElement setup.
-            request.setAttribute(Request.MULTIPART_CONFIG_ELEMENT, multipartConfig);
+            request.setAttribute(Request.__MULTIPART_CONFIG_ELEMENT, multipartConfig);
             // Process the request
             processParts(request, response, outputDir);
             baseRequest.setHandled(true);

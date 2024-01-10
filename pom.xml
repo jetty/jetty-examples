@@ -8,9 +8,9 @@
   </parent>
   <groupId>org.eclipse.jetty.examples</groupId>
   <artifactId>jetty-examples</artifactId>
-  <version>9.4.x</version>
+  <version>10.0.x</version>
   <packaging>pom</packaging>
-  <name>Jetty Examples :: Jetty 9.4.x</name>
+  <name>Jetty Examples :: Jetty 10.0.x</name>
 
   <modules>
     <module>embedded</module>
@@ -26,9 +26,9 @@
 
   <properties>
     <jdk.version.minimum>8</jdk.version.minimum>
-    <jetty-test-helper.version>6.0</jetty-test-helper.version>
+    <jetty-test-helper.version>6.2</jetty-test-helper.version>
     <jetty.git.repo>jetty-examples</jetty.git.repo>
-    <jetty.version>9.4.53.v20231009</jetty.version>
+    <jetty.version>10.0.19</jetty.version>
   </properties>
 
   <build>

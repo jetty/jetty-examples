@@ -28,8 +28,8 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
-import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
-import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
+import org.eclipse.jetty.websocket.server.JettyWebSocketServlet;
+import org.eclipse.jetty.websocket.server.JettyWebSocketServletFactory;
 
 /**
  * Create a Secure WebSocket Server and host an Echo WebSocket endpoint on "/echo"
@@ -40,12 +40,12 @@ import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
  */
 public class SecureWebSocketServer
 {
-    public static class EchoSocketServlet extends WebSocketServlet
+    public static class EchoSocketServlet extends JettyWebSocketServlet
     {
         @Override
-        public void configure(WebSocketServletFactory webSocketServletFactory)
+        protected void configure(JettyWebSocketServletFactory jettyWebSocketServletFactory)
         {
-            webSocketServletFactory.register(EchoSocket.class);
+            jettyWebSocketServletFactory.register(EchoSocket.class);
         }
     }
 
@@ -77,7 +77,7 @@ public class SecureWebSocketServer
         int httpsPort = 8443;
 
         // Setup SSL
-        SslContextFactory sslContextFactory = new SslContextFactory.Server();
+        SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
         sslContextFactory.setKeyStoreResource(findKeyStore());
         sslContextFactory.setKeyStorePassword("OBF:1vny1zlo1x8e1vnw1vn61x8g1zlu1vn4");
         sslContextFactory.setKeyManagerPassword("OBF:1u2u1wml1z7s1z7a1wnl1u2g");

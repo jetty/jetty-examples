@@ -17,8 +17,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import javax.servlet.ServletException;
-import javax.websocket.DeploymentException;
 
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
@@ -29,18 +27,18 @@ import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.util.log.Log;
-import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
-import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer;
+import org.eclipse.jetty.websocket.javax.server.config.JavaxWebSocketServletContainerInitializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Set up a JakartaEE WebSocket Server that can be used by a browser
  */
 public class JakartaBrowserMain
 {
-    private static final Logger LOG = Log.getLogger(JakartaBrowserMain.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JakartaBrowserMain.class);
 
     public static void main(String[] args)
     {
@@ -68,7 +66,7 @@ public class JakartaBrowserMain
         }
         catch (Throwable t)
         {
-            LOG.warn(t);
+            LOG.warn("Failed to start " + JakartaBrowserMain.class.getName(), t);
         }
     }
 
@@ -81,7 +79,7 @@ public class JakartaBrowserMain
         server.join();
     }
 
-    private void setupServer(int port, int sslPort) throws DeploymentException, ServletException, MalformedURLException, URISyntaxException
+    private void setupServer(int port, int sslPort) throws MalformedURLException, URISyntaxException
     {
         server = new Server();
         ServerConnector connector = new ServerConnector(server);
@@ -89,7 +87,7 @@ public class JakartaBrowserMain
         server.addConnector(connector);
 
         // Setup SSL
-        SslContextFactory sslContextFactory = new SslContextFactory.Server();
+        SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
         sslContextFactory.setKeyStoreResource(findKeyStore());
         sslContextFactory.setKeyStorePassword("OBF:1vny1zlo1x8e1vnw1vn61x8g1zlu1vn4");
         sslContextFactory.setKeyManagerPassword("OBF:1u2u1wml1z7s1z7a1wnl1u2g");
@@ -128,7 +126,7 @@ public class JakartaBrowserMain
         holder.setInitParameter("dirAllowed", "true");
         server.setHandler(context);
 
-        WebSocketServerContainerInitializer.configure(context,
+        JavaxWebSocketServletContainerInitializer.configure(context,
             (servletContext, wsContainer) -> wsContainer.addEndpoint(JakartaBrowserSocket.class));
 
         LOG.info("{} setup on (http) port {} and (https) port {}", this.getClass().getName(), port, sslPort);
