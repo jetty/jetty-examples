@@ -13,6 +13,7 @@
   <name>Jetty Examples :: Jetty 9.4.x :: Embedded</name>
 
   <modules>
+    <module>client</module>
     <module>client-certificates</module>
     <module>compressed-encoding</module>
     <module>connectors</module>
