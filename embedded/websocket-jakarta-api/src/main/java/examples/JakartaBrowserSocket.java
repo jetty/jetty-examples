@@ -27,8 +27,8 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import org.eclipse.jetty.util.StringUtil;
-import org.eclipse.jetty.util.log.Log;
-import org.eclipse.jetty.util.log.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ServerEndpoint(value = "/", subprotocols = {"tool"}, configurator = JakartaBrowserConfigurator.class)
 public class JakartaBrowserSocket
@@ -68,7 +68,7 @@ public class JakartaBrowserSocket
         }
     }
 
-    private static final Logger LOG = Log.getLogger(JakartaBrowserSocket.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JakartaBrowserSocket.class);
     private Session session;
     private Async remote;
     private String userAgent;
