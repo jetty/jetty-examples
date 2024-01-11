@@ -20,18 +20,18 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.jetty.ee10.servlet.DefaultServlet;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.ServletHolder;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.server.handler.DefaultHandler;
-import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.util.resource.PathResource;
 import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.util.resource.ResourceFactory;
 import org.eclipse.jetty.xml.XmlConfiguration;
 
 /**
@@ -65,6 +65,9 @@ public class XmlEnhancedServer
     public static void main(String[] args) throws Exception
     {
         Server server = new Server();
+
+        ResourceFactory resourceFactory = ResourceFactory.of(server);
+
         HttpConfiguration httpConfig = new HttpConfiguration();
         ServerConnector httpConnector = new ServerConnector(server, new HttpConnectionFactory(httpConfig));
         httpConnector.setPort(8080);
@@ -84,12 +87,12 @@ public class XmlEnhancedServer
         URI webRootUri = f.toURI().resolve("./").normalize();
         System.err.println("WebRoot is " + webRootUri);
 
-        HandlerList handlers = new HandlerList();
+        Handler.Sequence handlers = new Handler.Sequence();
         ContextHandlerCollection contexts = new ContextHandlerCollection();
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
-        context.setBaseResource(Resource.newResource(webRootUri));
+        context.setBaseResource(resourceFactory.newResource(webRootUri));
         contexts.addHandler(context);
 
         ServletHolder holderPwd = new ServletHolder("default", DefaultServlet.class);
@@ -126,7 +129,7 @@ public class XmlEnhancedServer
             {
                 Path xmlPath = Paths.get(xml);
                 System.err.println("Applying XML: " + xmlPath);
-                PathResource xmlResource = new PathResource(xmlPath);
+                Resource xmlResource = resourceFactory.newResource(xmlPath);
                 XmlConfiguration configuration = new XmlConfiguration(xmlResource);
                 if (lastConfig != null)
                     configuration.getIdMap().putAll(lastConfig.getIdMap());

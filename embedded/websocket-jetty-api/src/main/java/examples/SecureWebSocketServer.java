@@ -14,9 +14,7 @@
 package examples;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
@@ -24,12 +22,19 @@ import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
-import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.util.resource.ResourceFactory;
+import org.eclipse.jetty.util.resource.Resources;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
-import org.eclipse.jetty.websocket.api.WebSocketAdapter;
-import org.eclipse.jetty.websocket.server.JettyWebSocketServlet;
-import org.eclipse.jetty.websocket.server.JettyWebSocketServletFactory;
+import org.eclipse.jetty.ee10.websocket.server.JettyWebSocketServlet;
+import org.eclipse.jetty.ee10.websocket.server.JettyWebSocketServletFactory;
+import org.eclipse.jetty.websocket.api.Callback;
+import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Create a Secure WebSocket Server and host an Echo WebSocket endpoint on "/echo"
@@ -49,36 +54,31 @@ public class SecureWebSocketServer
         }
     }
 
-    public static class EchoSocket extends WebSocketAdapter
+    public static class EchoSocket
     {
-        @Override
-        public void onWebSocketText(String message)
+        private static final Logger LOG = LoggerFactory.getLogger(EchoSocket.class);
+
+        @OnWebSocketMessage
+        public void onWebSocketText(Session session, String message)
         {
-            try
-            {
-                getRemote().sendString(message);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace(System.err);
-            }
+            session.sendText(message, Callback.NOOP);
         }
 
-        @Override
+        @OnWebSocketError
         public void onWebSocketError(Throwable cause)
         {
-            cause.printStackTrace(System.err);
+            LOG.warn("WebSocket error", cause);
         }
     }
 
-    public static void main(String[] args) throws IOException, URISyntaxException
+    public static void main(String[] args)
     {
         Server server = new Server();
         int httpsPort = 8443;
 
         // Setup SSL
         SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-        sslContextFactory.setKeyStoreResource(findKeyStore());
+        sslContextFactory.setKeyStoreResource(findKeyStore(ResourceFactory.of(server)));
         sslContextFactory.setKeyStorePassword("OBF:1vny1zlo1x8e1vnw1vn61x8g1zlu1vn4");
         sslContextFactory.setKeyManagerPassword("OBF:1u2u1wml1z7s1z7a1wnl1u2g");
 
@@ -116,16 +116,14 @@ public class SecureWebSocketServer
         }
     }
 
-    private static Resource findKeyStore() throws URISyntaxException, MalformedURLException
+    private static Resource findKeyStore(ResourceFactory resourceFactory)
     {
-        ClassLoader cl = SecureWebSocketServer.class.getClassLoader();
-        String keystoreResource = "ssl/keystore";
-        URL f = cl.getResource(keystoreResource);
-        if (f == null)
+        String resourceName = "ssl/keystore";
+        Resource resource = resourceFactory.newClassLoaderResource(resourceName);
+        if (Resources.isReadableFile(resource))
         {
-            throw new RuntimeException("Unable to find " + keystoreResource);
+            throw new RuntimeException("Unable to read " + resourceName);
         }
-
-        return Resource.newResource(f.toURI());
+        return resource;
     }
 }

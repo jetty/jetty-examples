@@ -13,18 +13,18 @@
 
 package examples;
 
-import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.eclipse.jetty.ee10.servlet.DefaultServlet;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.util.resource.ResourceFactory;
 
 /**
  * Using a {@link ServletContextHandler} serve static file content from multiple locations.
@@ -64,7 +64,8 @@ public class ServletFileServerMultipleLocations
         // This is also known as the handler tree (in jetty speak)
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
-        context.setBaseResource(Resource.newResource(webRootUri));
+        ResourceFactory resourceFactory = ResourceFactory.of(context);
+        context.setBaseResource(resourceFactory.newResource(webRootUri));
         context.setWelcomeFiles(new String[]{"index.html", "index.htm", "alt-index.html"});
         server.setHandler(context);
 

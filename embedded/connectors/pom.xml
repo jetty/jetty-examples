@@ -4,12 +4,12 @@
   <parent>
     <groupId>org.eclipse.jetty.examples.embedded</groupId>
     <artifactId>jetty-embedded-examples</artifactId>
-    <version>11.0.x</version>
+    <version>12.0.x</version>
   </parent>
   <artifactId>connectors</artifactId>
-  <version>11.0.x</version>
+  <version>12.0.x</version>
   <packaging>jar</packaging>
-  <name>Jetty Examples :: Jetty 11.0.x :: Embedded :: Connectors</name>
+  <name>Jetty Examples :: Jetty 12.0.x :: Embedded :: Connectors</name>
 
   <dependencies>
     <dependency>
@@ -19,8 +19,8 @@
     </dependency>
 
     <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-webapp</artifactId>
+      <groupId>org.eclipse.jetty.ee10</groupId>
+      <artifactId>jetty-ee10-webapp</artifactId>
       <version>${jetty.version}</version>
     </dependency>
   </dependencies>

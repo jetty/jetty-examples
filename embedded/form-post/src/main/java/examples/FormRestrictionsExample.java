@@ -15,6 +15,7 @@ package examples;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -23,20 +24,23 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.eclipse.jetty.client.FormRequestContent;
 import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.client.api.ContentResponse;
-import org.eclipse.jetty.client.api.Request;
-import org.eclipse.jetty.client.util.FormContentProvider;
-import org.eclipse.jetty.client.util.MultiPartContentProvider;
-import org.eclipse.jetty.client.util.StringContentProvider;
+import org.eclipse.jetty.client.ContentResponse;
+import org.eclipse.jetty.client.MultiPartRequestContent;
+import org.eclipse.jetty.client.Request;
+import org.eclipse.jetty.client.StringRequestContent;
+import org.eclipse.jetty.http.HttpFields;
 import org.eclipse.jetty.http.HttpStatus;
+import org.eclipse.jetty.http.MultiPart;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.DefaultHandler;
-import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.server.Handler.Sequence;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.Fields;
 import org.eclipse.jetty.util.StringUtil;
 import org.eclipse.jetty.util.component.LifeCycle;
@@ -96,7 +100,7 @@ public class FormRestrictionsExample
         servletContextHandler.addServlet(ServiceFormServlet.class, "/form/service")
             .getRegistration().setMultipartConfig(multipartConfig);
 
-        HandlerList handlers = new HandlerList();
+        Handler.Sequence handlers = new Handler.Sequence();
         handlers.addHandler(servletContextHandler);
         handlers.addHandler(new DefaultHandler());
 
@@ -124,16 +128,15 @@ public class FormRestrictionsExample
             submitForm(httpMethod + " with application/x-www-form-urlencoded",
                 client.newRequest(uri)
                     .method(httpMethod)
-                    .content(new FormContentProvider(wwwForm)));
+                    .body(new FormRequestContent(wwwForm)));
 
-            MultiPartContentProvider multipartForm = new MultiPartContentProvider();
-            multipartForm.addFieldPart("UserName", new StringContentProvider("Andrés Dorantes de Carranza"), null);
-            multipartForm.close();
+            MultiPartRequestContent multiPartForm = new MultiPartRequestContent();
+            multiPartForm.addPart(new MultiPart.ContentSourcePart("UserName", null, HttpFields.EMPTY, new StringRequestContent("Andrés Dorantes de Carranza")));
 
             submitForm(httpMethod + " with multipart/form-data",
                 client.newRequest(uri)
                     .method(httpMethod)
-                    .content(multipartForm));
+                    .body(multiPartForm));
         }
     }
 
@@ -141,7 +144,7 @@ public class FormRestrictionsExample
     {
         try
         {
-            ContentResponse response = request.header("Accept", "text/plain").send();
+            ContentResponse response = request.headers((fields) -> fields.put("Accept", "text/plain")).send();
             if (response.getStatus() == HttpStatus.OK_200)
             {
                 System.out.printf("%-17s - %-44s -> OK: %s%n", request.getPath(), description, response.getContentAsString().trim());

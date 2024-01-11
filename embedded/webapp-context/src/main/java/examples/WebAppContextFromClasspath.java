@@ -17,7 +17,7 @@ import java.net.URI;
 import java.net.URL;
 
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.ee10.webapp.WebAppContext;
 
 public class WebAppContextFromClasspath
 {

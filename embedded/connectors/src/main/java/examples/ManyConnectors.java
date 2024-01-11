@@ -24,6 +24,8 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.util.resource.ResourceFactory;
+import org.eclipse.jetty.util.resource.Resources;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 /**
@@ -33,16 +35,16 @@ public class ManyConnectors
 {
     public static void main(String[] args) throws Exception
     {
-        // Since this example shows off SSL configuration, we need a keystore
-        // with the appropriate key. These lookup of jetty.home is purely a hack
-        // to get access to a keystore that we use in many unit tests and should
-        // probably be a direct path to your own keystore.
-        Resource keystoreResource = findKeyStore();
-
         // Create a basic jetty server object without declaring the port. Since
         // we are configuring connectors directly we'll be setting ports on
         // those connectors.
         Server server = new Server();
+
+        // Since this example shows off SSL configuration, we need a keystore
+        // with the appropriate key. These lookup of jetty.home is purely a hack
+        // to get access to a keystore that we use in many unit tests and should
+        // probably be a direct path to your own keystore.
+        Resource keystoreResource = findKeyStore(ResourceFactory.of(server));
 
         // HTTP Configuration
         // HttpConfiguration is a collection of configuration information
@@ -118,16 +120,14 @@ public class ManyConnectors
         server.join();
     }
 
-    private static Resource findKeyStore() throws URISyntaxException, MalformedURLException
+    private static Resource findKeyStore(ResourceFactory resourceFactory)
     {
-        ClassLoader cl = ManyConnectors.class.getClassLoader();
-        String keystoreResource = "ssl/keystore";
-        URL f = cl.getResource(keystoreResource);
-        if (f == null)
+        String resourceName = "ssl/keystore";
+        Resource resource = resourceFactory.newClassLoaderResource(resourceName);
+        if (Resources.isReadableFile(resource))
         {
-            throw new RuntimeException("Unable to find " + keystoreResource);
+            throw new RuntimeException("Unable to read " + resourceName);
         }
-
-        return Resource.newResource(f.toURI());
+        return resource;
     }
 }

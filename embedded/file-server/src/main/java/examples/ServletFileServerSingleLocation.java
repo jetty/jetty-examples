@@ -16,12 +16,13 @@ package examples;
 import java.net.URI;
 import java.net.URL;
 
+import org.eclipse.jetty.ee10.servlet.DefaultServlet;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.util.resource.ResourceFactory;
 
 /**
  * Using a {@link ServletContextHandler} serve static file content from single location
@@ -51,7 +52,8 @@ public class ServletFileServerSingleLocation
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
-        context.setBaseResource(Resource.newResource(webRootUri));
+        ResourceFactory resourceFactory = ResourceFactory.of(context);
+        context.setBaseResource(resourceFactory.newResource(webRootUri));
         server.setHandler(context);
 
         ServletHolder holderPwd = new ServletHolder("default", DefaultServlet.class);

@@ -14,15 +14,17 @@
 import java.io.IOException;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
-import org.eclipse.jetty.server.handler.HandlerCollection;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.server.handler.ContextHandlerCollection;
+import org.eclipse.jetty.ee10.servlet.DefaultServlet;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.IO;
 import org.eclipse.jetty.util.component.LifeCycle;
 
@@ -53,7 +55,7 @@ public class VirtualHostsExample
     private void startServer() throws Exception
     {
         server = new Server(8080);
-        HandlerCollection handlers = new HandlerCollection();
+        ContextHandlerCollection handlers = new ContextHandlerCollection();
         server.setHandler(handlers);
 
         handlers.addHandler(createContext("/", "foo.company.com", HelloFooServlet.class));
@@ -70,7 +72,7 @@ public class VirtualHostsExample
         context.addServlet(virtualHostSpecificServlet, "/hello");
         context.addServlet(DefaultServlet.class, "/");
 
-        context.setVirtualHosts(new String[]{host});
+        context.setVirtualHosts(List.of(host));
         return context;
     }
 

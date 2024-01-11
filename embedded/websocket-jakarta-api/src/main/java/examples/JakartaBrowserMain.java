@@ -24,12 +24,14 @@ import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.ee10.servlet.DefaultServlet;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.util.resource.ResourceFactory;
+import org.eclipse.jetty.util.resource.Resources;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
-import org.eclipse.jetty.websocket.jakarta.server.config.JakartaWebSocketServletContainerInitializer;
+import org.eclipse.jetty.ee10.websocket.jakarta.server.config.JakartaWebSocketServletContainerInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,7 +90,7 @@ public class JakartaBrowserMain
 
         // Setup SSL
         SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-        sslContextFactory.setKeyStoreResource(findKeyStore());
+        sslContextFactory.setKeyStoreResource(findKeyStore(ResourceFactory.of(server)));
         sslContextFactory.setKeyStorePassword("OBF:1vny1zlo1x8e1vnw1vn61x8g1zlu1vn4");
         sslContextFactory.setKeyManagerPassword("OBF:1u2u1wml1z7s1z7a1wnl1u2g");
 
@@ -121,7 +123,8 @@ public class JakartaBrowserMain
         // Setup ServletContext
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
-        context.setBaseResource(Resource.newResource(webRootUri));
+        ResourceFactory resourceFactory = ResourceFactory.of(context);
+        context.setBaseResource(resourceFactory.newResource(webRootUri));
         ServletHolder holder = context.addServlet(DefaultServlet.class, "/");
         holder.setInitParameter("dirAllowed", "true");
         server.setHandler(context);
@@ -132,16 +135,14 @@ public class JakartaBrowserMain
         LOG.info("{} setup on (http) port {} and (https) port {}", this.getClass().getName(), port, sslPort);
     }
 
-    private static Resource findKeyStore() throws URISyntaxException, MalformedURLException
+    private static Resource findKeyStore(ResourceFactory resourceFactory)
     {
-        ClassLoader cl = JakartaBrowserMain.class.getClassLoader();
-        String keystoreResource = "ssl/keystore";
-        URL f = cl.getResource(keystoreResource);
-        if (f == null)
+        String resourceName = "ssl/keystore";
+        Resource resource = resourceFactory.newClassLoaderResource(resourceName);
+        if (Resources.isReadableFile(resource))
         {
-            throw new RuntimeException("Unable to find " + keystoreResource);
+            throw new RuntimeException("Unable to read " + resourceName);
         }
-
-        return Resource.newResource(f.toURI());
+        return resource;
     }
 }

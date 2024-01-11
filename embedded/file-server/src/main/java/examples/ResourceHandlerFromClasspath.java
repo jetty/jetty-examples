@@ -19,6 +19,7 @@ import java.net.URL;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.util.resource.ResourceFactory;
 
 public class ResourceHandlerFromClasspath
 {
@@ -40,9 +41,10 @@ public class ResourceHandlerFromClasspath
         URI webRootUri = f.toURI().resolve("./").normalize();
         System.err.println("WebRoot is " + webRootUri);
 
+        ResourceFactory resourceFactory = ResourceFactory.of(server);
         ResourceHandler handler = new ResourceHandler();
-        handler.setBaseResource(Resource.newResource(webRootUri));
-        handler.setDirectoriesListed(true);
+        handler.setBaseResource(resourceFactory.newResource(webRootUri));
+        handler.setDirAllowed(true);
 
         server.setHandler(handler);
 

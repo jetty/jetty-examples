@@ -13,17 +13,15 @@
 
 package examples;
 
-import java.io.File;
 import java.net.URI;
 import java.net.URL;
-import java.nio.file.Path;
 
+import org.eclipse.jetty.ee10.servlet.DefaultServlet;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.gzip.GzipHandler;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.util.resource.PathResource;
+import org.eclipse.jetty.util.resource.ResourceFactory;
 
 public class GzipRequestResponseExample
 {
@@ -56,8 +54,9 @@ public class GzipRequestResponseExample
 
         ServletContextHandler context = new ServletContextHandler();
         gzip.setHandler(context);
+
         context.setContextPath("/");
-        context.setBaseResource(new PathResource(webRootUri));
+        context.setBaseResource(ResourceFactory.of(context).newResource(webRootUri));
         context.setWelcomeFiles(new String[]{"index.html"});
 
         // Adding Servlets

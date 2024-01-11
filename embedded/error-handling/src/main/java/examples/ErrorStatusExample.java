@@ -17,16 +17,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
-import jakarta.servlet.ServletException;
+
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import org.eclipse.jetty.ee10.servlet.DefaultServlet;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.DefaultHandler;
-import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.IO;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -44,7 +43,7 @@ public class ErrorStatusExample
         context.setContextPath("/");
         context.addServlet(RangeHandlingServlet.class, "/demo");
         context.addServlet(DefaultServlet.class, "/"); // handle static content and errors for this context
-        HandlerList handlers = new HandlerList();
+        Handler.Sequence handlers = new Handler.Sequence();
         handlers.addHandler(context);
         handlers.addHandler(new DefaultHandler()); // handle non-context errors
         server.setHandler(context);

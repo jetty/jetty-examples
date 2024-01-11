@@ -13,7 +13,6 @@
 
 package examples;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -25,19 +24,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.http.HttpHeader;
+import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.http.HttpTester;
-import org.eclipse.jetty.rewrite.handler.RedirectUtil;
 import org.eclipse.jetty.rewrite.handler.RewriteHandler;
 import org.eclipse.jetty.rewrite.handler.Rule;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.util.Callback;
 import org.eclipse.jetty.util.component.LifeCycle;
-import org.eclipse.jetty.util.resource.PathResource;
+import org.eclipse.jetty.util.resource.ResourceFactory;
 
 public class MovedPermanentlyRuleExample
 {
@@ -77,7 +77,7 @@ public class MovedPermanentlyRuleExample
         connector.setPort(port);
         server.addConnector(connector);
 
-        HandlerList handlers = new HandlerList();
+        Handler.Sequence handlers = new Handler.Sequence();
         server.setHandler(handlers);
 
         // Add Rewrite / Redirect handlers + Rules
@@ -98,7 +98,7 @@ public class MovedPermanentlyRuleExample
         ServletContextHandler context = new ServletContextHandler();
         handlers.addHandler(context);
         context.setContextPath("/");
-        context.setBaseResource(new PathResource(webRootPath));
+        context.setBaseResource(ResourceFactory.of(context).newResource(webRootPath));
         context.setWelcomeFiles(new String[]{"index.html"});
         context.addServlet(DumpServlet.class, "/dump/*");
 
@@ -162,18 +162,24 @@ public class MovedPermanentlyRuleExample
         }
 
         @Override
-        public String matchAndApply(String target, HttpServletRequest request, HttpServletResponse response) throws IOException
+        public Handler matchAndApply(Handler input)
         {
-            Matcher matcher = regex.matcher(request.getRequestURL());
+            Matcher matcher = regex.matcher(input.getHttpURI().toString());
             boolean matches = matcher.matches();
             if (matches)
             {
-                String location = response.encodeRedirectURL(replacement);
-                response.setHeader("Location", RedirectUtil.toRedirectURL(request, location));
-                response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-                response.getOutputStream().flush(); // no output / content
-                response.getOutputStream().close();
-                return location;
+                return new Handler(input)
+                {
+                    @Override
+                    protected boolean handle(Response response, Callback callback)
+                    {
+                        String location = Response.toRedirectURI(input, replacement);
+                        response.setStatus(HttpStatus.MOVED_TEMPORARILY_302);
+                        response.getHeaders().put(HttpHeader.LOCATION, location);
+                        callback.succeeded();
+                        return true;
+                    }
+                };
             }
             return null;
         }

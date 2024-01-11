@@ -13,20 +13,21 @@
 
 package examples;
 
-import java.io.IOException;
 import java.net.URI;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.nio.charset.StandardCharsets;
 
+import org.eclipse.jetty.client.ContentResponse;
 import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.client.api.ContentResponse;
+import org.eclipse.jetty.http.HttpHeader;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.eclipse.jetty.util.BufferUtil;
+import org.eclipse.jetty.util.Callback;
 import org.eclipse.jetty.util.component.LifeCycle;
 
 public class HttpConfigExample
@@ -50,15 +51,14 @@ public class HttpConfigExample
         connectorDefault.setPort(9191);
         server.addConnector(connectorDefault);
 
-        server.setHandler(new AbstractHandler()
+        server.setHandler(new Handler.Abstract()
         {
             @Override
-            public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+            public boolean handle(Request request, Response response, Callback callback)
             {
-                response.setCharacterEncoding("utf-8");
-                response.setContentType("text/plain");
-                response.getWriter().println("Greetings.");
-                baseRequest.setHandled(true);
+                response.getHeaders().put(HttpHeader.CONTENT_TYPE, "text/plain; charset=utf-8");
+                response.write(true, BufferUtil.toBuffer("Greetings.", StandardCharsets.UTF_8), callback);
+                return true;
             }
         });
 

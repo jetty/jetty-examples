@@ -11,6 +11,8 @@ package examples;//
 // ========================================================================
 //
 
+import java.util.List;
+
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandler;
@@ -40,14 +42,14 @@ public class ConnectorSpecificContexts
         ContextHandler ctxHelloA = new ContextHandler();
         ctxHelloA.setContextPath("/");
         ctxHelloA.setHandler(new HelloHandler("Hello Connection A"));
-        ctxHelloA.setVirtualHosts(new String[]{"@connA"}); // Reference connector name
+        ctxHelloA.setVirtualHosts(List.of("@connA")); // Reference connector name
         contexts.addHandler(ctxHelloA);
 
         // Hello Handler (connection B)
         ContextHandler ctxHelloB = new ContextHandler();
         ctxHelloB.setContextPath("/");
         ctxHelloB.setHandler(new HelloHandler("Greetings from Connection B"));
-        ctxHelloB.setVirtualHosts(new String[]{"@connB"}); // Reference connector name
+        ctxHelloB.setVirtualHosts(List.of("@connB")); // Reference connector name
         contexts.addHandler(ctxHelloB);
 
         server.start();

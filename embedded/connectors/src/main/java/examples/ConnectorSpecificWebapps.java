@@ -11,10 +11,12 @@ package examples;//
 // ========================================================================
 //
 
+import java.util.List;
+
+import org.eclipse.jetty.ee10.webapp.WebAppContext;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.HandlerCollection;
-import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 
 public class ConnectorSpecificWebapps
 {
@@ -33,21 +35,21 @@ public class ConnectorSpecificWebapps
         server.addConnector(connectorB);
 
         // Basic handler collection
-        HandlerCollection contexts = new HandlerCollection();
+        ContextHandlerCollection contexts = new ContextHandlerCollection();
         server.setHandler(contexts);
 
         // WebApp A
         WebAppContext appA = new WebAppContext();
         appA.setContextPath("/a");
         appA.setWar("./src/main/webapps/webapp-a/");
-        appA.setVirtualHosts(new String[]{"@connA"}); // Reference connector name
+        appA.setVirtualHosts(List.of("@connA")); // Reference connector name
         contexts.addHandler(appA);
 
         // WebApp B
         WebAppContext appB = new WebAppContext();
         appB.setContextPath("/b");
         appB.setWar("./src/main/webapps/webapp-b/");
-        appB.setVirtualHosts(new String[]{"@connB"}); // Reference connector name
+        appB.setVirtualHosts(List.of("@connB")); // Reference connector name
         contexts.addHandler(appB);
 
         server.start();

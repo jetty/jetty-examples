@@ -15,6 +15,7 @@ package examples;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -34,6 +35,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.resource.PathResource;
 import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.util.resource.ResourceFactory;
 import org.eclipse.jetty.xml.XmlConfiguration;
 
 /**
@@ -49,6 +51,9 @@ public class XmlServer
         final boolean enableHttp = !argList.contains("--disable-http");
         final boolean enableHttps = !argList.contains("--disable-https");
 
+        // List of configured IDs from XML;
+        Map<String, Object> idMap;
+
         // The list of XMLs in the order they should be executed.
         List<Resource> xmls = new ArrayList<>();
 
@@ -61,52 +66,57 @@ public class XmlServer
         // Bonus is we also learn what JAR files we need.
         // And if we look at tmpdir/start.ini we can also know what properties can be set.
 
-        Path homeXmlPath = Paths.get("src/main/xml/home");
-        xmls.add(new PathResource(homeXmlPath.resolve("jetty-bytebufferpool.xml")));
-        xmls.add(new PathResource(homeXmlPath.resolve("jetty-threadpool.xml")));
-        xmls.add(new PathResource(homeXmlPath.resolve("jetty.xml")));
-        if (enableHttp)
+        try(ResourceFactory.Closeable resourceFactory = ResourceFactory.closeable())
         {
-            xmls.add(new PathResource(homeXmlPath.resolve("jetty-http.xml")));
+            Resource homeXmlResource = resourceFactory.newResource(Path.of("src/main/xml/home"));
+            Resource customBaseResource = resourceFactory.newResource(Path.of("src/main/xml/base"));
+
+            xmls.add(homeXmlResource.resolve("jetty-bytebufferpool.xml"));
+            xmls.add(homeXmlResource.resolve("jetty-threadpool.xml"));
+            xmls.add(homeXmlResource.resolve("jetty.xml"));
+            if (enableHttp)
+            {
+                xmls.add(homeXmlResource.resolve("jetty-http.xml"));
+            }
+            if (enableHttps)
+            {
+                xmls.add(homeXmlResource.resolve("jetty-ssl.xml"));
+                xmls.add(homeXmlResource.resolve("jetty-ssl-context.xml"));
+                xmls.add(homeXmlResource.resolve("jetty-https.xml"));
+            }
+            xmls.add(homeXmlResource.resolve("jetty-customrequestlog.xml"));
+
+            // Now we add our customizations
+            // In this case, it's 2 ServletContextHandlers
+            xmls.add(customBaseResource.resolve("context-foo.xml"));
+            xmls.add(customBaseResource.resolve("context-bar.xml"));
+
+            // Lets load our properties
+            Map<String, String> customProps = loadProperties(customBaseResource.resolve("custom.properties"));
+
+            // Create a path suitable for output / work directory / etc.
+            Path outputPath = Paths.get("target/xmlserver-output");
+            Path resourcesPath = outputPath.resolve("resources");
+
+            ensureDirExists(outputPath);
+            ensureDirExists(outputPath.resolve("logs"));
+            ensureDirExists(resourcesPath);
+            ensureDirExists(resourcesPath.resolve("bar"));
+            ensureDirExists(resourcesPath.resolve("foo"));
+
+            // And define some common properties
+            // These 2 properties are used in MANY PLACES, define them, even if you don't use them fully.
+            customProps.put("jetty.home", outputPath.toString());
+            customProps.put("jetty.base", outputPath.toString());
+            // And define the resource paths for the contexts
+            customProps.put("custom.resources", resourcesPath.toString());
+            customProps.put("jetty.sslContext.keyStoreAbsolutePath", customBaseResource.resolve("keystore").toString());
+            customProps.put("jetty.sslContext.trustStoreAbsolutePath", customBaseResource.resolve("keystore").toString());
+
+            // Now lets tie it all together
+            idMap = configure(xmls, customProps);
         }
-        if (enableHttps)
-        {
-            xmls.add(new PathResource(homeXmlPath.resolve("jetty-ssl.xml")));
-            xmls.add(new PathResource(homeXmlPath.resolve("jetty-ssl-context.xml")));
-            xmls.add(new PathResource(homeXmlPath.resolve("jetty-https.xml")));
-        }
-        xmls.add(new PathResource(homeXmlPath.resolve("jetty-customrequestlog.xml")));
 
-        // Now we add our customizations
-        // In this case, it's 2 ServletContextHandlers
-        Path customBasePath = Paths.get("src/main/xml/base");
-        xmls.add(new PathResource(customBasePath.resolve("context-foo.xml")));
-        xmls.add(new PathResource(customBasePath.resolve("context-bar.xml")));
-
-        // Lets load our properties
-        Map<String, String> customProps = loadProperties(customBasePath.resolve("custom.properties"));
-
-        // Create a path suitable for output / work directory / etc.
-        Path outputPath = Paths.get("target/xmlserver-output");
-        Path resourcesPath = outputPath.resolve("resources");
-
-        ensureDirExists(outputPath);
-        ensureDirExists(outputPath.resolve("logs"));
-        ensureDirExists(resourcesPath);
-        ensureDirExists(resourcesPath.resolve("bar"));
-        ensureDirExists(resourcesPath.resolve("foo"));
-
-        // And define some common properties
-        // These 2 properties are used in MANY PLACES, define them, even if you don't use them fully.
-        customProps.put("jetty.home", outputPath.toString());
-        customProps.put("jetty.base", outputPath.toString());
-        // And define the resource paths for the contexts
-        customProps.put("custom.resources", resourcesPath.toString());
-        customProps.put("jetty.sslContext.keyStoreAbsolutePath", customBasePath.resolve("keystore").toString());
-        customProps.put("jetty.sslContext.trustStoreAbsolutePath", customBasePath.resolve("keystore").toString());
-
-        // Now lets tie it all together
-        Map<String, Object> idMap = configure(xmls, customProps);
         Server server = (Server)idMap.get("Server");
         server.start();
         System.out.println("Server is running, and listening on ...");
@@ -160,13 +170,13 @@ public class XmlServer
         }
     }
 
-    private static Map<String, String> loadProperties(Path path) throws IOException
+    private static Map<String, String> loadProperties(Resource resource) throws IOException
     {
         Properties properties = new Properties();
 
-        try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8))
+        try (InputStream in = resource.newInputStream())
         {
-            properties.load(reader);
+            properties.load(in);
         }
 
         return properties.entrySet().stream().collect(

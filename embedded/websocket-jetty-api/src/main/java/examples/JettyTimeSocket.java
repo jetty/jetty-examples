@@ -13,24 +13,27 @@
 
 package examples;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.jetty.websocket.api.Callback;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketOpen;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebSocket
 public class JettyTimeSocket implements Runnable
 {
+    private static final Logger LOG = LoggerFactory.getLogger(JettyTimeSocket.class);
     private TimeZone timezone;
     private Session session;
 
-    @OnWebSocketConnect
+    @OnWebSocketOpen
     public void onOpen(Session session)
     {
         this.session = session;
@@ -55,12 +58,12 @@ public class JettyTimeSocket implements Runnable
                 dateFormat.setTimeZone(timezone);
 
                 String timestamp = dateFormat.format(new Date());
-                this.session.getRemote().sendString(timestamp);
+                this.session.sendText(timestamp, Callback.NOOP);
                 TimeUnit.SECONDS.sleep(1);
             }
-            catch (InterruptedException | IOException e)
+            catch (InterruptedException e)
             {
-                e.printStackTrace();
+                LOG.warn("Send of TEXT message interrupted", e);
             }
         }
     }

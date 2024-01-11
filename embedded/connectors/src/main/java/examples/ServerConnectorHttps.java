@@ -22,6 +22,8 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.util.resource.ResourceFactory;
+import org.eclipse.jetty.util.resource.Resources;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 public class ServerConnectorHttps
@@ -33,7 +35,7 @@ public class ServerConnectorHttps
 
         // Setup SSL
         SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-        sslContextFactory.setKeyStoreResource(findKeyStore());
+        sslContextFactory.setKeyStoreResource(findKeyStore(ResourceFactory.of(server)));
         sslContextFactory.setKeyStorePassword("OBF:1vny1zlo1x8e1vnw1vn61x8g1zlu1vn4");
         sslContextFactory.setKeyManagerPassword("OBF:1u2u1wml1z7s1z7a1wnl1u2g");
 
@@ -58,16 +60,14 @@ public class ServerConnectorHttps
         server.join();
     }
 
-    private static Resource findKeyStore() throws URISyntaxException, MalformedURLException
+    private static Resource findKeyStore(ResourceFactory resourceFactory)
     {
-        ClassLoader cl = ServerConnectorHttps.class.getClassLoader();
-        String keystoreResource = "ssl/keystore";
-        URL f = cl.getResource(keystoreResource);
-        if (f == null)
+        String resourceName = "ssl/keystore";
+        Resource resource = resourceFactory.newClassLoaderResource(resourceName);
+        if (Resources.isReadableFile(resource))
         {
-            throw new RuntimeException("Unable to find " + keystoreResource);
+            throw new RuntimeException("Unable to read " + resourceName);
         }
-
-        return Resource.newResource(f.toURI());
+        return resource;
     }
 }

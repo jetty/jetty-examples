@@ -6,6 +6,7 @@ on:
       - '9.4.x'
       - '10.0.x'
       - '11.0.x'
+      - '12.0.x'
   pull_request:
 
 jobs:
@@ -13,4 +14,4 @@ jobs:
     name: Build
     uses: jetty/.github/.github/workflows/maven-ci.yml@main
     with:
-      jdk-matrix: '[ "11", "21" ]'
+      jdk-matrix: '[ "17", "21" ]'

@@ -28,11 +28,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.FilterHolder;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.ee10.servlet.DefaultServlet;
+import org.eclipse.jetty.ee10.servlet.FilterHolder;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.util.resource.ResourceFactory;
 
 public class AddFilterMultipleMapping
 {
@@ -84,7 +85,7 @@ public class AddFilterMultipleMapping
         // This is also known as the handler tree (in jetty speak)
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
-        context.setBaseResource(Resource.newResource(webRootUri));
+        context.setBaseResource(ResourceFactory.of(context).newResource(webRootUri));
         server.setHandler(context);
 
         EnumSet<DispatcherType> dispatches = EnumSet.allOf(DispatcherType.class);

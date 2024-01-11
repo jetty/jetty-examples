@@ -25,17 +25,17 @@ import java.util.List;
 import javax.naming.InitialContext;
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import org.eclipse.jetty.ee10.webapp.WebAppContext;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.IO;
 import org.eclipse.jetty.util.component.LifeCycle;
-import org.eclipse.jetty.util.resource.PathResource;
-import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.util.resource.ResourceFactory;
 
 public class WebAppContextWithJNDI
 {
@@ -91,7 +91,7 @@ public class WebAppContextWithJNDI
         WebAppContext context = new WebAppContext();
         context.setContextPath("/");
         // This directory only has WEB-INF/web.xml
-        context.setBaseResource(new PathResource(Paths.get("src/main/webroots/jndi-root")));
+        context.setBaseResource(ResourceFactory.of(context).newResource(Paths.get("src/main/webroots/jndi-root")));
         context.addServlet(JndiDumpServlet.class, "/jndi-dump");
 
         new org.eclipse.jetty.plus.jndi.Resource(null, "val/foo", Integer.valueOf(770));

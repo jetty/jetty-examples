@@ -13,7 +13,6 @@
 
 package examples;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,13 +23,12 @@ import org.eclipse.jetty.deploy.App;
 import org.eclipse.jetty.deploy.AppLifeCycle;
 import org.eclipse.jetty.deploy.DeploymentManager;
 import org.eclipse.jetty.deploy.graph.Node;
-import org.eclipse.jetty.deploy.providers.WebAppProvider;
+import org.eclipse.jetty.deploy.providers.ContextProvider;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.server.handler.DefaultHandler;
-import org.eclipse.jetty.server.handler.HandlerCollection;
 
 public class WebAppsHotDeployExample
 {
@@ -39,9 +37,9 @@ public class WebAppsHotDeployExample
         Server server = new Server(8080);
 
         ContextHandlerCollection contexts = new ContextHandlerCollection();
-        HandlerCollection handlers = new HandlerCollection();
-
-        handlers.setHandlers(new Handler[]{contexts, new DefaultHandler()});
+        Handler.Sequence handlers = new Handler.Sequence();
+        handlers.addHandler(contexts);
+        handlers.addHandler(new DefaultHandler());
 
         server.setHandler(handlers);
 
@@ -59,9 +57,10 @@ public class WebAppsHotDeployExample
         {
             throw new FileNotFoundException("Missing System Property 'jetty.base'");
         }
-        Path jettyBase = new File(jettyBaseProp).toPath().toAbsolutePath();
+        Path jettyBase = Path.of(jettyBaseProp).toAbsolutePath();
 
-        WebAppProvider webAppProvider = new WebAppProvider();
+        ContextProvider webAppProvider = new ContextProvider();
+        webAppProvider.setEnvironmentName("ee10");
         webAppProvider.setMonitoredDirName(jettyBase.resolve("webapps").toString());
 
         deploymentManager.addAppProvider(webAppProvider);

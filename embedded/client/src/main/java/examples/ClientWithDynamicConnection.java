@@ -14,11 +14,11 @@
 package examples;
 
 import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.client.api.ContentResponse;
-import org.eclipse.jetty.client.dynamic.HttpClientTransportDynamic;
-import org.eclipse.jetty.client.http.HttpClientConnectionFactory;
+import org.eclipse.jetty.client.ContentResponse;
+import org.eclipse.jetty.client.transport.HttpClientConnectionFactory;
+import org.eclipse.jetty.client.transport.HttpClientTransportDynamic;
 import org.eclipse.jetty.http2.client.HTTP2Client;
-import org.eclipse.jetty.http2.client.http.ClientConnectionFactoryOverHTTP2;
+import org.eclipse.jetty.http2.client.transport.ClientConnectionFactoryOverHTTP2;
 import org.eclipse.jetty.io.ClientConnectionFactory;
 import org.eclipse.jetty.io.ClientConnector;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
@@ -36,10 +36,10 @@ public class ClientWithDynamicConnection
         ClientConnector clientConnector = new ClientConnector();
         clientConnector.setSslContextFactory(sslContextFactory);
 
-        ClientConnectionFactory.Info h1 = HttpClientConnectionFactory.HTTP11;
+        ClientConnectionFactory.Info http1Info = HttpClientConnectionFactory.HTTP11;
         HTTP2Client http2Client = new HTTP2Client(clientConnector);
-        ClientConnectionFactory.Info h2 = new ClientConnectionFactoryOverHTTP2.HTTP2(http2Client);
-        HttpClientTransportDynamic dynamicTransport = new HttpClientTransportDynamic(clientConnector, h1, h2);
+        ClientConnectionFactoryOverHTTP2.HTTP2 http2Info = new ClientConnectionFactoryOverHTTP2.HTTP2(http2Client);
+        HttpClientTransportDynamic dynamicTransport = new HttpClientTransportDynamic(clientConnector, http1Info, http2Info);
 
         HttpClient httpClient = new HttpClient(dynamicTransport);
         try

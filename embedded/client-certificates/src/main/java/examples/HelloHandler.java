@@ -11,15 +11,16 @@ package examples;//
 // ========================================================================
 //
 
-import java.io.IOException;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.nio.charset.StandardCharsets;
 
+import org.eclipse.jetty.http.HttpHeader;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.eclipse.jetty.server.Response;
+import org.eclipse.jetty.util.BufferUtil;
+import org.eclipse.jetty.util.Callback;
 
-public class HelloHandler extends AbstractHandler
+public class HelloHandler extends Handler.Abstract
 {
     private final String msg;
 
@@ -29,10 +30,10 @@ public class HelloHandler extends AbstractHandler
     }
 
     @Override
-    public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+    public boolean handle(Request request, Response response, Callback callback) throws Exception
     {
-        response.setContentType("text/plain");
-        response.getWriter().printf("%s%n", msg);
-        baseRequest.setHandled(true);
+        response.getHeaders().put(HttpHeader.CONTENT_TYPE, "text/plain; charset=utf-8");
+        response.write(true, BufferUtil.toBuffer(String.format("%s%n", msg), StandardCharsets.UTF_8), callback);
+        return true;
     }
 }

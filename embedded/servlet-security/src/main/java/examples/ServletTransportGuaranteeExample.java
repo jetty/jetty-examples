@@ -13,12 +13,11 @@
 
 package examples;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-import org.eclipse.jetty.security.ConstraintAware;
-import org.eclipse.jetty.security.ConstraintMapping;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.ServletHolder;
+import org.eclipse.jetty.ee10.servlet.security.ConstraintAware;
+import org.eclipse.jetty.ee10.servlet.security.ConstraintMapping;
+import org.eclipse.jetty.security.Constraint;
 import org.eclipse.jetty.security.SecurityHandler;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
@@ -26,10 +25,9 @@ import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
-import org.eclipse.jetty.util.security.Constraint;
+import org.eclipse.jetty.util.resource.ResourceFactory;
+import org.eclipse.jetty.util.resource.Resources;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 public class ServletTransportGuaranteeExample
@@ -39,6 +37,7 @@ public class ServletTransportGuaranteeExample
         Server server = new Server();
         int httpPort = 8080;
         int httpsPort = 8443;
+        ResourceFactory resourceFactory = ResourceFactory.of(server);
 
         // Setup HTTP Connector
         HttpConfiguration httpConf = new HttpConfiguration();
@@ -53,7 +52,7 @@ public class ServletTransportGuaranteeExample
 
         // Setup SSL
         SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-        sslContextFactory.setKeyStoreResource(findKeyStore());
+        sslContextFactory.setKeyStoreResource(findKeyStore(resourceFactory));
         sslContextFactory.setKeyStorePassword("OBF:1vny1zlo1x8e1vnw1vn61x8g1zlu1vn4");
         sslContextFactory.setKeyManagerPassword("OBF:1u2u1wml1z7s1z7a1wnl1u2g");
 
@@ -82,8 +81,9 @@ public class ServletTransportGuaranteeExample
             ConstraintAware constraint = (ConstraintAware)security;
             ConstraintMapping mapping = new ConstraintMapping();
             mapping.setPathSpec("/*");
-            Constraint dc = new Constraint();
-            dc.setDataConstraint(Constraint.DC_CONFIDENTIAL);
+            Constraint dc = new Constraint.Builder()
+                .transport(Constraint.Transport.SECURE)
+                .build();
             mapping.setConstraint(dc);
             constraint.addConstraintMapping(mapping);
         }
@@ -102,16 +102,14 @@ public class ServletTransportGuaranteeExample
         server.join();
     }
 
-    private static Resource findKeyStore() throws URISyntaxException, MalformedURLException
+    private static Resource findKeyStore(ResourceFactory resourceFactory)
     {
-        ClassLoader cl = ServletTransportGuaranteeExample.class.getClassLoader();
-        String keystoreResource = "ssl/keystore";
-        URL f = cl.getResource(keystoreResource);
-        if (f == null)
+        String resourceName = "ssl/keystore";
+        Resource resource = resourceFactory.newClassLoaderResource(resourceName);
+        if (Resources.isReadableFile(resource))
         {
-            throw new RuntimeException("Unable to find " + keystoreResource);
+            throw new RuntimeException("Unable to read " + resourceName);
         }
-
-        return Resource.newResource(f.toURI());
+        return resource;
     }
 }

@@ -14,21 +14,21 @@
 package examples;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
+
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import org.eclipse.jetty.ee10.webapp.WebAppContext;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
-import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.util.Callback;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Demonstrate an Embedded Jetty server where the server
@@ -37,6 +37,8 @@ import org.eclipse.jetty.webapp.WebAppContext;
  */
 public class DelayedWebAppDeployExample
 {
+    private static final Logger LOG = LoggerFactory.getLogger(DelayedWebAppDeployExample.class);
+
     public static void main(String[] args) throws Exception
     {
         Server server = new Server(8080);
@@ -45,7 +47,7 @@ public class DelayedWebAppDeployExample
         ContextHandlerCollection contexts = new ContextHandlerCollection();
 
         // The server handler list
-        HandlerList handlers = new HandlerList();
+        Handler.Sequence handlers = new Handler.Sequence();
         handlers.addHandler(contexts);
         handlers.addHandler(new UnavailableHandler());
 
@@ -60,15 +62,15 @@ public class DelayedWebAppDeployExample
         server.join();
     }
 
-    public static class UnavailableHandler extends AbstractHandler
+    public static class UnavailableHandler extends Handler.Abstract
     {
         @Override
-        public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+        public boolean handle(Request request, Response response, Callback callback) throws Exception
         {
             // Indicate a 503 status
             response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             // tell jetty that this request was handled (making others handlers not run for this request)
-            baseRequest.setHandled(true);
+            return true;
         }
     }
 
@@ -102,7 +104,7 @@ public class DelayedWebAppDeployExample
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+                LOG.warn("Unable to create/start webapp {} from {}", warPath, contextPath, e);
             }
         }
     }
@@ -123,14 +125,13 @@ public class DelayedWebAppDeployExample
             }
             catch (InterruptedException e)
             {
-                e.printStackTrace();
+                LOG.warn("Context initialization interrupted {}", sce, e);
             }
         }
 
         @Override
         public void contextDestroyed(ServletContextEvent sce)
         {
-
         }
     }
 }

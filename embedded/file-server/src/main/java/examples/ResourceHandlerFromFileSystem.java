@@ -20,6 +20,7 @@ import java.nio.file.Paths;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.util.resource.PathResource;
+import org.eclipse.jetty.util.resource.ResourceFactory;
 
 public class ResourceHandlerFromFileSystem
 {
@@ -35,9 +36,10 @@ public class ResourceHandlerFromFileSystem
         }
         System.err.println("WebRoot is " + webRootPath);
 
+        ResourceFactory resourceFactory = ResourceFactory.of(server);
         ResourceHandler handler = new ResourceHandler();
-        handler.setBaseResource(new PathResource(webRootPath));
-        handler.setDirectoriesListed(true);
+        handler.setBaseResource(resourceFactory.newResource(webRootPath));
+        handler.setDirAllowed(true);
 
         server.setHandler(handler);
 
