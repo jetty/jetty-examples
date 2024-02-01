@@ -13,7 +13,9 @@
 
 package examples;
 
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,7 +25,6 @@ import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.resource.ResourceFactory;
 
 /**
@@ -41,11 +42,19 @@ public class ServletFileServerMultipleLocations
 {
     public static void main(String[] args) throws Exception
     {
-        Server server = new Server();
-        ServerConnector connector = new ServerConnector(server);
-        connector.setPort(8080);
-        server.addConnector(connector);
+        URI webRootUri = findDefaultBaseResource();
+        System.err.println("Default Base Resource is " + webRootUri);
 
+        Path altPath = Paths.get("webapps/alt-root").toRealPath();
+        System.err.println("Alt Base Resource is " + altPath);
+
+        Server server = ServletFileServerMultipleLocations.newServer(8080, webRootUri, altPath);
+        server.start();
+        server.join();
+    }
+
+    public static URI findDefaultBaseResource() throws URISyntaxException
+    {
         // Figure out what path to serve content from
         ClassLoader cl = ServletFileServerMultipleLocations.class.getClassLoader();
         // We look for a file, as ClassLoader.getResource() is not
@@ -57,21 +66,24 @@ public class ServletFileServerMultipleLocations
         }
 
         // Resolve file to directory
-        URI webRootUri = f.toURI().resolve("./").normalize();
-        System.err.println("Main Base Resource is " + webRootUri);
+        return f.toURI().resolve("./").normalize();
+    }
+
+    public static Server newServer(int port, URI mainResourceBase, Path altPath) throws MalformedURLException
+    {
+        Server server = new Server();
+        ServerConnector connector = new ServerConnector(server);
+        connector.setPort(port);
+        server.addConnector(connector);
 
         // Setup the basic application "context" for this application at "/"
         // This is also known as the handler tree (in jetty speak)
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         ResourceFactory resourceFactory = ResourceFactory.of(context);
-        context.setBaseResource(resourceFactory.newResource(webRootUri));
+        context.setBaseResource(resourceFactory.newResource(mainResourceBase));
         context.setWelcomeFiles(new String[]{"index.html", "index.htm", "alt-index.html"});
         server.setHandler(context);
-
-        // Find altPath
-        Path altPath = Paths.get("webapps/alt-root").toRealPath();
-        System.err.println("Alt Base Resource is " + altPath);
 
         // add special pathspec of "/alt/" content mapped to the altPath
         ServletHolder holderAlt = new ServletHolder("static-alt", DefaultServlet.class);
@@ -86,7 +98,6 @@ public class ServletFileServerMultipleLocations
         holderDef.setInitParameter("dirAllowed", "true");
         context.addServlet(holderDef, "/");
 
-        server.start();
-        server.join();
+        return server;
     }
 }

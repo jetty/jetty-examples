@@ -19,15 +19,12 @@ import java.nio.file.Paths;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ResourceHandler;
-import org.eclipse.jetty.util.resource.PathResource;
 import org.eclipse.jetty.util.resource.ResourceFactory;
 
 public class ResourceHandlerFromFileSystem
 {
     public static void main(String[] args) throws Exception
     {
-        Server server = new Server(8080);
-
         Path webRootPath = Paths.get("webapps/alt-root/").toAbsolutePath().normalize();
         if (!Files.isDirectory(webRootPath))
         {
@@ -36,14 +33,21 @@ public class ResourceHandlerFromFileSystem
         }
         System.err.println("WebRoot is " + webRootPath);
 
+        Server server = ResourceHandlerFromFileSystem.newServer(8080, webRootPath);
+        server.start();
+        server.join();
+    }
+
+    public static Server newServer(int port, Path resourcesRoot)
+    {
+        Server server = new Server(port);
+
         ResourceFactory resourceFactory = ResourceFactory.of(server);
         ResourceHandler handler = new ResourceHandler();
-        handler.setBaseResource(resourceFactory.newResource(webRootPath));
+        handler.setBaseResource(resourceFactory.newResource(resourcesRoot));
         handler.setDirAllowed(true);
 
         server.setHandler(handler);
-
-        server.start();
-        server.join();
+        return server;
     }
 }

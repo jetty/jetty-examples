@@ -14,6 +14,7 @@
 package examples;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.eclipse.jetty.ee10.servlet.DefaultServlet;
@@ -21,7 +22,6 @@ import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.resource.ResourceFactory;
 
 /**
@@ -31,13 +31,18 @@ public class ServletFileServerSingleLocation
 {
     public static void main(String[] args) throws Exception
     {
-        Server server = new Server();
-        ServerConnector connector = new ServerConnector(server);
-        connector.setPort(8080);
-        server.addConnector(connector);
+        URI webRootUri = findDefaultBaseResource();
+        System.err.println("WebRoot is " + webRootUri);
 
+        Server server = ServletFileServerSingleLocation.newServer(8080, webRootUri);
+        server.start();
+        server.join();
+    }
+
+    public static URI findDefaultBaseResource() throws URISyntaxException
+    {
         // Figure out what path to serve content from
-        ClassLoader cl = ServletFileServerSingleLocation.class.getClassLoader();
+        ClassLoader cl = ServletFileServerMultipleLocations.class.getClassLoader();
         // We look for a file, as ClassLoader.getResource() is not
         // designed to look for directories (we resolve the directory later)
         URL f = cl.getResource("static-root/hello.html");
@@ -47,20 +52,26 @@ public class ServletFileServerSingleLocation
         }
 
         // Resolve file to directory
-        URI webRootUri = f.toURI().resolve("./").normalize();
-        System.err.println("WebRoot is " + webRootUri);
+        return f.toURI().resolve("./").normalize();
+    }
+
+    public static Server newServer(int port, URI resourcesRoot)
+    {
+        Server server = new Server();
+        ServerConnector connector = new ServerConnector(server);
+        connector.setPort(port);
+        server.addConnector(connector);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         ResourceFactory resourceFactory = ResourceFactory.of(context);
-        context.setBaseResource(resourceFactory.newResource(webRootUri));
+        context.setBaseResource(resourceFactory.newResource(resourcesRoot));
         server.setHandler(context);
 
         ServletHolder holderPwd = new ServletHolder("default", DefaultServlet.class);
         holderPwd.setInitParameter("dirAllowed", "true");
         context.addServlet(holderPwd, "/");
 
-        server.start();
-        server.join();
+        return server;
     }
 }

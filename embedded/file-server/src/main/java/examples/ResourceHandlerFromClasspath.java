@@ -18,15 +18,12 @@ import java.net.URL;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ResourceHandler;
-import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.resource.ResourceFactory;
 
 public class ResourceHandlerFromClasspath
 {
     public static void main(String[] args) throws Exception
     {
-        Server server = new Server(8080);
-
         // Figure out what path to serve content from
         ClassLoader cl = ResourceHandlerFromClasspath.class.getClassLoader();
         // We look for a file, as ClassLoader.getResource() is not
@@ -41,14 +38,21 @@ public class ResourceHandlerFromClasspath
         URI webRootUri = f.toURI().resolve("./").normalize();
         System.err.println("WebRoot is " + webRootUri);
 
+        Server server = ResourceHandlerFromClasspath.newServer(8080, webRootUri);
+        server.start();
+        server.join();
+    }
+
+    public static Server newServer(int port, URI resourcesRoot)
+    {
+        Server server = new Server(port);
+
         ResourceFactory resourceFactory = ResourceFactory.of(server);
         ResourceHandler handler = new ResourceHandler();
-        handler.setBaseResource(resourceFactory.newResource(webRootUri));
+        handler.setBaseResource(resourceFactory.newResource(resourcesRoot));
         handler.setDirAllowed(true);
 
         server.setHandler(handler);
-
-        server.start();
-        server.join();
+        return server;
     }
 }
