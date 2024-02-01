@@ -13,6 +13,7 @@
 
 package examples;
 
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
@@ -30,11 +31,6 @@ public class ServletFileServerSingleLocation
 {
     public static void main(String[] args) throws Exception
     {
-        Server server = new Server();
-        ServerConnector connector = new ServerConnector(server);
-        connector.setPort(8080);
-        server.addConnector(connector);
-
         // Figure out what path to serve content from
         ClassLoader cl = ServletFileServerSingleLocation.class.getClassLoader();
         // We look for a file, as ClassLoader.getResource() is not
@@ -49,16 +45,27 @@ public class ServletFileServerSingleLocation
         URI webRootUri = f.toURI().resolve("./").normalize();
         System.err.println("WebRoot is " + webRootUri);
 
+        Server server = ServletFileServerSingleLocation.newServer(8080, webRootUri);
+        server.start();
+        server.join();
+    }
+
+    public static Server newServer(int port, URI resourcesRoot) throws MalformedURLException
+    {
+        Server server = new Server();
+        ServerConnector connector = new ServerConnector(server);
+        connector.setPort(port);
+        server.addConnector(connector);
+
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
-        context.setBaseResource(Resource.newResource(webRootUri));
+        context.setBaseResource(Resource.newResource(resourcesRoot));
         server.setHandler(context);
 
         ServletHolder holderPwd = new ServletHolder("default", DefaultServlet.class);
         holderPwd.setInitParameter("dirAllowed", "true");
         context.addServlet(holderPwd, "/");
 
-        server.start();
-        server.join();
+        return server;
     }
 }

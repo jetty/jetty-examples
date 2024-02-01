@@ -13,6 +13,7 @@
 
 package examples;
 
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
@@ -24,8 +25,6 @@ public class ResourceHandlerFromClasspath
 {
     public static void main(String[] args) throws Exception
     {
-        Server server = new Server(8080);
-
         // Figure out what path to serve content from
         ClassLoader cl = ResourceHandlerFromClasspath.class.getClassLoader();
         // We look for a file, as ClassLoader.getResource() is not
@@ -40,13 +39,20 @@ public class ResourceHandlerFromClasspath
         URI webRootUri = f.toURI().resolve("./").normalize();
         System.err.println("WebRoot is " + webRootUri);
 
+        Server server = ResourceHandlerFromClasspath.newServer(8080, webRootUri);
+        server.start();
+        server.join();
+    }
+
+    public static Server newServer(int port, URI resourcesRoot) throws MalformedURLException
+    {
+        Server server = new Server(port);
+
         ResourceHandler handler = new ResourceHandler();
-        handler.setBaseResource(Resource.newResource(webRootUri));
+        handler.setBaseResource(Resource.newResource(resourcesRoot));
         handler.setDirectoriesListed(true);
 
         server.setHandler(handler);
-
-        server.start();
-        server.join();
+        return server;
     }
 }
