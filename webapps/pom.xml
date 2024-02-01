@@ -10,19 +10,10 @@
   <artifactId>jetty-webapp-examples</artifactId>
   <version>12.0.x</version>
   <packaging>pom</packaging>
-  <name>Jetty Examples :: Jetty 12.0.x :: WebApps</name>
+  <name>Jetty Examples :: Jetty 12.0.x :: Hello WebApp (Servlet 5)</name>
 
   <modules>
-    <module>hello</module>
+    <module>hello-servlet-3</module>
+    <module>hello-servlet-5</module>
   </modules>
-
-  <dependencies>
-    <dependency>
-      <groupId>jakarta.servlet</groupId>
-      <artifactId>jakarta.servlet-api</artifactId>
-      <version>5.0.0</version>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
-
 </project>

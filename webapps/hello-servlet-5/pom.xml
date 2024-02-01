@@ -6,13 +6,21 @@
     <artifactId>jetty-webapp-examples</artifactId>
     <version>12.0.x</version>
   </parent>
-  <artifactId>hello</artifactId>
+  <artifactId>hello-servlet-5</artifactId>
   <version>12.0.x</version>
   <packaging>war</packaging>
   <name>Jetty Examples :: Jetty 12.0.x :: Hello WebApp</name>
 
+  <dependencies>
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>5.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
   <build>
     <finalName>hello</finalName>
   </build>
-
 </project>

@@ -18,6 +18,8 @@
     <module>compressed-encoding</module>
     <module>connectors</module>
     <module>deploying</module>
+    <module>ee8-webapp-context</module>
+    <module>ee10-webapp-context</module>
     <module>error-handling</module>
     <module>file-server</module>
     <module>file-upload</module>
@@ -30,7 +32,6 @@
     <module>servlet-security</module>
     <module>simple-server</module>
     <module>virtual-hosts</module>
-    <module>webapp-context</module>
     <module>websocket-jakarta-api</module>
     <module>websocket-jetty-api</module>
     <module>xml</module>

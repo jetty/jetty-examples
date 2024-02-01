@@ -13,36 +13,31 @@
 
 package examples;
 
-import java.net.URI;
-import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.ee10.webapp.WebAppContext;
+import org.eclipse.jetty.server.Server;
 
-public class WebAppContextFromClasspath
+public class WebAppContextFromFileSystem
 {
     public static void main(String[] args) throws Exception
     {
         Server server = new Server(8080);
 
-        // Figure out what path to serve content from
-        ClassLoader cl = WebAppContextFromClasspath.class.getClassLoader();
-        // We look for a file, as ClassLoader.getResource() is not
-        // designed to look for directories (we resolve the directory later)
-        URL f = cl.getResource("hello-webapp/hello.html");
-        if (f == null)
+        Path warPath = Paths.get("target/webapps/hello-servlet-5.war").toAbsolutePath().normalize();
+        if (!Files.isRegularFile(warPath))
         {
-            throw new RuntimeException("Unable to find resource directory");
+            System.err.println("Unable to find " + warPath + ".  Please build the entire project once first (`mvn clean install` from top of repo)");
+            System.exit(-1);
         }
 
-        // Resolve file to directory
-        URI webRootUri = f.toURI().resolve("./").normalize();
-        System.err.println("WebRoot is " + webRootUri);
+        System.out.println("WAR File is " + warPath);
 
         WebAppContext webapp = new WebAppContext();
         webapp.setContextPath("/");
-        webapp.setWar(webRootUri.toASCIIString());
-        webapp.setParentLoaderPriority(true);
+        webapp.setWar(warPath.toUri().toASCIIString());
 
         server.setHandler(webapp);
 
