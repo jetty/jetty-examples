@@ -22,19 +22,18 @@ import org.eclipse.jetty.toolchain.test.FS;
 import org.eclipse.jetty.toolchain.test.MavenPaths;
 import org.eclipse.jetty.util.component.LifeCycle;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static examples.StaticFileGen.GB;
-import static examples.StaticFileGen.MB;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ServletFileServerMultipleLocationsTest
 {
-    private final long exampleSize = 2 * MB;
-    private final long largeSize = 2 * GB;
+    private final long exampleSize = 2 * StaticFileGen.MB;
+    private final long largeSize = 2 * StaticFileGen.GB;
     private Server server;
     private String exampleSha;
     private String largeSha;
@@ -73,7 +72,7 @@ public class ServletFileServerMultipleLocationsTest
         String contentLengthResponse = http.getHeaderField("Content-Length");
         assertNotNull(contentLengthResponse);
         long contentLengthLong = Long.parseLong(contentLengthResponse);
-        assertEquals(2 * MB, contentLengthLong);
+        Assertions.assertEquals(2 * StaticFileGen.MB, contentLengthLong);
         assertEquals("image/png", http.getHeaderField("Content-Type"));
 
         StaticFileGen.verify(http.getInputStream(), exampleSize, exampleSha);
@@ -92,7 +91,7 @@ public class ServletFileServerMultipleLocationsTest
         String contentLengthResponse = http.getHeaderField("Content-Length");
         assertNotNull(contentLengthResponse);
         long contentLengthLong = Long.parseLong(contentLengthResponse);
-        assertEquals(2 * GB, contentLengthLong);
+        Assertions.assertEquals(2 * StaticFileGen.GB, contentLengthLong);
         assertNull(http.getHeaderField("Content-Type"), "Not a recognized mime-type by Jetty");
 
         StaticFileGen.verify(http.getInputStream(), largeSize, largeSha);

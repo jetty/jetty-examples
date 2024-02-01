@@ -19,6 +19,7 @@
     <module>connectors</module>
     <module>deploying</module>
     <module>ee8-webapp-context</module>
+    <module>ee10-file-server</module>
     <module>ee10-webapp-context</module>
     <module>error-handling</module>
     <module>file-server</module>
