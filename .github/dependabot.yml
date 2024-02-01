@@ -50,3 +50,9 @@ updates:
         versions: [ ">=3.0.0" ]
       - dependency-name: "jakarta.servlet:*"
         versions: [ ">=6.0.0" ]
+
+  - package-ecosystem: "maven"
+    directory: "/"
+    target-branch: "jetty-12.0.x"
+    schedule:
+      interval: "daily"
