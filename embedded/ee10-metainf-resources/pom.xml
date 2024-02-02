@@ -4,12 +4,12 @@
   <parent>
     <groupId>org.eclipse.jetty.examples.embedded</groupId>
     <artifactId>jetty-embedded-examples</artifactId>
-    <version>9.4.x</version>
+    <version>12.0.x</version>
   </parent>
-  <artifactId>metainf-resources</artifactId>
-  <version>9.4.x</version>
+  <artifactId>ee10-metainf-resources</artifactId>
+  <version>12.0.x</version>
   <packaging>jar</packaging>
-  <name>Jetty Examples :: Jetty 9.4.x :: Embedded :: Integrating jars with META-INF/resources without WebAppContext</name>
+  <name>Jetty Examples :: Jetty 12.0.x :: Embedded :: EE10 Integrating jars with META-INF/resources without WebAppContext</name>
 
   <dependencies>
     <dependency>
@@ -19,7 +19,12 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-servlet</artifactId>
+      <artifactId>jetty-slf4j-impl</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.ee10</groupId>
+      <artifactId>jetty-ee10-servlet</artifactId>
       <version>${jetty.version}</version>
     </dependency>
     <dependency>

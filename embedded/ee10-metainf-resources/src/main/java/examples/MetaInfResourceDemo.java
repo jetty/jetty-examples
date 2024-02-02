@@ -18,14 +18,14 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.jetty.ee10.servlet.DefaultServlet;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.ServletHolder;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.DefaultHandler;
-import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
-import org.eclipse.jetty.util.resource.ResourceCollection;
+import org.eclipse.jetty.util.resource.ResourceFactory;
 
 public class MetaInfResourceDemo
 {
@@ -40,12 +40,14 @@ public class MetaInfResourceDemo
     {
         Server server = new Server(port);
 
-        HandlerList handlers = new HandlerList();
+        Handler.Sequence handlers = new Handler.Sequence();
 
         ServletContextHandler context = new ServletContextHandler();
         context.setContextPath("/");
 
-        Resource manifestResources = findManifestResources(MetaInfResourceDemo.class.getClassLoader());
+        ResourceFactory resourceFactory = ResourceFactory.of(context);
+
+        Resource manifestResources = findManifestResources(resourceFactory, MetaInfResourceDemo.class.getClassLoader());
         context.setBaseResource(manifestResources);
 
         // Add something to serve the static files
@@ -60,15 +62,15 @@ public class MetaInfResourceDemo
         return server;
     }
 
-    private static Resource findManifestResources(ClassLoader classLoader) throws IOException
+    private static Resource findManifestResources(ResourceFactory resourceFactory, ClassLoader classLoader) throws IOException
     {
         List<URL> hits = Collections.list(classLoader.getResources("META-INF/resources"));
         int size = hits.size();
         Resource[] resources = new Resource[hits.size()];
         for (int i = 0; i < size; i++)
         {
-            resources[i] = Resource.newResource(hits.get(i));
+            resources[i] = resourceFactory.newResource(hits.get(i));
         }
-        return new ResourceCollection(resources);
+        return ResourceFactory.combine(resources);
     }
 }
