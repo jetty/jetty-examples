@@ -32,6 +32,7 @@
     <module>http-config</module>
     <module>jndi</module>
     <module>redirect</module>
+    <module>requestlog</module>
     <module>rewrite</module>
     <module>simple-server</module>
     <module>virtual-hosts</module>
