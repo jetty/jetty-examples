@@ -23,6 +23,7 @@
     <module>form-post</module>
     <module>http-config</module>
     <module>jndi</module>
+    <module>metainf-resources</module>
     <module>redirect</module>
     <module>rewrite</module>
     <module>servlet-config</module>
