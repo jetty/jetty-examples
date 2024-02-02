@@ -23,6 +23,8 @@
     <module>ee10-servlet-config</module>
     <module>ee10-servlet-security</module>
     <module>ee10-webapp-context</module>
+    <module>ee10-websocket-jakarta-api</module>
+    <module>ee10-websocket-jetty-api</module>
     <module>error-handling</module>
     <module>file-server</module>
     <module>file-upload</module>
@@ -33,8 +35,6 @@
     <module>rewrite</module>
     <module>simple-server</module>
     <module>virtual-hosts</module>
-    <module>websocket-jakarta-api</module>
-    <module>websocket-jetty-api</module>
     <module>xml</module>
   </modules>
 

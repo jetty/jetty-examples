@@ -6,10 +6,10 @@
     <artifactId>jetty-embedded-examples</artifactId>
     <version>12.0.x</version>
   </parent>
-  <artifactId>websocket-jakarta-api</artifactId>
+  <artifactId>ee10-websocket-jetty-api</artifactId>
   <version>12.0.x</version>
   <packaging>jar</packaging>
-  <name>Jetty Examples :: Jetty 12.0.x :: Embedded :: WebSocket with Jakarta EE API</name>
+  <name>Jetty Examples :: Jetty 12.0.x :: Embedded :: EE10 WebSocket with Jetty API</name>
 
   <dependencies>
     <dependency>
@@ -26,7 +26,7 @@
 
     <dependency>
       <groupId>org.eclipse.jetty.ee10.websocket</groupId>
-      <artifactId>jetty-ee10-websocket-jakarta-server</artifactId>
+      <artifactId>jetty-ee10-websocket-jetty-server</artifactId>
       <version>${jetty.version}</version>
     </dependency>
   </dependencies>

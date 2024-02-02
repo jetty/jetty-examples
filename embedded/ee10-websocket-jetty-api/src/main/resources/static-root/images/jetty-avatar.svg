@@ -1,25 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="400"
-   height="400"
-   id="svg2"
-   sodipodi:version="0.32"
-   inkscape:version="0.91 r13725"
-   version="1.0"
-   sodipodi:docname="jetty-avatar.svg"
-   inkscape:output_extension="org.inkscape.output.svg.inkscape"
-   inkscape:export-filename="/home/joakim/code/jetty/github-jetty-project/embedded-jetty-live-war/src/main/webapp/images/jetty-avatar.png"
-   inkscape:export-xdpi="9.6700001"
-   inkscape:export-ydpi="9.6700001">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="400" height="400" id="svg2" sodipodi:version="0.32" inkscape:version="0.91 r13725" version="1.0" sodipodi:docname="jetty-avatar.svg" inkscape:output_extension="org.inkscape.output.svg.inkscape" inkscape:export-filename="/home/joakim/code/jetty/github-jetty-project/embedded-jetty-live-war/src/main/webapp/images/jetty-avatar.png" inkscape:export-xdpi="9.6700001" inkscape:export-ydpi="9.6700001">
   <defs
      id="defs4">
     <inkscape:perspective
