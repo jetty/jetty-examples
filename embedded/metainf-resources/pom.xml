@@ -7,9 +7,9 @@
     <version>9.4.x</version>
   </parent>
   <artifactId>metainf-resources</artifactId>
-  <version>9.4.x</version>
+  <version>11.0.x</version>
   <packaging>jar</packaging>
-  <name>Jetty Examples :: Jetty 9.4.x :: Embedded :: Integrating jars with META-INF/resources without WebAppContext</name>
+  <name>Jetty Examples :: Jetty 11.0.x :: Embedded :: Integrating jars with META-INF/resources without WebAppContext</name>
 
   <dependencies>
     <dependency>
