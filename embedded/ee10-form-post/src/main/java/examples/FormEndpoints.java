@@ -14,71 +14,33 @@
 package examples;
 
 import java.io.IOException;
-import java.net.URI;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
+
 import jakarta.servlet.MultipartConfigElement;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import org.eclipse.jetty.client.FormRequestContent;
-import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.client.ContentResponse;
-import org.eclipse.jetty.client.MultiPartRequestContent;
-import org.eclipse.jetty.client.Request;
-import org.eclipse.jetty.client.StringRequestContent;
-import org.eclipse.jetty.http.HttpFields;
-import org.eclipse.jetty.http.HttpStatus;
-import org.eclipse.jetty.http.MultiPart;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.DefaultHandler;
-import org.eclipse.jetty.server.Handler.Sequence;
-import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
-import org.eclipse.jetty.util.Fields;
-import org.eclipse.jetty.util.StringUtil;
-import org.eclipse.jetty.util.component.LifeCycle;
 
-public class FormRestrictionsExample
+public class FormEndpoints
 {
-    private Server server;
-
     public static void main(String[] args) throws Exception
     {
-        FormRestrictionsExample example = new FormRestrictionsExample();
-
-        HttpClient client = new HttpClient();
-        try
-        {
-            example.startServer(9090);
-            URI serverURI = example.getServerURI();
-
-            client.start();
-            example.submitVariousForms(client, serverURI.resolve("/form/post-only"));
-            example.submitVariousForms(client, serverURI.resolve("/form/conjoined"));
-            example.submitVariousForms(client, serverURI.resolve("/form/service"));
-        }
-        finally
-        {
-            client.stop();
-            example.stopServer();
-        }
+        Server server = FormEndpoints.newServer(8080);
+        server.start();
+        server.join();
     }
 
-    public URI getServerURI()
+    public static Server newServer(int port) throws IOException
     {
-        return server.getURI();
-    }
-
-    public void startServer(int port) throws Exception
-    {
-        server = new Server();
+        Server server = new Server();
 
         HttpConfiguration httpConfig = new HttpConfiguration();
         httpConfig.setFormEncodedMethods("POST");
@@ -90,8 +52,8 @@ public class FormRestrictionsExample
         ServletContextHandler servletContextHandler = new ServletContextHandler();
         servletContextHandler.setContextPath("/");
 
-        String tempDir = System.getProperty("java.io.tmpDir");
-        MultipartConfigElement multipartConfig = new MultipartConfigElement(tempDir, -1, -1, 500_000);
+        Path workDir = Files.createTempDirectory("multipart-work");
+        MultipartConfigElement multipartConfig = new MultipartConfigElement(workDir.toString(), -1, -1, 500_000);
 
         servletContextHandler.addServlet(PostFormOnlyServlet.class, "/form/post-only")
             .getRegistration().setMultipartConfig(multipartConfig);
@@ -105,63 +67,7 @@ public class FormRestrictionsExample
         handlers.addHandler(new DefaultHandler());
 
         server.setHandler(handlers);
-        server.start();
-    }
-
-    public void stopServer()
-    {
-        LifeCycle.stop(server);
-    }
-
-    public void submitVariousForms(HttpClient client, URI uri)
-    {
-        for (String httpMethod : Arrays.asList("GET", "POST", "PUT"))
-        {
-            submitForm(httpMethod + " with Query Params Only",
-                client.newRequest(uri)
-                    .method(httpMethod)
-                    .path(uri.getRawPath() + "?UserName=Esteban+de+Dorantes"));
-
-            Fields wwwForm = new Fields();
-            wwwForm.add("UserName", "Álvar Núñez Cabeza de Vaca");
-
-            submitForm(httpMethod + " with application/x-www-form-urlencoded",
-                client.newRequest(uri)
-                    .method(httpMethod)
-                    .body(new FormRequestContent(wwwForm)));
-
-            MultiPartRequestContent multiPartForm = new MultiPartRequestContent();
-            multiPartForm.addPart(new MultiPart.ContentSourcePart("UserName", null, HttpFields.EMPTY, new StringRequestContent("Andrés Dorantes de Carranza")));
-
-            submitForm(httpMethod + " with multipart/form-data",
-                client.newRequest(uri)
-                    .method(httpMethod)
-                    .body(multiPartForm));
-        }
-    }
-
-    private void submitForm(String description, Request request)
-    {
-        try
-        {
-            ContentResponse response = request.headers((fields) -> fields.put("Accept", "text/plain")).send();
-            if (response.getStatus() == HttpStatus.OK_200)
-            {
-                System.out.printf("%-17s - %-44s -> OK: %s%n", request.getPath(), description, response.getContentAsString().trim());
-            }
-            else
-            {
-                String reason = response.getReason();
-                String[] content = response.getContentAsString().split("\n");
-                if (StringUtil.isNotBlank(content[0]))
-                    reason = content[0];
-                System.out.printf("%-17s - %-44s -> Status [%d]: %s%n", request.getPath(), description, response.getStatus(), reason);
-            }
-        }
-        catch (InterruptedException | TimeoutException | ExecutionException e)
-        {
-            System.out.printf("%-17s - %-44s - ERROR: %s: %s%n", request.getPath(), description, e.getClass().getName(), e.getMessage());
-        }
+        return server;
     }
 
     /**
@@ -179,8 +85,8 @@ public class FormRestrictionsExample
         @Override
         protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
         {
-            String userName = request.getParameter("UserName");
-            if (userName == null)
+            String member = request.getParameter("Member");
+            if (member == null)
             {
                 response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE, "Form not valid");
                 return;
@@ -188,7 +94,7 @@ public class FormRestrictionsExample
 
             response.setCharacterEncoding("utf-8");
             response.setContentType("text/plain");
-            response.getWriter().printf("Got (PostOnly) UserName [%s]%n", userName);
+            response.getWriter().printf("Got (PostOnly) Member [%s]%n", member);
         }
     }
 
@@ -212,15 +118,15 @@ public class FormRestrictionsExample
 
         protected void handleForm(HttpServletRequest request, HttpServletResponse response) throws IOException
         {
-            String userName = request.getParameter("UserName");
-            if (userName == null)
+            String member = request.getParameter("Member");
+            if (member == null)
             {
                 response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE, "Form not valid");
                 return;
             }
             response.setCharacterEncoding("utf-8");
             response.setContentType("text/plain");
-            response.getWriter().printf("Got (Conjoined) UserName [%s]%n", userName);
+            response.getWriter().printf("Got (Conjoined) Member [%s]%n", member);
         }
     }
 
@@ -232,15 +138,15 @@ public class FormRestrictionsExample
         @Override
         protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException
         {
-            String userName = request.getParameter("UserName");
-            if (userName == null)
+            String member = request.getParameter("Member");
+            if (member == null)
             {
                 response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE, "Form not valid");
                 return;
             }
             response.setCharacterEncoding("utf-8");
             response.setContentType("text/plain");
-            response.getWriter().printf("Got (Service) UserName [%s]%n", userName);
+            response.getWriter().printf("Got (Service) Member [%s]%n", member);
         }
     }
 }
