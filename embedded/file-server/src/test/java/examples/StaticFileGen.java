@@ -19,12 +19,14 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
+import org.eclipse.jetty.toolchain.test.FS;
 import org.eclipse.jetty.toolchain.test.Hex;
 import org.eclipse.jetty.toolchain.test.Sha1Sum;
 import org.eclipse.jetty.util.IO;
@@ -79,6 +81,13 @@ public class StaticFileGen
         }
         System.err.println(" Done");
         return Sha1Sum.calculate(staticFile);
+    }
+
+    public static Path tempDir(String directoryName)
+    {
+        Path tempDir = Paths.get(System.getProperty("java.io.tmpdir"), directoryName);
+        FS.ensureDirExists(tempDir);
+        return tempDir;
     }
 
     public static void verify(InputStream inputStream, long expectedSize, String expectedSha1) throws NoSuchAlgorithmException, IOException
