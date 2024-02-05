@@ -24,6 +24,7 @@
     <module>ee10-metainf-resources</module>
     <module>ee10-servlet-config</module>
     <module>ee10-servlet-security</module>
+    <module>ee10-servlet-server</module>
     <module>ee10-webapp-context</module>
     <module>ee10-websocket-jakarta-api</module>
     <module>ee10-websocket-jetty-api</module>

@@ -25,6 +25,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
+import org.eclipse.jetty.toolchain.test.FS;
 import org.eclipse.jetty.toolchain.test.Hex;
 import org.eclipse.jetty.toolchain.test.Sha1Sum;
 import org.eclipse.jetty.util.IO;
@@ -79,6 +80,14 @@ public class StaticFileGen
         }
         System.err.println(" Done");
         return Sha1Sum.calculate(staticFile);
+    }
+
+    public static Path tempDir(String directoryName)
+    {
+        Path systemTemp = Path.of(System.getProperty("java.io.tmpdir"));
+        Path tempDir = systemTemp.resolve(directoryName);
+        FS.ensureDirExists(tempDir);
+        return tempDir;
     }
 
     public static void verify(InputStream inputStream, long expectedSize, String expectedSha1) throws NoSuchAlgorithmException, IOException

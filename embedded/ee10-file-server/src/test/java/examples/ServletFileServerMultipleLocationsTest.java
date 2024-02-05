@@ -19,7 +19,6 @@ import java.nio.file.Path;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.toolchain.test.FS;
-import org.eclipse.jetty.toolchain.test.MavenTestingUtils;
 import org.eclipse.jetty.util.component.LifeCycle;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -41,7 +40,7 @@ public class ServletFileServerMultipleLocationsTest
     @BeforeEach
     public void startServer() throws Exception
     {
-        Path resourcesRoot = MavenTestingUtils.getTargetTestingPath(ServletFileServerMultipleLocations.class.getSimpleName());
+        Path resourcesRoot = StaticFileGen.tempDir("static-huge");
         FS.ensureDirExists(resourcesRoot);
 
         exampleSha = StaticFileGen.generate(resourcesRoot.resolve("example.png"), exampleSize);
