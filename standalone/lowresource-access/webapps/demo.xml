@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">
+
+<Configure class="org.eclipse.jetty.ee10.webapp.WebAppContext">
+  <Set name="contextPath">/demo</Set>
+  <Set name="war"><Property name="jetty.webapps" />/demo.war
+  </Set>
+  <Ref refid="Server">
+    <Call id="lowResourceMonitor" name="getBean">
+      <Arg>
+        <Call class="java.lang.Class" name="forName">
+          <Arg>org.eclipse.jetty.server.LowResourceMonitor</Arg>
+        </Call>
+      </Arg>
+    </Call>
+  </Ref>
+  <Call name="setAttribute">
+    <Arg>org.eclipse.jetty.server.LowResourceMonitor</Arg>
+    <Arg>
+      <Ref refid="lowResourceMonitor" />
+    </Arg>
+  </Call>
+  <!-- tweak what classes from the Server this WebAppContext can see -->
+  <Get name="serverClassMatcher">
+    <Call name="add">
+      <!-- needed for all example servlets to actually see LowResourceMonitor -->
+      <Arg>-org.eclipse.jetty.server.LowResourceMonitor</Arg>
+    </Call>
+    <Call name="add">
+      <!-- needed for example servlets that use Server.getBean().
+           FromBaseRequestServlet
+           and FromRequestAttributeChannelServlet
+           and FromRequestAttributeConnectionServlet -->
+      <Arg>-org.eclipse.jetty.server.Server</Arg>
+    </Call>
+    <Call name="add">
+      <!-- needed for FromBaseRequestServlet -->
+      <Arg>-org.eclipse.jetty.server.Request</Arg>
+    </Call>
+  </Get>
+</Configure>

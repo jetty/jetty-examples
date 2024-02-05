@@ -11,4 +11,8 @@
   <packaging>pom</packaging>
   <name>Jetty Examples :: Jetty 12.0.x :: Standalone</name>
 
+  <modules>
+    <module>lowresource-access</module>
+  </modules>
+
 </project>
