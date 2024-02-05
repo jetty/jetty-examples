@@ -23,14 +23,14 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.util.log.Log;
-import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EmbedMe
 {
-    private static final Logger LOG = Log.getLogger(EmbedMe.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EmbedMe.class);
 
     public static void main(String[] args) throws Exception
     {
