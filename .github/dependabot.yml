@@ -7,7 +7,7 @@ updates:
 
   - package-ecosystem: "maven"
     directory: "/"
-    target-branch: "jetty-9.4.x"
+    target-branch: "9.4.x"
     schedule:
       interval: "daily"
     ignore:
@@ -21,7 +21,7 @@ updates:
 
   - package-ecosystem: "maven"
     directory: "/"
-    target-branch: "jetty-10.0.x"
+    target-branch: "10.0.x"
     schedule:
       interval: "daily"
     ignore:
@@ -37,7 +37,7 @@ updates:
 
   - package-ecosystem: "maven"
     directory: "/"
-    target-branch: "jetty-11.0.x"
+    target-branch: "11.0.x"
     schedule:
       interval: "daily"
     ignore:
@@ -53,6 +53,6 @@ updates:
 
   - package-ecosystem: "maven"
     directory: "/"
-    target-branch: "jetty-12.0.x"
+    target-branch: "12.0.x"
     schedule:
       interval: "daily"
