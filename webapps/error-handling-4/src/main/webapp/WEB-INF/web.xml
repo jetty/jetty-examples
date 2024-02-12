@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+  version="4.0">
+
+  <display-name>error handling webapp</display-name>
+
+  <servlet>
+    <servlet-name>hello</servlet-name>
+    <servlet-class>examples.HelloServlet</servlet-class>
+    <init-param>
+      <param-name>message</param-name>
+      <param-value>Hello from webapps/error-handling</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet>
+    <servlet-name>triggers</servlet-name>
+    <servlet-class>examples.TriggersServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>errors</servlet-name>
+    <servlet-class>examples.ErrorsServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>hello</servlet-name>
+    <url-pattern>/hello</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>triggers</servlet-name>
+    <url-pattern>/triggers/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>errors</servlet-name>
+    <url-pattern>/errors/*</url-pattern>
+  </servlet-mapping>
+
+  <filter>
+    <filter-name>triggers-filter</filter-name>
+    <filter-class>examples.TriggersFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>triggers-filter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  
+  <error-page>
+    <location>/errors/</location>
+  </error-page>
+
+  <error-page>
+    <error-code>500</error-code>
+    <location>/errors/500</location>
+  </error-page>
+
+  <error-page>
+    <error-code>404</error-code>
+    <location>/errors/400</location>
+  </error-page>
+</web-app>

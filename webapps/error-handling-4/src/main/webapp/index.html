@@ -1,0 +1,54 @@
+<html>
+<head>
+    <title>Error Handling WebApp</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<h1>Error Handling WebApp</h1>
+<p>
+    A selection of URL endpoints in this webapp.
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>URL</th>
+            <th>Expected Result</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="hello"><code>hello</code></a></td>
+            <td>Servlet replies with Hello World</td>
+        </tr>
+        <tr>
+            <td><a href="triggers/404"><code>triggers/404</code></a></td>
+            <td>Servlet calls <code>response.sendError(404)</code></td>
+        </tr>
+        <tr>
+            <td><a href="triggers/500"><code>triggers/500</code></a></td>
+            <td>Servlet calls <code>response.sendError(500)</code></td>
+        </tr>
+        <tr>
+            <td><a href="triggers/IOException"><code>triggers/IOException</code></a></td>
+            <td>Servlet throws a <code>java.io.IOException</code></td>
+        </tr>
+        <tr>
+            <td><a href="triggers/Example%20Message%20from%20sendError"><code>triggers/Example%20Message%20from%20sendError</code></a></td>
+            <td>Servlet calls a <code>response.sendError(500, message)</code></td>
+        </tr>
+        <tr>
+            <td><a href="hello?trigger=404"><code>hello?trigger=404</code></a></td>
+            <td>Filter calls <code>response.sendError(404)</code></td>
+        </tr>
+        <tr>
+            <td><a href="hello?trigger=500"><code>hello?trigger=500</code></a></td>
+            <td>Filter calls <code>response.sendError(500)</code></td>
+        </tr>
+        <tr>
+            <td><a href="hello?trigger=RuntimeException"><code>hello?trigger=RuntimeException</code></a></td>
+            <td>Filter throws a <code>java.lang.RuntimeException</code></td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

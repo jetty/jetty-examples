@@ -13,6 +13,7 @@
   <name>Jetty Examples :: Jetty 12.0.x :: Hello WebApp (Servlet 5)</name>
 
   <modules>
+    <module>error-handling-4</module>
     <module>hello-servlet-3</module>
     <module>hello-servlet-5</module>
   </modules>
