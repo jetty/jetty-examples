@@ -69,4 +69,9 @@
     <error-code>404</error-code>
     <location>/errors/400</location>
   </error-page>
+
+  <error-page>
+    <error-code>403</error-code>
+    <location>/forbidden.html</location>
+  </error-page>
 </web-app>

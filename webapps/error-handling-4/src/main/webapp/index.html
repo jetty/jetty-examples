@@ -21,6 +21,10 @@
             <td>Servlet replies with Hello World</td>
         </tr>
         <tr>
+            <td><a href="triggers/403"><code>triggers/403</code></a></td>
+            <td>Servlet calls <code>response.sendError(403)</code> - should see <code>forbidden.html</code> contents</td>
+        </tr>
+        <tr>
             <td><a href="triggers/404"><code>triggers/404</code></a></td>
             <td>Servlet calls <code>response.sendError(404)</code></td>
         </tr>
@@ -35,6 +39,10 @@
         <tr>
             <td><a href="triggers/Example%20Message%20from%20sendError"><code>triggers/Example%20Message%20from%20sendError</code></a></td>
             <td>Servlet calls a <code>response.sendError(500, message)</code></td>
+        </tr>
+        <tr>
+            <td><a href="hello?trigger=403"><code>hello?trigger=403</code></a></td>
+            <td>Filter calls <code>response.sendError(403)</code> - should see <code>forbidden.html</code> contents</td>
         </tr>
         <tr>
             <td><a href="hello?trigger=404"><code>hello?trigger=404</code></a></td>

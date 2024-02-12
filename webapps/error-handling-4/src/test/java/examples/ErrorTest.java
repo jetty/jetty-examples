@@ -18,6 +18,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.ee8.webapp.WebAppContext;
 import org.eclipse.jetty.server.Server;
@@ -104,6 +105,24 @@ public class ErrorTest
         assertThat(body, containsString("ERROR_REQUEST_URI: /app/triggers/404"));
         assertThat(body, containsString("ERROR_EXCEPTION_TYPE: null"));
         assertThat(body, containsString("ERROR_EXCEPTION: null"));
+    }
+
+    /**
+     * Demo of an error-page setup to respond to 403 (Forbidden) sendError with a static HTML page.
+     */
+    @Test
+    public void testTriggers403InContext() throws IOException, InterruptedException
+    {
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+            .uri(server.getURI().resolve("/app/triggers/" + HttpServletResponse.SC_FORBIDDEN))
+            .GET().build();
+        HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+
+        assertThat(httpResponse.statusCode(), is(403));
+        String body = httpResponse.body();
+        assertThat(body, containsString("<title>Error Handling WebApp - FORBIDDEN</title>"));
+        assertThat(body, containsString("<h1>Error Handling WebApp - FORBIDDEN</h1>"));
     }
 
     @Test
@@ -231,6 +250,21 @@ public class ErrorTest
         assertThat(body, containsString("ERROR_EXCEPTION_TYPE: class java.lang.RuntimeException"));
         assertThat(body, containsString("ERROR_EXCEPTION: Error from examples.TriggersFilter"));
         assertThat(body, containsString("at examples.TriggersFilter.doFilter("));
+    }
+
+    @Test
+    public void testTriggers403InFilterUsingQuery() throws IOException, InterruptedException
+    {
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+            .uri(server.getURI().resolve("/app/hello?trigger=403"))
+            .GET().build();
+        HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+
+        assertThat(httpResponse.statusCode(), is(403));
+        String body = httpResponse.body();
+        assertThat(body, containsString("<title>Error Handling WebApp - FORBIDDEN</title>"));
+        assertThat(body, containsString("<h1>Error Handling WebApp - FORBIDDEN</h1>"));
     }
 
     @Test
