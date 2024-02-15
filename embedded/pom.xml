@@ -34,6 +34,7 @@
     <module>form-post</module>
     <module>http-config</module>
     <module>jndi</module>
+    <module>path-mapping-handler</module>
     <module>redirect</module>
     <module>requestlog</module>
     <module>rewrite</module>
