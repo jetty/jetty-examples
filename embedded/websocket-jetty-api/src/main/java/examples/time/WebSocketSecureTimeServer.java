@@ -11,12 +11,14 @@
 // ========================================================================
 //
 
-package examples;
+package examples.time;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+
+import javax.servlet.ServletException;
 
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
@@ -38,43 +40,18 @@ import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
  * as they will reject either connecting to localhost, or reject any self-signed certificate.
  * </p>
  */
-public class SecureWebSocketServer
+public class WebSocketSecureTimeServer extends WebSocketTimeServer
 {
-    public static class EchoSocketServlet extends WebSocketServlet
+    public static void main(String[] args) throws Exception
     {
-        @Override
-        public void configure(WebSocketServletFactory webSocketServletFactory)
-        {
-            webSocketServletFactory.register(EchoSocket.class);
-        }
+        Server server = WebSocketSecureTimeServer.newServer(8443);
+        server.start();
+        server.join();
     }
 
-    public static class EchoSocket extends WebSocketAdapter
+    public static Server newServer(int httpsPort) throws MalformedURLException, URISyntaxException, ServletException
     {
-        @Override
-        public void onWebSocketText(String message)
-        {
-            try
-            {
-                getRemote().sendString(message);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace(System.err);
-            }
-        }
-
-        @Override
-        public void onWebSocketError(Throwable cause)
-        {
-            cause.printStackTrace(System.err);
-        }
-    }
-
-    public static void main(String[] args) throws IOException, URISyntaxException
-    {
-        Server server = new Server();
-        int httpsPort = 8443;
+        Server server = newServerNoConnector();
 
         // Setup SSL
         SslContextFactory sslContextFactory = new SslContextFactory.Server();
@@ -95,30 +72,12 @@ public class SecureWebSocketServer
         httpsConnector.setPort(httpsPort);
 
         server.addConnector(httpsConnector);
-
-        // Setup the basic application "context" for this application at "/"
-        // This is also known as the handler tree (in jetty speak)
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.setContextPath("/");
-        server.setHandler(context);
-
-        // Add a WebSocket as a Servlet to the context
-        context.addServlet(EchoSocketServlet.class, "/echo");
-
-        try
-        {
-            server.start();
-            server.join();
-        }
-        catch (Throwable t)
-        {
-            t.printStackTrace(System.err);
-        }
+        return server;
     }
 
     private static Resource findKeyStore() throws URISyntaxException, MalformedURLException
     {
-        ClassLoader cl = SecureWebSocketServer.class.getClassLoader();
+        ClassLoader cl = WebSocketSecureTimeServer.class.getClassLoader();
         String keystoreResource = "ssl/keystore";
         URL f = cl.getResource(keystoreResource);
         if (f == null)

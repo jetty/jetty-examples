@@ -11,7 +11,7 @@
 // ========================================================================
 //
 
-package examples;
+package examples.time;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -25,7 +25,7 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
 @WebSocket
-public class JettyTimeSocket implements Runnable
+public class TimeSocket implements Runnable
 {
     private TimeZone timezone;
     private Session session;

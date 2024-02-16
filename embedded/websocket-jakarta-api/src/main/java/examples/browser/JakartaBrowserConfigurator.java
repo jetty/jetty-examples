@@ -11,7 +11,7 @@
 // ========================================================================
 //
 
-package examples;
+package examples.browser;
 
 import java.util.Collections;
 import java.util.List;
