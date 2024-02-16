@@ -11,7 +11,7 @@
 // ========================================================================
 //
 
-package examples;
+package examples.browser;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -40,7 +40,7 @@ public class JakartaBrowserMain
 {
     private static final Logger LOG = LoggerFactory.getLogger(JakartaBrowserMain.class);
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
         int port = 8080;
         int sslPort = 8443;
@@ -58,30 +58,15 @@ public class JakartaBrowserMain
             }
         }
 
-        try
-        {
-            JakartaBrowserMain tool = new JakartaBrowserMain();
-            tool.setupServer(port, sslPort);
-            tool.runForever();
-        }
-        catch (Throwable t)
-        {
-            LOG.warn("Failed to start " + JakartaBrowserMain.class.getName(), t);
-        }
-    }
-
-    private Server server;
-
-    private void runForever() throws Exception
-    {
+        Server server = newServer(port, sslPort);
         server.start();
-        server.dumpStdErr();
         server.join();
     }
 
-    private void setupServer(int port, int sslPort) throws MalformedURLException, URISyntaxException
+    public static Server newServer(int port, int sslPort) throws MalformedURLException, URISyntaxException
     {
-        server = new Server();
+        Server server = new Server();
+
         ServerConnector connector = new ServerConnector(server);
         connector.setPort(port);
         server.addConnector(connector);
@@ -91,12 +76,17 @@ public class JakartaBrowserMain
         sslContextFactory.setKeyStoreResource(findKeyStore());
         sslContextFactory.setKeyStorePassword("OBF:1vny1zlo1x8e1vnw1vn61x8g1zlu1vn4");
         sslContextFactory.setKeyManagerPassword("OBF:1u2u1wml1z7s1z7a1wnl1u2g");
+        sslContextFactory.setSniRequired(false);
 
         // Setup HTTPS Configuration
         HttpConfiguration httpsConf = new HttpConfiguration();
         httpsConf.setSecurePort(sslPort);
         httpsConf.setSecureScheme("https");
-        httpsConf.addCustomizer(new SecureRequestCustomizer()); // adds ssl info to request object
+        SecureRequestCustomizer secureRequestCustomizer = new SecureRequestCustomizer();
+        // Disable SNI requirements, to allow for testing against IP or localhost
+        secureRequestCustomizer.setSniRequired(false);
+        secureRequestCustomizer.setSniHostCheck(false);
+        httpsConf.addCustomizer(secureRequestCustomizer); // adds ssl info to request object
 
         // Establish the ServerConnector
         ServerConnector httpsConnector = new ServerConnector(server,
@@ -110,7 +100,7 @@ public class JakartaBrowserMain
         ClassLoader cl = JakartaBrowserMain.class.getClassLoader();
         // We look for a file, as ClassLoader.getResource() is not
         // designed to look for directories (we resolve the directory later)
-        URL f = cl.getResource("websocket-statics/index.html");
+        URL f = cl.getResource("browser-root/index.html");
         if (f == null)
         {
             throw new RuntimeException("Unable to find resource directory");
@@ -129,7 +119,9 @@ public class JakartaBrowserMain
         JakartaWebSocketServletContainerInitializer.configure(context,
             (servletContext, wsContainer) -> wsContainer.addEndpoint(JakartaBrowserSocket.class));
 
-        LOG.info("{} setup on (http) port {} and (https) port {}", this.getClass().getName(), port, sslPort);
+        LOG.info("{} setup on (http) port {} and (https) port {}", JakartaBrowserMain.class.getName(), port, sslPort);
+
+        return server;
     }
 
     private static Resource findKeyStore() throws URISyntaxException, MalformedURLException
