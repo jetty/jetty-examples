@@ -13,9 +13,6 @@
 
 package examples;
 
-import java.net.URISyntaxException;
-import java.net.URL;
-
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
@@ -83,7 +80,7 @@ public class EnableClientCertificates
     {
         String resourceName = "ssl/keystore";
         Resource resource = resourceFactory.newClassLoaderResource(resourceName);
-        if (Resources.isReadableFile(resource))
+        if (!Resources.isReadableFile(resource))
         {
             throw new RuntimeException("Unable to read " + resourceName);
         }

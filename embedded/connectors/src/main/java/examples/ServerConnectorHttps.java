@@ -11,10 +11,6 @@ package examples;//
 // ========================================================================
 //
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.SecureRequestCustomizer;
@@ -64,7 +60,7 @@ public class ServerConnectorHttps
     {
         String resourceName = "ssl/keystore";
         Resource resource = resourceFactory.newClassLoaderResource(resourceName);
-        if (Resources.isReadableFile(resource))
+        if (!Resources.isReadableFile(resource))
         {
             throw new RuntimeException("Unable to read " + resourceName);
         }

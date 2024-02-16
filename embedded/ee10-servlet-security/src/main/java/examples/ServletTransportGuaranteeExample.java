@@ -106,7 +106,7 @@ public class ServletTransportGuaranteeExample
     {
         String resourceName = "ssl/keystore";
         Resource resource = resourceFactory.newClassLoaderResource(resourceName);
-        if (Resources.isReadableFile(resource))
+        if (!Resources.isReadableFile(resource))
         {
             throw new RuntimeException("Unable to read " + resourceName);
         }
