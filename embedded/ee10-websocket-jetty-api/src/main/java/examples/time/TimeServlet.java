@@ -11,7 +11,7 @@
 // ========================================================================
 //
 
-package examples;
+package examples.time;
 
 import java.io.IOException;
 import java.text.DateFormat;

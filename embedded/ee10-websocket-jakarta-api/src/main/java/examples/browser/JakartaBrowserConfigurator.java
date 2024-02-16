@@ -11,7 +11,7 @@
 // ========================================================================
 //
 
-package examples;
+package examples.browser;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +34,8 @@ public class JakartaBrowserConfigurator extends ServerEndpointConfig.Configurato
     private String getHeaderValue(HandshakeRequest request, String key)
     {
         List<String> value = request.getHeaders().get(key);
+        if (value == null)
+            return null;
         return String.join(", ", value);
     }
 

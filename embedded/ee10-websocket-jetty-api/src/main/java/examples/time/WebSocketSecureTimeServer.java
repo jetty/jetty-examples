@@ -11,11 +11,13 @@
 // ========================================================================
 //
 
-package examples;
+package examples.time;
 
-import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
-import org.eclipse.jetty.ee10.websocket.server.JettyWebSocketServlet;
-import org.eclipse.jetty.ee10.websocket.server.JettyWebSocketServletFactory;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import jakarta.servlet.ServletException;
+
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.SecureRequestCustomizer;
@@ -40,15 +42,13 @@ import org.slf4j.LoggerFactory;
  * as they will reject either connecting to localhost, or reject any self-signed certificate.
  * </p>
  */
-public class SecureWebSocketServer
+public class WebSocketSecureTimeServer extends WebSocketTimeServer
 {
-    public static class EchoSocketServlet extends JettyWebSocketServlet
+    public static void main(String[] args) throws Exception
     {
-        @Override
-        protected void configure(JettyWebSocketServletFactory jettyWebSocketServletFactory)
-        {
-            jettyWebSocketServletFactory.register(EchoSocket.class);
-        }
+        Server server = WebSocketSecureTimeServer.newServer(8443);
+        server.start();
+        server.join();
     }
 
     public static class EchoSocket
@@ -68,10 +68,9 @@ public class SecureWebSocketServer
         }
     }
 
-    public static void main(String[] args)
+    public static Server newServer(int httpsPort) throws MalformedURLException, URISyntaxException, ServletException
     {
-        Server server = new Server();
-        int httpsPort = 8443;
+        Server server = newServerNoConnector();
 
         // Setup SSL
         SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
@@ -83,7 +82,11 @@ public class SecureWebSocketServer
         HttpConfiguration httpsConf = new HttpConfiguration();
         httpsConf.setSecurePort(httpsPort);
         httpsConf.setSecureScheme("https");
-        httpsConf.addCustomizer(new SecureRequestCustomizer()); // adds ssl info to request object
+        SecureRequestCustomizer secureRequestCustomizer = new SecureRequestCustomizer();
+        // Disable SNI requirements, to allow for testing against IP or localhost
+        secureRequestCustomizer.setSniRequired(false);
+        secureRequestCustomizer.setSniHostCheck(false);
+        httpsConf.addCustomizer(secureRequestCustomizer); // adds ssl info to request object
 
         // Establish the Secure ServerConnector
         ServerConnector httpsConnector = new ServerConnector(server,
@@ -92,32 +95,14 @@ public class SecureWebSocketServer
         httpsConnector.setPort(httpsPort);
 
         server.addConnector(httpsConnector);
-
-        // Setup the basic application "context" for this application at "/"
-        // This is also known as the handler tree (in jetty speak)
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.setContextPath("/");
-        server.setHandler(context);
-
-        // Add a WebSocket as a Servlet to the context
-        context.addServlet(EchoSocketServlet.class, "/echo");
-
-        try
-        {
-            server.start();
-            server.join();
-        }
-        catch (Throwable t)
-        {
-            t.printStackTrace(System.err);
-        }
+        return server;
     }
 
     private static Resource findKeyStore(ResourceFactory resourceFactory)
     {
         String resourceName = "ssl/keystore";
         Resource resource = resourceFactory.newClassLoaderResource(resourceName);
-        if (Resources.isReadableFile(resource))
+        if (!Resources.isReadableFile(resource))
         {
             throw new RuntimeException("Unable to read " + resourceName);
         }

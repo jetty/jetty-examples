@@ -11,7 +11,7 @@
 // ========================================================================
 //
 
-package examples;
+package examples.time;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,9 +27,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @WebSocket
-public class JettyTimeSocket implements Runnable
+public class TimeSocket implements Runnable
 {
-    private static final Logger LOG = LoggerFactory.getLogger(JettyTimeSocket.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TimeSocket.class);
     private TimeZone timezone;
     private Session session;
 

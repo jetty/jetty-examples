@@ -11,7 +11,7 @@
 // ========================================================================
 //
 
-package examples;
+package examples.browser;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -105,7 +105,7 @@ public class JakartaBrowserSocket
             {
                 case "info":
                 {
-                    writeMessage("Using javax.websocket");
+                    writeMessage("Using jakarta.websocket");
                     if (StringUtil.isBlank(userAgent))
                     {
                         writeMessage("Client has no User-Agent");
