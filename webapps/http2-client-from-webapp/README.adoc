@@ -1,0 +1,21 @@
+== Using Jetty's HTTP/2 APIs from a Web Application
+
+=== Instructions
+
+This demo runs on any OS.
+
+[source,bash]
+----
+$ mvn clean install
+$ mvn jetty:run-forked
+----
+
+=== JDK Dependency
+
+You need JDK 8 or greater to run this demo.
+
+This demo uses ALPN to run HTTP/2.
+
+The JDK version used to run this demo and the ALPN version
+specified in `pom.xml` must be compatible as specified in the
+https://eclipse.dev/jetty/documentation/jetty-9/index.html#alpn-versions[JDK/ALPN Table].
