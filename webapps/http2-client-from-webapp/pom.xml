@@ -4,18 +4,18 @@
   <parent>
     <groupId>org.eclipse.jetty.examples.webapps</groupId>
     <artifactId>jetty-webapp-examples</artifactId>
-    <version>10.0.x</version>
+    <version>11.0.x</version>
   </parent>
   <artifactId>http2-client-from-webapp</artifactId>
-  <version>10.0.x</version>
+  <version>11.0.x</version>
   <packaging>war</packaging>
-  <name>Jetty Examples :: Jetty 10.0.x :: Using HTTP2 Client from WebApp</name>
+  <name>Jetty Examples :: Jetty 11.0.x :: Using HTTP2 Client from WebApp</name>
 
   <properties>
     <alpn.agent.version>2.0.10</alpn.agent.version>
     <jetty.version>10.0.20</jetty.version>
     <log4j2.version>2.22.1</log4j2.version>
-    <servlet.api.version>4.0.4</servlet.api.version>
+    <servlet.api.version>5.0.0</servlet.api.version>
   </properties>
 
   <dependencies>
