@@ -11,5 +11,5 @@ mvn clean install
 ## To run this project
 
 ``` shell
-java -jar target/servlet-with-cdi.jar
+java -jar target/ee10-servlet-with-cdi.jar
 ```
