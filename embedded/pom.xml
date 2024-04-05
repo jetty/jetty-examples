@@ -29,6 +29,7 @@
     <module>servlet-config</module>
     <module>servlet-security</module>
     <module>servlet-server</module>
+    <module>servlet-with-cdi</module>
     <module>simple-server</module>
     <module>virtual-hosts</module>
     <module>webapp-context</module>
