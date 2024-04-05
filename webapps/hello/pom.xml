@@ -11,8 +11,16 @@
   <packaging>war</packaging>
   <name>Jetty Examples :: Jetty 10.0.x :: Hello WebApp</name>
 
+  <dependencies>
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>4.0.4</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
   <build>
     <finalName>hello</finalName>
   </build>
-
 </project>

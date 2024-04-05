@@ -14,6 +14,7 @@
 
   <modules>
     <module>hello</module>
+    <module>http2-client-from-webapp</module>
   </modules>
 
   <dependencies>

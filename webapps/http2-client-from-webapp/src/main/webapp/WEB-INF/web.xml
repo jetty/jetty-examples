@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         metadata-complete="true"
+         version="3.1">
+
+    <display-name>HTTP/2 From WebApp</display-name>
+
+    <servlet>
+        <servlet-name>http2</servlet-name>
+        <servlet-class>org.eclipse.jetty.http2.HTTP2Servlet</servlet-class>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>http2</servlet-name>
+        <url-pattern>/http2/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>
+
+
