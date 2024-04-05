@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.eclipse.jetty.examples.webapps</groupId>
+    <artifactId>jetty-webapp-examples</artifactId>
+    <version>9.4.x</version>
+  </parent>
+  <artifactId>http2-demo</artifactId>
+  <version>9.4.x</version>
+  <packaging>war</packaging>
+  <name>Jetty Examples :: Jetty 9.4.x :: HTTP/2 Demo WebApp</name>
+
+  <properties>
+    <alpn.agent.version>2.0.10</alpn.agent.version>
+    <jetty.version>9.4.54.v20240208</jetty.version>
+    <log4j2.version>2.22.1</log4j2.version>
+    <servlet.api.version>3.1.0</servlet.api.version>
+    <slf4j.version>2.0.12</slf4j.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j2.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${log4j2.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>${servlet.api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mortbay.jetty.alpn</groupId>
+      <artifactId>jetty-alpn-agent</artifactId>
+      <version>${alpn.agent.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>http2-demo</finalName>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>java-8</id>
+      <activation>
+        <jdk>[1.8,)</jdk>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-alpn-openjdk8-server</artifactId>
+          <version>${jetty.version}</version>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>java-9+</id>
+      <activation>
+        <jdk>[9,]</jdk>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-alpn-java-server</artifactId>
+          <version>${jetty.version}</version>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
+</project>
