@@ -1,0 +1,42 @@
+#row1
+{
+    width: 700px;
+    height: 50px;
+    position: absolute;
+    top: 100px;
+    left: 100px;
+}
+
+#row2
+{
+    width: 700px;
+    height: 50px;
+    position: absolute;
+    top: 150px;
+    left: 100px;
+}
+
+#row3
+{
+    width: 700px;
+    height: 50px;
+    position: absolute;
+    top: 200px;
+    left: 100px;
+}
+
+#row4
+{
+    width: 700px;
+    height: 50px;
+    position: absolute;
+    top: 250px;
+    left: 100px;
+}
+
+img
+{
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
