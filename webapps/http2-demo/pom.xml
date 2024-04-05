@@ -13,14 +13,14 @@
 
   <properties>
     <alpn.agent.version>2.0.10</alpn.agent.version>
-    <servlet.api.version>3.1.0</servlet.api.version>
+    <servlet.api.version>4.0.2</servlet.api.version>
     <slf4j.version>2.0.12</slf4j.version>
   </properties>
 
   <dependencies>
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
       <version>${servlet.api.version}</version>
       <scope>provided</scope>
     </dependency>
