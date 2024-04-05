@@ -4,25 +4,20 @@
   <parent>
     <groupId>org.eclipse.jetty.examples.embedded</groupId>
     <artifactId>jetty-embedded-examples</artifactId>
-    <version>10.0.x</version>
+    <version>11.0.x</version>
   </parent>
   <artifactId>servlet-with-cdi</artifactId>
-  <version>10.0.x</version>
+  <version>11.0.x</version>
   <packaging>jar</packaging>
-  <name>Jetty Examples :: Jetty 10.0.x :: Embedded :: Servlet with CDI</name>
+  <name>Jetty Examples :: Jetty 11.0.x :: Embedded :: Servlet with CDI</name>
 
   <properties>
     <servlet.jsp.version>3.0.0</servlet.jsp.version>
     <slf4j.version>2.0.11</slf4j.version>
-    <weld.version>3.1.9.Final</weld.version>
+    <weld.version>4.0.3.Final</weld.version>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>jakarta.servlet.jsp</groupId>
-      <artifactId>jakarta.servlet.jsp-api</artifactId>
-      <version>${servlet.jsp.version}</version>
-    </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-cdi</artifactId>
@@ -35,7 +30,7 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty.websocket</groupId>
-      <artifactId>websocket-javax-server</artifactId>
+      <artifactId>websocket-jakarta-server</artifactId>
       <version>${jetty.version}</version>
     </dependency>
     <dependency>

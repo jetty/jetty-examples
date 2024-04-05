@@ -23,7 +23,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.Resource;
-import org.eclipse.jetty.websocket.javax.server.config.JavaxWebSocketServletContainerInitializer;
+import org.eclipse.jetty.websocket.jakarta.server.config.JakartaWebSocketServletContainerInitializer;
 import org.slf4j.LoggerFactory;
 
 public class ServerMain
@@ -67,7 +67,7 @@ public class ServerMain
         context.addServletContainerInitializer(new org.jboss.weld.environment.servlet.EnhancedListener());
 
         // Add WebSocket endpoints
-        JavaxWebSocketServletContainerInitializer.configure(context, (servletContext, wsContainer) ->
+        JakartaWebSocketServletContainerInitializer.configure(context, (servletContext, wsContainer) ->
             wsContainer.addEndpoint(TimeSocket.class));
 
         // Add Servlet endpoints
