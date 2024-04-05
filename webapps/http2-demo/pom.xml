@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.eclipse.jetty.examples.webapps</groupId>
+    <artifactId>jetty-webapp-examples</artifactId>
+    <version>11.0.x</version>
+  </parent>
+  <artifactId>http2-demo</artifactId>
+  <version>11.0.x</version>
+  <packaging>war</packaging>
+  <name>Jetty Examples :: Jetty 11.0.x :: HTTP/2 Demo WebApp</name>
+
+  <properties>
+    <alpn.agent.version>2.0.10</alpn.agent.version>
+    <servlet.api.version>5.0.0</servlet.api.version>
+    <slf4j.version>2.0.12</slf4j.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>${servlet.api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mortbay.jetty.alpn</groupId>
+      <artifactId>jetty-alpn-agent</artifactId>
+      <version>${alpn.agent.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>http2-demo</finalName>
+  </build>
+</project>

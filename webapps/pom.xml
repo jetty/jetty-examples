@@ -17,5 +17,6 @@
     <module>hello-servlet-3</module>
     <module>hello-servlet-5</module>
     <module>http2-client-from-webapp</module>
+    <module>http2-demo</module>
   </modules>
 </project>
