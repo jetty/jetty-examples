@@ -16,14 +16,4 @@
     <module>hello</module>
     <module>http2-client-from-webapp</module>
   </modules>
-
-  <dependencies>
-    <dependency>
-      <groupId>jakarta.servlet</groupId>
-      <artifactId>jakarta.servlet-api</artifactId>
-      <version>4.0.4</version>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
-
 </project>
