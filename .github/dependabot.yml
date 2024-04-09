@@ -15,6 +15,8 @@ updates:
       - dependency-name: "*"
         update-types: [ "version-update:semver-major" ]
       # Restrict updates in this branch to jetty in the 9.4.x space
+      - dependency-name: "org.jboss.weld.servlet:*"
+        update-types: [ "version-update:semver-minor" ]
       - dependency-name: "javax.websocket:*"
       - dependency-name: "javax.servlet:*"
       - dependency-name: "javax.servlet.jsp:*"
@@ -29,6 +31,8 @@ updates:
       - dependency-name: "*"
         update-types: [ "version-update:semver-major" ]
       # Restrict updates in this branch to jetty in the 10.x.x space
+      - dependency-name: "org.jboss.weld.servlet:*"
+        update-types: [ "version-update:semver-minor" ]
       - dependency-name: "jakarta.websocket:*"
       - dependency-name: "jakarta.servlet:*"
       - dependency-name: "jakarta.servlet.jsp:*"
@@ -43,6 +47,8 @@ updates:
       - dependency-name: "*"
         update-types: [ "version-update:semver-major" ]
       # Restrict updates in this branch to jetty in the 11.x.x space
+      - dependency-name: "org.jboss.weld.servlet:*"
+        update-types: [ "version-update:semver-minor" ]
       - dependency-name: "jakarta.websocket:*"
       - dependency-name: "jakarta.servlet:*"
       - dependency-name: "jakarta.servlet.jsp:*"
@@ -57,6 +63,8 @@ updates:
       - dependency-name: "*"
         update-types: [ "version-update:semver-major" ]
       # Restrict updates in this branch to jetty in the 12.x.x space
+      - dependency-name: "org.jboss.weld.servlet:*"
+        update-types: [ "version-update:semver-minor" ]
       - dependency-name: "jakarta.websocket:*"
       - dependency-name: "jakarta.servlet:*"
       - dependency-name: "jakarta.servlet.jsp:*"
