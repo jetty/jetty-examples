@@ -14,10 +14,13 @@
 package examples;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.component.LifeCycle;
@@ -30,6 +33,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PathMappingServerTest
 {
@@ -90,14 +94,29 @@ public class PathMappingServerTest
     @Test
     public void testGetMetaInfResource() throws IOException, InterruptedException
     {
+        Properties props = loadClassPathProperties("/META-INF/maven/org.webjars/bootstrap/pom.properties");
+        String version = props.getProperty("version");
+
         HttpClient client = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(server.getURI().resolve("/jars/webjars/bootstrap/5.3.2/js/bootstrap.bundle.js"))
+            .uri(server.getURI().resolve("/jars/webjars/bootstrap/@VER@/js/bootstrap.bundle.js".replace("@VER@", version)))
             .GET()
             .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
         assertThat(response.statusCode(), is(200));
-        assertThat(response.body(), containsString("* Bootstrap v5.3.2 (https://getbootstrap.com/)"));
+        assertThat(response.body(), containsString("* Bootstrap v@VER@ (https://getbootstrap.com/)".replace("@VER@", version)));
+    }
+
+    private Properties loadClassPathProperties(String resourceName) throws IOException
+    {
+        URL url = PathMappingServerTest.class.getResource(resourceName);
+        assertNotNull(url, "Unable to find: " + resourceName);
+        try (InputStream input = url.openStream())
+        {
+            Properties props = new Properties();
+            props.load(input);
+            return props;
+        }
     }
 
     /**
