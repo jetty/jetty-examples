@@ -11,12 +11,13 @@ updates:
     schedule:
       interval: "daily"
     ignore:
+      # Do not upgrade major versions of dependencies
+      - dependency-name: "*"
+        update-types: [ "version-update:semver-major" ]
       # Restrict updates in this branch to jetty in the 9.4.x space
-      - dependency-name: "org.eclipse.jetty.websocket:*"
-        versions: [ ">=10.0.0" ]
-      - dependency-name: "org.eclipse.jetty:*"
-        versions: [ ">=10.0.0" ]
+      - dependency-name: "javax.websocket:*"
       - dependency-name: "javax.servlet:*"
+      - dependency-name: "javax.servlet.jsp:*"
 
   - package-ecosystem: "maven"
     directory: "/"
@@ -24,14 +25,13 @@ updates:
     schedule:
       interval: "daily"
     ignore:
+      # Do not upgrade major versions of dependencies
+      - dependency-name: "*"
+        update-types: [ "version-update:semver-major" ]
       # Restrict updates in this branch to jetty in the 10.x.x space
-      - dependency-name: "org.eclipse.jetty.websocket:*"
-        versions: [ "<=10.0.0", ">=11.0.0" ]
-      - dependency-name: "org.eclipse.jetty:*"
-        versions: [ "<=10.0.0", ">=11.0.0" ]
       - dependency-name: "jakarta.websocket:*"
-        versions: [ ">=2.0.0" ]
       - dependency-name: "jakarta.servlet:*"
+      - dependency-name: "jakarta.servlet.jsp:*"
 
   - package-ecosystem: "maven"
     directory: "/"
@@ -39,14 +39,13 @@ updates:
     schedule:
       interval: "daily"
     ignore:
+      # Do not upgrade major versions of dependencies
+      - dependency-name: "*"
+        update-types: [ "version-update:semver-major" ]
       # Restrict updates in this branch to jetty in the 11.x.x space
-      - dependency-name: "org.eclipse.jetty.websocket:*"
-        versions: [ ">=12.0.0" ]
-      - dependency-name: "org.eclipse.jetty:*"
-        versions: [ ">=12.0.0" ]
       - dependency-name: "jakarta.websocket:*"
-        versions: [ ">=3.0.0" ]
       - dependency-name: "jakarta.servlet:*"
+      - dependency-name: "jakarta.servlet.jsp:*"
 
   - package-ecosystem: "maven"
     directory: "/"
@@ -54,4 +53,10 @@ updates:
     schedule:
       interval: "daily"
     ignore:
+      # Do not upgrade major versions of dependencies
+      - dependency-name: "*"
+        update-types: [ "version-update:semver-major" ]
+      # Restrict updates in this branch to jetty in the 12.x.x space
+      - dependency-name: "jakarta.websocket:*"
       - dependency-name: "jakarta.servlet:*"
+      - dependency-name: "jakarta.servlet.jsp:*"
