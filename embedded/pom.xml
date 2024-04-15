@@ -41,6 +41,7 @@
     <module>requestlog</module>
     <module>rewrite</module>
     <module>simple-server</module>
+    <module>uber-jar</module>
     <module>virtual-hosts</module>
     <module>xml</module>
   </modules>

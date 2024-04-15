@@ -18,5 +18,6 @@
     <module>hello-servlet-5</module>
     <module>http2-client-from-webapp</module>
     <module>http2-demo</module>
+    <module>jaspi-webapp</module>
   </modules>
 </project>
