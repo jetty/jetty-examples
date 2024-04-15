@@ -16,11 +16,11 @@ package jetty.uber;
 import java.net.URI;
 import java.net.URL;
 
+import org.eclipse.jetty.ee10.servlet.DefaultServlet;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.websocket.jakarta.server.config.JakartaWebSocketServletContainerInitializer;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.util.resource.Resource;
-import org.eclipse.jetty.websocket.jakarta.server.config.JakartaWebSocketServletContainerInitializer;
+import org.eclipse.jetty.util.resource.ResourceFactory;
 
 public class ServerMain
 {
@@ -52,7 +52,8 @@ public class ServerMain
 
         ServletContextHandler contextHandler = new ServletContextHandler();
         contextHandler.setContextPath("/");
-        contextHandler.setBaseResource(Resource.newResource(webRootUri));
+        ResourceFactory resourceFactory = ResourceFactory.of(contextHandler);
+        contextHandler.setBaseResource(resourceFactory.newResource(webRootUri));
         contextHandler.setWelcomeFiles(new String[]{"index.html"});
 
         contextHandler.getMimeTypes().addMimeMapping("txt", "text/plain;charset=utf-8");
