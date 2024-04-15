@@ -35,6 +35,7 @@
     <module>form-post</module>
     <module>http-config</module>
     <module>jndi</module>
+    <module>ee10-jsp</module>
     <module>path-mapping-handler</module>
     <module>redirect</module>
     <module>requestlog</module>

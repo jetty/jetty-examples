@@ -16,19 +16,20 @@ package examples;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.SimpleInstanceManager;
-import org.eclipse.jetty.jsp.JettyJspServlet;
+import org.eclipse.jetty.ee10.jsp.JettyJspServlet;
+import org.eclipse.jetty.ee10.servlet.DefaultServlet;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.util.resource.ResourceFactory;
+import org.eclipse.jetty.util.resource.Resources;
 import org.example.DateServlet;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
@@ -79,13 +80,13 @@ public class Main
         connector.setPort(port);
         server.addConnector(connector);
 
-        // Base URI for servlet context
-        URI baseUri = getWebRootResourceUri();
 
         // Create Servlet context
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         servletContextHandler.setContextPath("/");
-        servletContextHandler.setResourceBase(baseUri.toASCIIString());
+        // Base URI for servlet context
+        Resource baseResource = getWebRootResource(ResourceFactory.of(servletContextHandler));
+        servletContextHandler.setBaseResource(baseResource);
 
         // Since this is a ServletContextHandler we must manually configure JSP support.
         enableEmbeddedJspSupport(servletContextHandler);
@@ -100,7 +101,7 @@ public class Main
 
         // Default Servlet (always last, always named "default")
         ServletHolder holderDefault = new ServletHolder("default", DefaultServlet.class);
-        holderDefault.setInitParameter("resourceBase", baseUri.toASCIIString());
+        holderDefault.setInitParameter("resourceBase", baseResource.getRealURI().toASCIIString());
         holderDefault.setInitParameter("dirAllowed", "true");
         servletContextHandler.addServlet(holderDefault, "/");
         server.setHandler(servletContextHandler);
@@ -159,15 +160,15 @@ public class Main
         servletContextHandler.setAttribute(InstanceManager.class.getName(), new SimpleInstanceManager());
     }
 
-    private URI getWebRootResourceUri() throws FileNotFoundException, URISyntaxException
+    private Resource getWebRootResource(ResourceFactory resourceFactory) throws FileNotFoundException
     {
-        URL indexUri = this.getClass().getResource(WEBROOT_INDEX);
-        if (indexUri == null)
+        Resource resource = resourceFactory.newClassLoaderResource(WEBROOT_INDEX);
+        if (Resources.missing(resource))
         {
             throw new FileNotFoundException("Unable to find resource " + WEBROOT_INDEX);
         }
         // Points to wherever /webroot/ (the resource) is
-        return indexUri.toURI();
+        return resource;
     }
 
     public void stop() throws Exception
