@@ -4,12 +4,12 @@
   <parent>
     <groupId>org.eclipse.jetty.examples.webapps</groupId>
     <artifactId>jetty-webapp-examples</artifactId>
-    <version>10.0.x</version>
+    <version>11.0.x</version>
   </parent>
   <artifactId>jaspi-webapp</artifactId>
-  <version>10.0.x</version>
+  <version>11.0.x</version>
   <packaging>war</packaging>
-  <name>Jetty Examples :: Jetty 10.0.x :: JASPI WebApp</name>
+  <name>Jetty Examples :: Jetty 11.0.x :: JASPI WebApp</name>
 
   <properties>
     <jsp-api.version>2.2</jsp-api.version>
@@ -19,7 +19,7 @@
     <dependency>
       <groupId>jakarta.servlet</groupId>
       <artifactId>jakarta.servlet-api</artifactId>
-      <version>4.0.4</version>
+      <version>5.0.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
