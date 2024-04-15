@@ -20,9 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import javax.servlet.jsp.JspFactory;
 
-import org.apache.jasper.runtime.JspFactoryImpl;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.SimpleInstanceManager;
 import org.eclipse.jetty.jsp.JettyJspServlet;
@@ -31,7 +29,6 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.webapp.Configuration;
 import org.example.DateServlet;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
@@ -81,13 +78,6 @@ public class Main
         ServerConnector connector = new ServerConnector(server);
         connector.setPort(port);
         server.addConnector(connector);
-
-        // Add annotation scanning (for WebAppContexts)
-        Configuration.ClassList classlist = Configuration.ClassList
-            .setServerDefault(server);
-        classlist.addBefore(
-            "org.eclipse.jetty.webapp.JettyWebXmlConfiguration",
-            "org.eclipse.jetty.annotations.AnnotationConfiguration");
 
         // Base URI for servlet context
         URI baseUri = getWebRootResourceUri();
@@ -143,9 +133,6 @@ public class Main
             }
         }
         servletContextHandler.setAttribute("javax.servlet.context.tempdir", scratchDir);
-
-        // Setup Default implementation
-        JspFactory.setDefaultFactory(new JspFactoryImpl());
 
         // Set Classloader of Context to be sane (needed for JSTL)
         // JSP requires a non-System classloader, this simply wraps the

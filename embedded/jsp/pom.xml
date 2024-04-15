@@ -4,24 +4,20 @@
   <parent>
     <groupId>org.eclipse.jetty.examples.embedded</groupId>
     <artifactId>jetty-embedded-examples</artifactId>
-    <version>9.4.x</version>
+    <version>10.0.x</version>
   </parent>
   <artifactId>jsp</artifactId>
-  <version>9.4.x</version>
+  <version>10.0.x</version>
   <packaging>jar</packaging>
-  <name>Jetty Examples :: Jetty 9.4.x :: Embedded :: JSP</name>
+  <name>Jetty Examples :: Jetty 10.0.x :: Embedded :: JSP</name>
 
   <properties>
     <logback.version>1.4.14</logback.version>
+    <maven.exec.plugin.version>3.1.1</maven.exec.plugin.version>
     <slf4j.version>2.0.11</slf4j.version>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>${logback.version}</version>
-    </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>apache-jsp</artifactId>
@@ -33,11 +29,15 @@
       <artifactId>apache-jstl</artifactId>
       <version>${jetty.version}</version>
       <type>pom</type>
-      <!-- TODO: huh? -->
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-slf4j-impl</artifactId>
       <version>${jetty.version}</version>
     </dependency>
     <dependency>
@@ -68,4 +68,17 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>${maven.exec.plugin.version}</version>
+        <configuration>
+          <mainClass>examples.Main</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
