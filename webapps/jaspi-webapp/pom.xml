@@ -12,7 +12,7 @@
   <name>Jetty Examples :: Jetty 10.0.x :: JASPI WebApp</name>
 
   <properties>
-    <jsp-api.version>2.2</jsp-api.version>
+    <jsp-api.version>2.3.6</jsp-api.version>
   </properties>
 
   <dependencies>
@@ -23,8 +23,8 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>javax.servlet.jsp</groupId>
-      <artifactId>jsp-api</artifactId>
+      <groupId>jakarta.servlet.jsp</groupId>
+      <artifactId>jakarta.servlet.jsp-api</artifactId>
       <version>${jsp-api.version}</version>
       <scope>provided</scope>
     </dependency>
