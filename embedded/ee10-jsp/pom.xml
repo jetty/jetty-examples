@@ -17,48 +17,61 @@
     <slf4j.version>2.0.12</slf4j.version>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-bom</artifactId>
+        <version>${jetty.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty.ee10</groupId>
+        <artifactId>jetty-ee10-bom</artifactId>
+        <version>${jetty.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-bom</artifactId>
+        <version>${slf4j.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
-      <version>${jetty.version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-slf4j-impl</artifactId>
-      <version>${jetty.version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty.ee10</groupId>
       <artifactId>jetty-ee10-apache-jsp</artifactId>
-      <version>${jetty.version}</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty.ee10</groupId>
       <artifactId>jetty-ee10-glassfish-jstl</artifactId>
-      <version>${jetty.version}</version>
-      <type>pom</type>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty.ee10</groupId>
       <artifactId>jetty-ee10-webapp</artifactId>
-      <version>${jetty.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jul-to-slf4j</artifactId>
-      <version>${slf4j.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>${slf4j.version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-client</artifactId>
-      <version>${jetty.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
