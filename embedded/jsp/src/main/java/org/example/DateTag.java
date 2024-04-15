@@ -16,50 +16,78 @@ package org.example;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.BodyContent;
-import javax.servlet.jsp.tagext.BodyTagSupport;
-import javax.servlet.jsp.tagext.Tag;
+
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspTagException;
+import jakarta.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.tagext.BodyContent;
+import jakarta.servlet.jsp.tagext.BodyTagSupport;
+import jakarta.servlet.jsp.tagext.Tag;
 
 @SuppressWarnings("serial")
 public class DateTag extends BodyTagSupport
 {
     Tag parent;
     BodyContent body;
-    String tz="GMT";
+    String tz = "GMT";
 
-    public void setParent(Tag parent) {this.parent=parent;}
-    public Tag getParent() {return parent;}
-    public void setBodyContent(BodyContent content) {body=content;}
-    public void setPageContext(PageContext pageContext) {}
+    public void setParent(Tag parent)
+    {
+        this.parent = parent;
+    }
 
-    public void setTz(String value) {tz=value;}
+    public Tag getParent()
+    {
+        return parent;
+    }
 
-    public int doStartTag() throws JspException {return EVAL_BODY_BUFFERED;}
+    public void setBodyContent(BodyContent content)
+    {
+        body = content;
+    }
 
-    public int doEndTag() throws JspException {return EVAL_PAGE;}
+    public void setPageContext(PageContext pageContext)
+    {
+    }
 
-    public void doInitBody() throws JspException {}
+    public void setTz(String value)
+    {
+        tz = value;
+    }
 
-    public int doAfterBody() throws JspException {
-	try
-	{
+    public int doStartTag() throws JspException
+    {
+        return EVAL_BODY_BUFFERED;
+    }
+
+    public int doEndTag() throws JspException
+    {
+        return EVAL_PAGE;
+    }
+
+    public void doInitBody() throws JspException
+    {
+    }
+
+    public int doAfterBody() throws JspException
+    {
+        try
+        {
             SimpleDateFormat format = new SimpleDateFormat(body.getString());
             format.setTimeZone(TimeZone.getTimeZone(tz));
-	    body.getEnclosingWriter().write(format.format(new Date()));
-	    return SKIP_BODY;
-	}
-	catch (Exception ex) {
+            body.getEnclosingWriter().write(format.format(new Date()));
+            return SKIP_BODY;
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
             throw new JspTagException(ex.toString());
-	}
+        }
     }
 
     public void release()
     {
-	body=null;
+        body = null;
     }
 }
 

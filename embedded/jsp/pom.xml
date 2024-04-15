@@ -4,12 +4,12 @@
   <parent>
     <groupId>org.eclipse.jetty.examples.embedded</groupId>
     <artifactId>jetty-embedded-examples</artifactId>
-    <version>10.0.x</version>
+    <version>11.0.x</version>
   </parent>
   <artifactId>jsp</artifactId>
-  <version>10.0.x</version>
+  <version>11.0.x</version>
   <packaging>jar</packaging>
-  <name>Jetty Examples :: Jetty 10.0.x :: Embedded :: JSP</name>
+  <name>Jetty Examples :: Jetty 11.0.x :: Embedded :: JSP</name>
 
   <properties>
     <logback.version>1.4.14</logback.version>
@@ -26,7 +26,7 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
-      <artifactId>apache-jstl</artifactId>
+      <artifactId>glassfish-jstl</artifactId>
       <version>${jetty.version}</version>
       <type>pom</type>
     </dependency>
