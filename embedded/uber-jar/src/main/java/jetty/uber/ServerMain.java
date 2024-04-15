@@ -20,7 +20,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.Resource;
-import org.eclipse.jetty.websocket.javax.server.config.JavaxWebSocketServletContainerInitializer;
+import org.eclipse.jetty.websocket.jakarta.server.config.JakartaWebSocketServletContainerInitializer;
 
 public class ServerMain
 {
@@ -60,7 +60,7 @@ public class ServerMain
         server.setHandler(contextHandler);
 
         // Add WebSocket endpoints
-        JavaxWebSocketServletContainerInitializer.configure(contextHandler, (context, wsContainer) ->
+        JakartaWebSocketServletContainerInitializer.configure(contextHandler, (context, wsContainer) ->
             wsContainer.addEndpoint(TimeSocket.class));
 
         // Add Servlet endpoints
