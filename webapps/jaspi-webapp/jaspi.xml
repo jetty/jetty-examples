@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jaspi xmlns="http://geronimo.apache.org/xml/ns/geronimo-jaspi">
+    <configProvider>
+        <messageLayer>HTTP</messageLayer>
+        <appContext>server /foo</appContext>
+        <description>description</description>
+        <serverAuthConfig>
+            <authenticationContextID>authenticationContextID2</authenticationContextID>
+            <protected>true</protected>
+            <serverAuthContext>
+                <serverAuthModule>
+                    <className>org.eclipse.jetty.security.jaspi.modules.FormAuthModule</className>
+                    <options>
+                       org.eclipse.jetty.security.jaspi.modules.LoginPage=/logon.html?param=test
+                       org.eclipse.jetty.security.jaspi.modules.ErrorPage=/logonError.html?param=test
+                    </options>
+                </serverAuthModule>
+            </serverAuthContext>
+        </serverAuthConfig>
+        <persistent>true</persistent>
+    </configProvider>
+</jaspi>
