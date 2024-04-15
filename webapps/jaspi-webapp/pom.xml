@@ -4,12 +4,12 @@
   <parent>
     <groupId>org.eclipse.jetty.examples.webapps</groupId>
     <artifactId>jetty-webapp-examples</artifactId>
-    <version>11.0.x</version>
+    <version>12.0.x</version>
   </parent>
   <artifactId>jaspi-webapp</artifactId>
-  <version>11.0.x</version>
+  <version>12.0.x</version>
   <packaging>war</packaging>
-  <name>Jetty Examples :: Jetty 11.0.x :: JASPI WebApp</name>
+  <name>Jetty Examples :: Jetty 12.0.x :: JASPI WebApp</name>
 
   <properties>
     <jsp-api.version>3.0.0</jsp-api.version>
@@ -29,8 +29,8 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-servlets</artifactId>
+      <groupId>org.eclipse.jetty.ee10</groupId>
+      <artifactId>jetty-ee10-servlets</artifactId>
       <version>${jetty.version}</version>
       <scope>provided</scope>
     </dependency>
@@ -39,8 +39,8 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
+        <groupId>org.eclipse.jetty.ee10</groupId>
+        <artifactId>jetty-ee10-maven-plugin</artifactId>
         <version>${jetty.version}</version>
         <configuration>
           <contextXml>context.xml</contextXml>
@@ -76,8 +76,8 @@
             <version>1.1</version>
           </dependency>
           <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-jaspi</artifactId>
+            <groupId>org.eclipse.jetty.ee10</groupId>
+            <artifactId>jetty-ee10-jaspi</artifactId>
             <version>${jetty.version}</version>
           </dependency>
         </dependencies>

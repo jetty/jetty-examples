@@ -76,7 +76,7 @@
             <goals>
               <goal>run</goal>
             </goals>
-            <phase>install</phase>
+            <phase>package</phase>
             <configuration>
               <target>
                 <copy file="${project.build.directory}/${project.build.finalName}.war" todir="${project.basedir}/webapps/" />
@@ -84,6 +84,24 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>webapps/</directory>
+              <includes>
+                <include>*.war</include>
+              </includes>
+              <excludes>
+                <exclude>.gitignore</exclude>
+                <exclude>*.xml</exclude>
+              </excludes>
+            </fileset>
+          </filesets>
+        </configuration>
       </plugin>
     </plugins>
   </build>
