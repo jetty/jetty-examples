@@ -4,25 +4,25 @@
   <parent>
     <groupId>org.eclipse.jetty.examples.embedded.uberwar</groupId>
     <artifactId>uber-war-parent</artifactId>
-    <version>9.4.x</version>
+    <version>10.0.x</version>
   </parent>
   <artifactId>uber-war-webapp</artifactId>
   <packaging>war</packaging>
-  <name>Jetty Examples :: Jetty 9.4.x :: Embedded :: Uber War :: Standalone WebApp</name>
+  <name>Jetty Examples :: Jetty 10.0.x :: Embedded :: Uber War :: Standalone WebApp</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>${servlet.api.version}</version>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>4.0.4</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>javax.websocket</groupId>
-      <artifactId>javax.websocket-api</artifactId>
-      <version>${websocket.api.version}</version>
+      <groupId>jakarta.websocket</groupId>
+      <artifactId>jakarta.websocket-api</artifactId>
+      <version>1.1.2</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>

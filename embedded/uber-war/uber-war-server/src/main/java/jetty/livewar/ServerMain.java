@@ -21,7 +21,6 @@ import java.nio.file.Path;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.resource.PathResource;
-import org.eclipse.jetty.webapp.Configuration;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 public class ServerMain
@@ -49,8 +48,6 @@ public class ServerMain
     private void run() throws Throwable
     {
         Server server = new Server(8080);
-
-        enableAnnotationScanning(server);
 
         WebAppContext context = new WebAppContext();
         context.setContextPath("/");
@@ -102,15 +99,5 @@ public class ServerMain
         }
 
         return null;
-    }
-
-    private void enableAnnotationScanning(Server server)
-    {
-        Configuration.ClassList classlist = Configuration.ClassList.setServerDefault(server);
-        classlist.addAfter("org.eclipse.jetty.webapp.FragmentConfiguration",
-                "org.eclipse.jetty.plus.webapp.EnvConfiguration",
-                "org.eclipse.jetty.plus.webapp.PlusConfiguration");
-        classlist.addBefore("org.eclipse.jetty.webapp.JettyWebXmlConfiguration",
-                "org.eclipse.jetty.annotations.AnnotationConfiguration");
     }
 }
