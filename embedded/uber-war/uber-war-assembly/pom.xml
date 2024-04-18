@@ -4,11 +4,11 @@
   <parent>
     <groupId>org.eclipse.jetty.examples.embedded.uberwar</groupId>
     <artifactId>uber-war-parent</artifactId>
-    <version>10.0.x</version>
+    <version>11.0.x</version>
   </parent>
   <artifactId>uber-war-assembly</artifactId>
   <packaging>pom</packaging>
-  <name>Jetty Examples :: Jetty 10.0.x :: Embedded :: Uber War :: Assembly</name>
+  <name>Jetty Examples :: Jetty 11.0.x :: Embedded :: Uber War :: Assembly</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <serverManifestDirectory>${project.build.directory}/servermanifest</serverManifestDirectory>
