@@ -33,6 +33,7 @@
     <module>servlet-with-cdi</module>
     <module>simple-server</module>
     <module>uber-jar</module>
+    <module>uber-war</module>
     <module>virtual-hosts</module>
     <module>webapp-context</module>
     <module>websocket-jakarta-api</module>
