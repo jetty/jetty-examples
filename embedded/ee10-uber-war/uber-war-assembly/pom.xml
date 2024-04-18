@@ -3,12 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.eclipse.jetty.examples.embedded.uberwar</groupId>
-    <artifactId>uber-war-parent</artifactId>
-    <version>11.0.x</version>
+    <artifactId>ee10-uber-war-parent</artifactId>
+    <version>12.0.x</version>
   </parent>
-  <artifactId>uber-war-assembly</artifactId>
+  <artifactId>ee10-uber-war-assembly</artifactId>
   <packaging>pom</packaging>
-  <name>Jetty Examples :: Jetty 11.0.x :: Embedded :: Uber War :: Assembly</name>
+  <name>Jetty Examples :: Jetty 12.0.x :: Embedded :: Uber War :: Assembly</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <serverManifestDirectory>${project.build.directory}/servermanifest</serverManifestDirectory>
@@ -16,17 +16,17 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>uber-war-bootstrap</artifactId>
+      <artifactId>ee10-uber-war-bootstrap</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>uber-war-server</artifactId>
+      <artifactId>ee10-uber-war-server</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>uber-war-webapp</artifactId>
+      <artifactId>ee10-uber-war-webapp</artifactId>
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
@@ -70,7 +70,7 @@
               <artifactItems>
                 <artifactItem>
                   <groupId>${project.groupId}</groupId>
-                  <artifactId>uber-war-bootstrap</artifactId>
+                  <artifactId>ee10-uber-war-bootstrap</artifactId>
                   <version>${project.version}</version>
                   <outputDirectory>${serverManifestDirectory}</outputDirectory>
                   <includes>META-INF/MANIFEST.MF</includes>

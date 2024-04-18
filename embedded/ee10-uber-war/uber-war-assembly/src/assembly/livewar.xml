@@ -12,7 +12,7 @@
       <unpack>true</unpack>
       <useTransitiveDependencies>false</useTransitiveDependencies>
       <includes>
-        <include>${project.groupId}:uber-war-server</include>
+        <include>${project.groupId}:ee10-uber-war-server</include>
       </includes>
     </dependencySet>
     <dependencySet>
@@ -20,8 +20,8 @@
       <unpack>true</unpack>
       <useTransitiveDependencies>false</useTransitiveDependencies>
       <includes>
-        <include>${project.groupId}:uber-war-webapp</include>
-        <include>${project.groupId}:uber-war-bootstrap</include>
+        <include>${project.groupId}:ee10-uber-war-webapp</include>
+        <include>${project.groupId}:ee10-uber-war-bootstrap</include>
       </includes>
     </dependencySet>
   </dependencySets>

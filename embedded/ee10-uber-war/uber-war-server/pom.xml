@@ -3,34 +3,34 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.eclipse.jetty.examples.embedded.uberwar</groupId>
-    <artifactId>uber-war-parent</artifactId>
-    <version>11.0.x</version>
+    <artifactId>ee10-uber-war-parent</artifactId>
+    <version>12.0.x</version>
   </parent>
-  <artifactId>uber-war-server</artifactId>
+  <artifactId>ee10-uber-war-server</artifactId>
   <packaging>jar</packaging>
-  <name>Jetty Examples :: Jetty 11.0.x :: Embedded :: Uber War :: Server Classes</name>
+  <name>Jetty Examples :: Jetty 12.0.x :: Embedded :: Uber War :: Server Classes</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-annotations</artifactId>
-      <version>${jetty.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-slf4j-impl</artifactId>
       <version>${jetty.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-webapp</artifactId>
+      <groupId>org.eclipse.jetty.ee10</groupId>
+      <artifactId>jetty-ee10-annotations</artifactId>
       <version>${jetty.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.jetty.websocket</groupId>
-      <artifactId>websocket-jakarta-server</artifactId>
+      <groupId>org.eclipse.jetty.ee10</groupId>
+      <artifactId>jetty-ee10-webapp</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.ee10.websocket</groupId>
+      <artifactId>jetty-ee10-websocket-jakarta-server</artifactId>
       <version>${jetty.version}</version>
     </dependency>
   </dependencies>

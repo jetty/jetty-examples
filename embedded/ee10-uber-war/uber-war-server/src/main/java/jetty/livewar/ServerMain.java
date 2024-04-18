@@ -19,9 +19,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.eclipse.jetty.ee10.webapp.WebAppContext;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.util.resource.PathResource;
-import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.util.resource.Resource;
 
 public class ServerMain
 {
@@ -60,7 +60,9 @@ public class ServerMain
                 break;
             case DEV:
                 // Configuring from Development Base
-                context.setBaseResource(new PathResource(basePath.resolve("src/main/webapp")));
+                Path webappPath = basePath.resolve("src/main/webapp");
+                Resource baseResource = context.getResourceFactory().newResource(webappPath);
+                context.setBaseResource(baseResource);
                 // Add webapp compiled classes & resources (copied into place from src/main/resources)
                 Path classesPath = basePath.resolve("target/thewebapp/WEB-INF/classes");
                 context.setExtraClasspath(classesPath.toAbsolutePath().toString());

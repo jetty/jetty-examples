@@ -22,11 +22,14 @@
     <module>ee10-error-handling</module>
     <module>ee10-file-server</module>
     <module>ee10-form-post</module>
+    <module>ee10-jsp</module>
     <module>ee10-metainf-resources</module>
     <module>ee10-servlet-config</module>
     <module>ee10-servlet-security</module>
     <module>ee10-servlet-server</module>
     <module>ee10-servlet-with-cdi</module>
+    <module>ee10-uber-jar</module>
+    <module>ee10-uber-war</module>
     <module>ee10-webapp-context</module>
     <module>ee10-websocket-jakarta-api</module>
     <module>ee10-websocket-jetty-api</module>
@@ -35,13 +38,11 @@
     <module>form-post</module>
     <module>http-config</module>
     <module>jndi</module>
-    <module>ee10-jsp</module>
     <module>path-mapping-handler</module>
     <module>redirect</module>
     <module>requestlog</module>
     <module>rewrite</module>
     <module>simple-server</module>
-    <module>ee10-uber-jar</module>
     <module>virtual-hosts</module>
     <module>xml</module>
   </modules>
