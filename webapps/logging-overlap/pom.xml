@@ -5,13 +5,13 @@
   <parent>
     <groupId>org.eclipse.jetty.examples.webapps</groupId>
     <artifactId>jetty-webapp-examples</artifactId>
-    <version>10.0.x</version>
+    <version>11.0.x</version>
   </parent>
 
   <groupId>org.eclipse.jetty.examples.logging</groupId>
   <artifactId>logging-overlap-demo-parent</artifactId>
   <packaging>pom</packaging>
-  <name>Jetty Examples :: 10.0.x :: WebApp Logging Overlap :: Parent</name>
+  <name>Jetty Examples :: 11.0.x :: WebApp Logging Overlap :: Parent</name>
 
   <modules>
     <module>logging-webapp</module>
