@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.eclipse.jetty.examples.webapps</groupId>
+    <artifactId>jetty-webapp-examples</artifactId>
+    <version>9.4.x</version>
+  </parent>
+
+  <groupId>org.eclipse.jetty.examples.logging</groupId>
+  <artifactId>logging-overlap-demo-parent</artifactId>
+  <packaging>pom</packaging>
+  <name>Jetty Examples :: 9.4.x :: WebApp Logging Overlap :: Parent</name>
+
+  <modules>
+    <module>logging-webapp</module>
+    <module>lib-using-commonslogging</module>
+    <module>lib-using-javautillogging</module>
+    <module>lib-using-slf4j</module>
+    <module>demobase</module>
+  </modules>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <servlet.version>3.1.0</servlet.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>${servlet.version}</version>
+        <scope>provided</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>

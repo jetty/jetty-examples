@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+  <Appenders>
+    <Console name="WebappConsole" target="SYSTEM_OUT">
+      <PatternLayout pattern="[webapp:%-5level] %d{HH:mm:ss.SSS} [%t] %logger{36} - %msg%n" />
+    </Console>
+    <File name="WebappFile" fileName="logs/webapp.log">
+      <PatternLayout pattern="[webapp:%-5level] %d{HH:mm:ss.SSS} [%t] %logger{36} - %msg%n" />
+    </File>
+  </Appenders>
+  <Loggers>
+    <Root level="info">
+      <AppenderRef ref="WebappFile" />
+      <AppenderRef ref="WebappConsole" />
+    </Root>
+  </Loggers>
+</Configuration>
