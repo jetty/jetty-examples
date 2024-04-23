@@ -13,17 +13,16 @@
 
 package examples;
 
-import java.io.IOException;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import org.eclipse.jetty.http.HttpHeader;
+import org.eclipse.jetty.io.Content;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.eclipse.jetty.server.Response;
+import org.eclipse.jetty.util.Callback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HelloHandler extends AbstractHandler
+public class HelloHandler extends Handler.Abstract
 {
     private static final Logger LOG = LoggerFactory.getLogger(HelloHandler.class);
     private final String msg;
@@ -33,11 +32,12 @@ public class HelloHandler extends AbstractHandler
         this.msg  = msg;
     }
 
-    public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+    @Override
+    public boolean handle(Request request, Response response, Callback callback) throws Exception
     {
-        LOG.info("Got request from {} for {}",request.getRemoteAddr(), request.getRequestURL());
-        response.setContentType("text/plain");
-        response.getWriter().printf("%s%n",msg);
-        baseRequest.setHandled(true);
+        LOG.info("Got request from {} for {}",Request.getRemoteAddr(request), request.getHttpURI().toString());
+        response.getHeaders().put(HttpHeader.CONTENT_TYPE, "text/plain; charset=utf-8");
+        Content.Sink.write(response, true, String.format("%s%n", msg), callback);
+        return true;
     }
 }

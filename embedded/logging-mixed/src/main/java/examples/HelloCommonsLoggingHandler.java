@@ -13,33 +13,33 @@
 
 package examples;
 
-import java.io.IOException;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.jetty.http.HttpHeader;
+import org.eclipse.jetty.io.Content;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Response;
+import org.eclipse.jetty.util.Callback;
 
-@SuppressWarnings("serial")
-public class HelloCommonsLoggingServlet extends HttpServlet
+public class HelloCommonsLoggingHandler extends Handler.Abstract
 {
-    private static final Log LOG = LogFactory.getLog(HelloCommonsLoggingServlet.class);
+    private static final Log LOG = LogFactory.getLog(HelloCommonsLoggingHandler.class);
     private final String msg;
 
-    public HelloCommonsLoggingServlet(String msg)
+    public HelloCommonsLoggingHandler(String msg)
     {
         this.msg  = msg;
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public boolean handle(Request request, Response response, Callback callback) throws Exception
     {
         LOG.info(String.format(
             "Got request from %s for %s",
-            request.getRemoteAddr(), request.getRequestURL()));
-        response.setContentType("text/plain");
-        response.getWriter().printf("%s%n",msg);
+            Request.getRemoteAddr(request), request.getHttpURI().toString()));
+        response.getHeaders().put(HttpHeader.CONTENT_TYPE, "text/plain; charset=utf-8");
+        Content.Sink.write(response, true, String.format("%s%n", msg), callback);
+        return true;
     }
 }

@@ -22,8 +22,8 @@ import java.util.List;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.util.IO;
 import org.eclipse.jetty.util.component.LifeCycle;
 import org.junit.jupiter.api.AfterEach;
@@ -50,15 +50,13 @@ public class AppTest
         server.addConnector(connector);
 
         // add handlers
-        ServletContextHandler contexts = new ServletContextHandler();
-        contexts.setContextPath("/");
+        ContextHandlerCollection contexts = new ContextHandlerCollection();
         server.setHandler(contexts);
 
-        contexts.addServlet(new ServletHolder(new HelloCommonsLoggingServlet("Hello commons-logging")),"/clogging/*");
-        contexts.addServlet(new ServletHolder(new HelloJettyServlet("Hello Jetty")),"/jetty/*");
-        contexts.addServlet(new ServletHolder(new HelloJULServlet("Hello JUL")),"/jul/*");
-        contexts.addServlet(new ServletHolder(new HelloLog4jServlet("Hello Log4j")),"/log4j/*");
-        contexts.addServlet(new ServletHolder(new HelloSlf4jServlet("Hello Slf4j")),"/slf4j/*");
+        contexts.addHandler(new ContextHandler(new HelloCommonsLoggingHandler("Hello commons-logging"),"/clogging"));
+        contexts.addHandler(new ContextHandler(new HelloJULHandler("Hello JUL"),"/jul"));
+        contexts.addHandler(new ContextHandler(new HelloLog4jHandler("Hello Log4j"),"/log4j"));
+        contexts.addHandler(new ContextHandler(new HelloSlf4jHandler("Hello Slf4j"),"/slf4j"));
 
         // Start server
         server.start();
@@ -81,7 +79,6 @@ public class AppTest
 
         List<String> paths = new ArrayList<>();
         paths.add("/clogging/");
-        paths.add("/jetty/");
         paths.add("/jul/");
         paths.add("/log4j/");
         paths.add("/slf4j/");

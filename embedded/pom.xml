@@ -22,6 +22,7 @@
     <module>ee10-error-handling</module>
     <module>ee10-file-server</module>
     <module>ee10-form-post</module>
+    <module>ee10-jersey-weld</module>
     <module>ee10-jsp</module>
     <module>ee10-metainf-resources</module>
     <module>ee10-servlet-config</module>
@@ -37,15 +38,13 @@
     <module>file-upload</module>
     <module>form-post</module>
     <module>http-config</module>
-    <module>ee10-jersey-weld</module>
     <module>jndi</module>
-    <module>path-mapping-handler</module>
     <module>logging-java-util-logging</module>
     <module>logging-mixed</module>
     <module>logging-slf4j</module>
     <module>logging-slf4j-and-log4j2</module>
     <module>logging-system-err</module>
-    <module>metainf-resources</module>
+    <module>path-mapping-handler</module>
     <module>redirect</module>
     <module>requestlog</module>
     <module>rewrite</module>

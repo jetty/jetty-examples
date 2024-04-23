@@ -13,21 +13,21 @@
 
 package examples;
 
-import java.util.logging.Logger;
-
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.io.Content;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.util.Callback;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class HelloHandler extends Handler.Abstract
+public class HelloSlf4jHandler extends Handler.Abstract
 {
-    private static final Logger LOG = Logger.getLogger(HelloHandler.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(HelloSlf4jHandler.class);
     private final String msg;
 
-    public HelloHandler(String msg)
+    public HelloSlf4jHandler(String msg)
     {
         this.msg  = msg;
     }
@@ -35,7 +35,7 @@ public class HelloHandler extends Handler.Abstract
     @Override
     public boolean handle(Request request, Response response, Callback callback) throws Exception
     {
-        LOG.info(String.format("Got request from %s for %s",Request.getRemoteAddr(request), request.getHttpURI().toString()));
+        LOG.info("Got request from {} for {}",Request.getRemoteAddr(request), request.getHttpURI().toString());
         response.getHeaders().put(HttpHeader.CONTENT_TYPE, "text/plain; charset=utf-8");
         Content.Sink.write(response, true, String.format("%s%n", msg), callback);
         return true;
