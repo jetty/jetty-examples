@@ -11,7 +11,7 @@
   <artifactId>uber-jar</artifactId>
   <version>10.0.x</version>
   <packaging>jar</packaging>
-  <name>Jetty Examples :: Jetty 9.4.x :: Embedded :: Uber Jar</name>
+  <name>Jetty Examples :: Jetty 10.0.x :: Embedded :: Uber Jar</name>
 
   <properties>
     <log4j.version>2.6.2</log4j.version>

@@ -52,13 +52,7 @@ public class AppTest
         server.start();
 
         // Establish the Server URI
-        String host = connector.getHost();
-        if (host == null)
-        {
-            host = "localhost";
-        }
-        int port = connector.getLocalPort();
-        serverUri = new URI(String.format("http://%s:%d/",host,port));
+        serverUri = server.getURI().resolve("/");
     }
 
     @AfterEach
@@ -81,7 +75,7 @@ public class AppTest
         {
             String response = IO.toString(in);
             assertThat("response",response,containsString("Hello"));
-            capture.assertContainsRecord("examples.HelloHandler","Got request from 127.0.0.1");
+            capture.assertContainsRecord("examples.HelloHandler", String.format("Got request from %s", getURI.getHost()));
         }
         finally
         {

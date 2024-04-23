@@ -64,13 +64,7 @@ public class AppTest
         server.start();
 
         // Establish the Server URI
-        String host = connector.getHost();
-        if (host == null)
-        {
-            host = "localhost";
-        }
-        int port = connector.getLocalPort();
-        serverUri = new URI(String.format("http://%s:%d/",host,port));
+        serverUri = server.getURI().resolve("/");
     }
 
     @AfterEach
