@@ -10,7 +10,7 @@
 
   <artifactId>lowresource-access</artifactId>
   <packaging>war</packaging>
-  <name>lowresource-access</name>
+  <name>Jetty Examples :: Jetty 9.4.x :: Embedded :: Using LowResourceMonitor</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
