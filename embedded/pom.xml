@@ -37,6 +37,7 @@
     <module>file-upload</module>
     <module>form-post</module>
     <module>http-config</module>
+    <module>jersey-weld</module>
     <module>jndi</module>
     <module>path-mapping-handler</module>
     <module>redirect</module>
