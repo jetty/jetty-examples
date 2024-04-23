@@ -5,12 +5,12 @@
   <parent>
     <groupId>org.eclipse.jetty.examples.logging</groupId>
     <artifactId>logging-overlap-demo-parent</artifactId>
-    <version>9.4.x</version>
+    <version>10.0.x</version>
   </parent>
 
   <artifactId>demobase</artifactId>
   <packaging>pom</packaging>
-  <name>Jetty Examples :: 9.4.x :: WebApp Logging Overlap :: Demo Base</name>
+  <name>Jetty Examples :: 10.0.x :: WebApp Logging Overlap :: Demo Base</name>
 
   <properties>
     <dependency.plugin.version>3.6.1</dependency.plugin.version>

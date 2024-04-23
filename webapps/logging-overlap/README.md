@@ -7,7 +7,7 @@ logging libraries and error handling.
 
 You will need
 
-1. Java 8+
+1. Java 11+
 2. Maven 3.9.6+
 3. An unpacked `jetty-home` somewhere on your system (**not** within this cloned project!)
 
@@ -17,12 +17,12 @@ Download it and unpack it.
 
 ``` shell
 $ cd ~/tmp
-$ curl -O http://central.maven.org/maven2/org/eclipse/jetty/jetty-home/9.4.54.v20240208/jetty-home-9.4.54.v20240208.tar.gz
-$ tar -zxvf jetty-home-9.4.54.v20240208.tar.gz
+$ curl -O http://central.maven.org/maven2/org/eclipse/jetty/jetty-home/10.0.20/jetty-home-10.0.20.tar.gz
+$ tar -zxvf jetty-home-10.0.20.tar.gz
 ```
 
 Using the above directories as an example, that means your `$JETTY_HOME` is  
-now `$HOME/tmp/jetty-home-9.4.54.v20240208/`
+now `$HOME/tmp/jetty-home-10.0.20/`
 
 ## To compile the project use 
 

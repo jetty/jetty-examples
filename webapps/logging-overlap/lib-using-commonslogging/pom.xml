@@ -5,12 +5,12 @@
   <parent>
     <groupId>org.eclipse.jetty.examples.logging</groupId>
     <artifactId>logging-overlap-demo-parent</artifactId>
-    <version>9.4.x</version>
+    <version>10.0.x</version>
   </parent>
 
   <artifactId>lib-using-commonslogging</artifactId>
   <packaging>jar</packaging>
-  <name>Jetty Examples :: 9.4.x :: WebApp Logging Overlap :: Lib w/commons-logging</name>
+  <name>Jetty Examples :: 10.0.x :: WebApp Logging Overlap :: Lib w/commons-logging</name>
 
   <properties>
     <commonslogging.version>1.2</commonslogging.version>
