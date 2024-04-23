@@ -5,20 +5,19 @@
   <parent>
     <groupId>org.eclipse.jetty.examples.embedded</groupId>
     <artifactId>jetty-embedded-examples</artifactId>
-    <version>10.0.x</version>
+    <version>11.0.x</version>
   </parent>
 
   <artifactId>jersey-weld</artifactId>
   <packaging>jar</packaging>
-  <name>Jetty Examples :: Jetty 10.0.x :: Embedded :: Jersey with Weld</name>
+  <name>Jetty Examples :: Jetty 11.0.x :: Embedded :: Jersey with Weld</name>
 
   <properties>
-    <jersey.version>2.41</jersey.version>
+    <jersey.version>3.0.11</jersey.version>
     <jetty-test-helper.version>6.2</jetty-test-helper.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
     <slf4j.version>2.0.13</slf4j.version>
-    <weld.version>3.1.9.Final</weld.version>
+    <weld.version>4.0.3.Final</weld.version>
   </properties>
 
   <dependencies>
