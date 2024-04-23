@@ -14,13 +14,13 @@
 package examples;
 
 import examples.rest.SandwichEndpoint;
-import org.eclipse.jetty.cdi.CdiDecoratingListener;
-import org.eclipse.jetty.cdi.CdiServletContainerInitializer;
-import org.eclipse.jetty.cdi.CdiSpiDecorator;
+import org.eclipse.jetty.ee10.cdi.CdiDecoratingListener;
+import org.eclipse.jetty.ee10.cdi.CdiServletContainerInitializer;
+import org.eclipse.jetty.ee10.cdi.CdiSpiDecorator;
+import org.eclipse.jetty.ee10.servlet.ListenerHolder;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ListenerHolder;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 public class Main
@@ -34,11 +34,6 @@ public class Main
 
     enum WeldMode
     {
-        // Do nothing special to integrate Weld, let weld work it out.
-        FALLBACK,
-
-        // Expect:INFO: WELD-ENV-001201: Jetty 7.2+ detected, CDI injection will be available in Servlets and Filters. Injection into Listeners is not supported.
-        DECORATING_LISTENER,
         // Expect:INFO: WELD-ENV-001212: Jetty CdiDecoratingListener support detected, CDI injection will be available in Listeners, Servlets and Filters.
         CDI_DECORATING_LISTENER,
         // // Expect:INFO: WELD-ENV-001213: Jetty CDI SPI support detected, CDI injection will be available in Listeners, Servlets and Filters.
@@ -83,6 +78,7 @@ public class Main
         // Setup Jetty weld integration
         switch (mode)
         {
+            /* These two modes are not supported in Jetty 12, and are meant for older versions of Jetty.
             case FALLBACK:
                 // Expect:INFO: WELD-ENV-001201: Jetty 7.2+ detected, CDI injection will be available in Servlets and Filters. Injection into Listeners is not supported.
                 context.getServletHandler().addListener(new ListenerHolder(org.jboss.weld.environment.servlet.Listener.class));
@@ -90,9 +86,10 @@ public class Main
 
             case DECORATING_LISTENER:
                 // Expect:INFO: WELD-ENV-001212: Jetty CdiDecoratingListener support detected, CDI injection will be available in Listeners, Servlets and Filters.
-                context.addEventListener(new org.eclipse.jetty.webapp.DecoratingListener(context));
+                context.addEventListener(new org.eclipse.jetty.ee10.webapp.DecoratingListener(context));
                 context.getServletHandler().addListener(new ListenerHolder(org.jboss.weld.environment.servlet.Listener.class));
                 break;
+             */
 
             case CDI_DECORATING_LISTENER:
                 // Expect:INFO: WELD-ENV-001212: Jetty CdiDecoratingListener support detected, CDI injection will be available in Listeners, Servlets and Filters.
