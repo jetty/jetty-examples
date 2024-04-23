@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.eclipse.jetty.examples.logging</groupId>
+    <artifactId>logging-overlap-demo-parent</artifactId>
+    <version>11.0.x</version>
+  </parent>
+
+  <artifactId>lib-using-slf4j</artifactId>
+  <packaging>jar</packaging>
+  <name>Jetty Examples :: 11.0.x :: WebApp Logging Overlap :: Lib w/SLF4J</name>
+
+  <properties>
+    <slf4j.version>1.7.36</slf4j.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build />
+</project>
