@@ -17,5 +17,6 @@
     <module>http2-client-from-webapp</module>
     <module>http2-demo</module>
     <module>jaspi-webapp</module>
+    <module>logging-overlap</module>
   </modules>
 </project>

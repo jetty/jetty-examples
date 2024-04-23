@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">
+
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+  <Set name="contextPath">/system-option</Set>
+  <Set name="war"><Property name="jetty.webapps" />/logging-webapp.war</Set>
+  <!-- to force server logging libs in webapp use below (will use server config too!) -->
+  <Get name="systemClasspathPattern">
+    <!-- Slf4j -->
+    <Call name="add"><Arg>org.slf4j.</Arg></Call>
+    <!-- Commons Logging -->
+    <Call name="add"><Arg>org.apache.commons.logging.</Arg></Call>
+    <!-- Log4j 2.x+ -->
+    <Call name="add"><Arg>org.apache.logging.</Arg></Call>
+    <!-- Log4j 1.x+ -->
+    <Call name="add"><Arg>org.apache.log4j.</Arg></Call>
+  </Get>
+</Configure>

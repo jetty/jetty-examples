@@ -1,0 +1,65 @@
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+
+  <!--
+  Prevent Log4j from auto-initializing within org.apache.logging.log4j.web.Log4jServletContainerInitializer.
+  As this will prevent webapp logging events from reaching the server logging appenders.
+   -->
+  <context-param>
+    <param-name>isLog4jAutoInitializationDisabled</param-name>
+    <param-value>true</param-value>
+  </context-param>
+
+  <servlet>
+    <servlet-name>demo</servlet-name>
+    <servlet-class>org.eclipse.jetty.demos.DemoServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet>
+    <servlet-name>naughty</servlet-name>
+    <servlet-class>org.eclipse.jetty.demos.NaughtyServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>error</servlet-name>
+    <servlet-class>org.eclipse.jetty.demos.ErrorServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>logging-status</servlet-name>
+    <servlet-class>org.eclipse.jetty.demos.LoggingStatusServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>demo</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>naughty</servlet-name>
+    <url-pattern>/naughty/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>error</servlet-name>
+    <url-pattern>/error</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>logging-status</servlet-name>
+    <url-pattern>/status/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- specific usage of sendError(500) -->
+  <error-page>
+    <error-code>500</error-code>
+    <location>/error</location>
+  </error-page>
+
+  <!-- and unhandled exception or throwable -->
+  <error-page>
+    <exception-type>java.lang.Throwable</exception-type>
+    <location>/error</location>
+  </error-page>
+</web-app>
