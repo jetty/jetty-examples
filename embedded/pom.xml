@@ -26,6 +26,11 @@
     <module>jersey-weld</module>
     <module>jndi</module>
     <module>jsp</module>
+    <module>logging-java-util-logging</module>
+    <module>logging-mixed</module>
+    <module>logging-slf4j</module>
+    <module>logging-slf4j-and-log4j2</module>
+    <module>logging-system-err</module>
     <module>metainf-resources</module>
     <module>redirect</module>
     <module>rewrite</module>
