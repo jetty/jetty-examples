@@ -17,12 +17,12 @@ Download it and unpack it.
 
 ``` shell
 $ cd ~/tmp
-$ curl -O http://central.maven.org/maven2/org/eclipse/jetty/jetty-home/11.0.20/jetty-home-11.0.20.tar.gz
-$ tar -zxvf jetty-home-11.0.20.tar.gz
+$ curl -O http://central.maven.org/maven2/org/eclipse/jetty/jetty-home/12.0.8/jetty-home-12.0.8.tar.gz
+$ tar -zxvf jetty-home-12.0.8.tar.gz
 ```
 
 Using the above directories as an example, that means your `$JETTY_HOME` is  
-now `$HOME/tmp/jetty-home-11.0.20/`
+now `$HOME/tmp/jetty-home-12.0.8/`
 
 ## To compile the project use 
 
