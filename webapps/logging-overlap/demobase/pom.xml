@@ -38,7 +38,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
-      <version>1.7.30</version>
+      <version>1.7.36</version>
     </dependency>
     <!-- Capture Java Util Logging and route to SLF4J -->
     <dependency>
