@@ -38,25 +38,25 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
-      <version>1.7.30</version>
+      <version>1.7.36</version>
     </dependency>
     <!-- Capture Java Util Logging and route to SLF4J -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jul-to-slf4j</artifactId>
-      <version>1.7.30</version>
+      <version>1.7.36</version>
     </dependency>
     <!-- Capture Log4j 1.x and route to SLF4J -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>log4j-over-slf4j</artifactId>
-      <version>1.7.30</version>
+      <version>1.7.36</version>
     </dependency>
     <!-- The API for Slf4J -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.30</version>
+      <version>1.7.36</version>
     </dependency>
   </dependencies>
 
