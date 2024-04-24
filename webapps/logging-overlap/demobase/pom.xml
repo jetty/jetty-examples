@@ -14,8 +14,8 @@
 
   <properties>
     <dependency.plugin.version>3.6.1</dependency.plugin.version>
-    <disruptor.version>3.6.0</disruptor.version>
-    <log4j.version>2.21.1</log4j.version>
+    <disruptor.version>3.6.1</disruptor.version>
+    <log4j.version>2.23.1</log4j.version>
     <slf4j.version>1.7.36</slf4j.version>
   </properties>
 
