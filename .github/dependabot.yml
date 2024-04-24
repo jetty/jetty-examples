@@ -49,6 +49,14 @@ updates:
       # Restrict updates in this branch to jetty in the 11.x.x space
       - dependency-name: "org.jboss.weld.servlet:*"
         update-types: [ "version-update:semver-minor" ]
+      - dependency-name: "org.glassfish.jersey:*"
+        update-types: [ "version-update:semver-minor" ]
+      - dependency-name: "org.glassfish.jersey.containers:*"
+        update-types: [ "version-update:semver-minor" ]
+      - dependency-name: "org.glassfish.jersey.inject:*"
+        update-types: [ "version-update:semver-minor" ]
+      - dependency-name: "org.glassfish.jersey.media:*"
+        update-types: [ "version-update:semver-minor" ]
       - dependency-name: "jakarta.websocket:*"
       - dependency-name: "jakarta.servlet:*"
       - dependency-name: "jakarta.servlet.jsp:*"
