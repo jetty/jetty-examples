@@ -20,7 +20,7 @@
     <dependency>
       <groupId>com.weicoder</groupId>
       <artifactId>disruptor</artifactId>
-      <version>3.6.0</version>
+      <version>3.6.1</version>
     </dependency>
     <!-- The (one and only) Slf4J Implementation -->
     <dependency>
