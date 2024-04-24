@@ -14,19 +14,15 @@
 
   <properties>
     <dependency.plugin.version>3.6.1</dependency.plugin.version>
+    <log4j2.version>2.23.1</log4j2.version>
+    <slf4j.version>2.0.13</slf4j.version>
   </properties>
 
   <dependencies>
     <dependency>
-      <groupId>com.weicoder</groupId>
-      <artifactId>disruptor</artifactId>
-      <version>3.6.0</version>
-    </dependency>
-    <!-- The (one and only) Slf4J Implementation -->
-    <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.21.1</version>
+      <version>${log4j2.version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty.examples.logging</groupId>
@@ -34,29 +30,25 @@
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
-    <!-- Capture Commons Logging and route to SLF4J -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
-      <version>1.7.30</version>
+      <version>${slf4j.version}</version>
     </dependency>
-    <!-- Capture Java Util Logging and route to SLF4J -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jul-to-slf4j</artifactId>
-      <version>1.7.30</version>
+      <version>${slf4j.version}</version>
     </dependency>
-    <!-- Capture Log4j 1.x and route to SLF4J -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>log4j-over-slf4j</artifactId>
-      <version>1.7.30</version>
+      <version>${slf4j.version}</version>
     </dependency>
-    <!-- The API for Slf4J -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.30</version>
+      <version>${slf4j.version}</version>
     </dependency>
   </dependencies>
 
