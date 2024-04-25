@@ -13,8 +13,6 @@
 
 package examples.annotated;
 
-import org.eclipse.jetty.util.log.Log;
-import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.websocket.api.RemoteEndpoint;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WriteCallback;
@@ -23,11 +21,13 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebSocket
 public class EchoWebSocket
 {
-    private static final Logger LOG = Log.getLogger(EchoWebSocket.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EchoWebSocket.class);
     private Session session;
     private RemoteEndpoint remote;
 

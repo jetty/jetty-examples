@@ -32,8 +32,8 @@ import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
 import org.eclipse.jetty.util.component.LifeCycle;
-import org.eclipse.jetty.util.log.Log;
-import org.eclipse.jetty.util.log.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EchoClient
 {
@@ -76,7 +76,7 @@ public class EchoClient
     @ClientEndpoint
     public static class EchoClientEndpoint
     {
-        private static final Logger LOG = Log.getLogger(EchoClientEndpoint.class);
+        private static final Logger LOG = LoggerFactory.getLogger(EchoClientEndpoint.class);
         private final LinkedBlockingDeque<String> messageQueue = new LinkedBlockingDeque<>();
         private final CountDownLatch closeLatch = new CountDownLatch(1);
 

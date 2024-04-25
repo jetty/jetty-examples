@@ -13,14 +13,14 @@
 
 package examples.listener;
 
-import org.eclipse.jetty.util.log.Log;
-import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EchoWebSocket implements WebSocketListener
 {
-    private static final Logger LOG = Log.getLogger(EchoWebSocket.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EchoWebSocket.class);
     private Session outbound;
 
     public void onWebSocketClose(int statusCode, String reason)

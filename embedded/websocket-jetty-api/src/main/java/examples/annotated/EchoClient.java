@@ -24,8 +24,6 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.eclipse.jetty.util.log.Log;
-import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.StatusCode;
 import org.eclipse.jetty.websocket.api.WriteCallback;
@@ -36,6 +34,8 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.eclipse.jetty.websocket.api.util.WSURI;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EchoClient
 {
@@ -79,7 +79,7 @@ public class EchoClient
     @WebSocket
     public static class ClientEchoWebSocket
     {
-        private static final Logger LOG = Log.getLogger(ClientEchoWebSocket.class);
+        private static final Logger LOG = LoggerFactory.getLogger(ClientEchoWebSocket.class);
         private final LinkedBlockingDeque<String> messageQueue = new LinkedBlockingDeque<>();
         private final CountDownLatch closeLatch = new CountDownLatch(1);
 
