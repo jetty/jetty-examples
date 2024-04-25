@@ -32,6 +32,12 @@
 
     <dependency>
       <groupId>org.eclipse.jetty.websocket</groupId>
+      <artifactId>websocket-jetty-client</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty.websocket</groupId>
       <artifactId>websocket-jetty-server</artifactId>
       <version>${jetty.version}</version>
     </dependency>
@@ -41,12 +47,6 @@
       <artifactId>jetty-test-helper</artifactId>
       <version>${jetty-test-helper.version}</version>
       <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.eclipse.jetty.websocket</groupId>
-      <artifactId>websocket-jetty-client</artifactId>
-      <version>${jetty.version}</version>
     </dependency>
   </dependencies>
 
