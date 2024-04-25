@@ -11,10 +11,11 @@
 // ========================================================================
 //
 
-package examples.annotated;
+package examples.endpoint;
 
 import java.net.URL;
 import java.util.Objects;
+import jakarta.websocket.server.ServerEndpointConfig;
 
 import org.eclipse.jetty.ee10.servlet.DefaultServlet;
 import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
@@ -22,7 +23,7 @@ import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.eclipse.jetty.ee10.websocket.jakarta.server.config.JakartaWebSocketServletContainerInitializer;
 import org.eclipse.jetty.server.Server;
 
-public class Main
+public class EchoServer
 {
     public static void main(String[] args) throws Exception
     {
@@ -43,7 +44,8 @@ public class Main
         JakartaWebSocketServletContainerInitializer.configure(servletContextHandler, (context, container) ->
         {
             // Add echo endpoint to server container
-            container.addEndpoint(EchoSocket.class);
+            ServerEndpointConfig echoConfig = ServerEndpointConfig.Builder.create(EchoServerEndpoint.class, "/echo").build();
+            container.addEndpoint(echoConfig);
         });
 
         // Add default servlet (to serve the html/css/js)

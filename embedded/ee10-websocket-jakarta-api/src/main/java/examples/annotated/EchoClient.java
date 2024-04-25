@@ -13,73 +13,70 @@
 
 package examples.annotated;
 
+import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
+
 import jakarta.websocket.ClientEndpoint;
 import jakarta.websocket.CloseReason;
 import jakarta.websocket.ContainerProvider;
+import jakarta.websocket.DeploymentException;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;
 import jakarta.websocket.OnMessage;
 import jakarta.websocket.OnOpen;
 import jakarta.websocket.Session;
 import jakarta.websocket.WebSocketContainer;
-
-import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.component.LifeCycle;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-public class MainTest
+public class EchoClient
 {
-    private Server server;
-    private WebSocketContainer wsClient;
-
-    @BeforeEach
-    public void startServerAndClient() throws Exception
+    public static void main(String[] args) throws Exception
     {
-        server = Main.newServer(0);
-        server.start();
-        wsClient = ContainerProvider.getWebSocketContainer();
-    }
+        URI uri = URI.create("ws://localhost:8080/echo");
 
-    @AfterEach
-    public void stopAll()
-    {
-        LifeCycle.stop(server);
-    }
+        if (args.length == 1)
+            uri = new URI(args[0]);
 
-    @Test
-    public void testEcho() throws Exception
-    {
-        EchoEndpoint echoSocket = new EchoEndpoint();
-        URI wsURI = new URI("ws", server.getURI().getAuthority(), "/echo", null, null);
-        try (Session session = wsClient.connectToServer(echoSocket, wsURI))
+        WebSocketContainer client = ContainerProvider.getWebSocketContainer();
+
+        try
         {
-            session.getBasicRemote().sendText("Hello from " + this.getClass().getName());
-
-            String msg = echoSocket.messageQueue.poll(5, TimeUnit.SECONDS);
-
-            assertThat(msg, is("You are now connected to examples.annotated.EchoSocket"));
-
-            session.close(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "Goodbye"));
-            assertTrue(echoSocket.closeLatch.await(5, TimeUnit.SECONDS));
+            EchoClient.performEcho(client, uri);
+        }
+        finally
+        {
+            LifeCycle.stop(client);
         }
     }
 
-    @ClientEndpoint
-    public static class EchoEndpoint
+    public static List<String> performEcho(WebSocketContainer client, URI uri) throws IOException, InterruptedException, DeploymentException
     {
-        private static final Logger LOG = LoggerFactory.getLogger(EchoEndpoint.class);
+        List<String> ret = new ArrayList<>();
+        EchoClientEndpoint echoSocket = new EchoClientEndpoint();
+        try (Session session = client.connectToServer(echoSocket, uri))
+        {
+            session.getBasicRemote().sendText("Hello from " + EchoClient.class.getName());
+
+            String msg = echoSocket.messageQueue.poll(5, TimeUnit.SECONDS);
+            ret.add(msg);
+            session.close(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "Goodbye"));
+            if (!echoSocket.closeLatch.await(5, TimeUnit.SECONDS))
+                throw new IOException("Failed to receive WebSocket close");
+        }
+        return ret;
+    }
+
+    @ClientEndpoint
+    public static class EchoClientEndpoint
+    {
+        private static final Logger LOG = LoggerFactory.getLogger(EchoClientEndpoint.class);
         private final LinkedBlockingDeque<String> messageQueue = new LinkedBlockingDeque<>();
         private final CountDownLatch closeLatch = new CountDownLatch(1);
 

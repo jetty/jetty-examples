@@ -24,9 +24,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @WebSocket
-public class EchoSocket
+public class EchoWebSocket
 {
-    private static final Logger LOG = LoggerFactory.getLogger(EchoSocket.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EchoWebSocket.class);
     private Session session;
 
     @OnWebSocketClose
@@ -47,7 +47,7 @@ public class EchoSocket
     @OnWebSocketError
     public void onWebSocketError(Throwable cause)
     {
-        LOG.warn("WebSocket Error", cause);
+        LOG.warn("WebSocket Error",cause);
     }
 
     @OnWebSocketMessage

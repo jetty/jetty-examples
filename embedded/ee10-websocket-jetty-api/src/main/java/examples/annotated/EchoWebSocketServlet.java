@@ -17,11 +17,11 @@ import org.eclipse.jetty.ee10.websocket.server.JettyWebSocketServlet;
 import org.eclipse.jetty.ee10.websocket.server.JettyWebSocketServletFactory;
 
 @SuppressWarnings("serial")
-public class EchoSocketServlet extends JettyWebSocketServlet
+public class EchoWebSocketServlet extends JettyWebSocketServlet
 {
     @Override
     public void configure(JettyWebSocketServletFactory factory)
     {
-        factory.register(EchoSocket.class);
+        factory.register(EchoWebSocket.class);
     }
 }
