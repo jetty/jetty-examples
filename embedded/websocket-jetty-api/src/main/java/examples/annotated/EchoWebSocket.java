@@ -17,6 +17,7 @@ import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.websocket.api.RemoteEndpoint;
 import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.WriteCallback;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
@@ -44,7 +45,7 @@ public class EchoWebSocket
         this.session = session;
         this.remote = this.session.getRemote();
         LOG.info("WebSocket Connect: {}",session);
-        this.remote.sendStringByFuture("You are now connected to " + this.getClass().getName());
+        this.remote.sendString("You are now connected to " + this.getClass().getName(), WriteCallback.NOOP);
     }
 
     @OnWebSocketError
@@ -59,7 +60,7 @@ public class EchoWebSocket
         if (this.session != null && this.session.isOpen() && this.remote != null)
         {
             LOG.info("Echoing back text message [{}]",message);
-            this.remote.sendStringByFuture(message);
+            this.remote.sendString(message, WriteCallback.NOOP);
         }
     }
 }

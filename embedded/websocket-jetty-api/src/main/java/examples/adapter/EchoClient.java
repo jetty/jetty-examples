@@ -24,13 +24,14 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.eclipse.jetty.util.log.Log;
-import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.StatusCode;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
+import org.eclipse.jetty.websocket.api.WriteCallback;
 import org.eclipse.jetty.websocket.api.util.WSURI;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EchoClient
 {
@@ -61,7 +62,7 @@ public class EchoClient
         ClientEchoWebSocket clientEchoSocket = new ClientEchoWebSocket();
         Future<Session> fut = client.connect(clientEchoSocket, uri);
         Session session = fut.get(5, TimeUnit.SECONDS);
-        session.getRemote().sendStringByFuture("Hello from " + EchoClient.class.getName());
+        session.getRemote().sendString("Hello from " + EchoClient.class.getName(), WriteCallback.NOOP);
 
         String msg = clientEchoSocket.messageQueue.poll(5, TimeUnit.SECONDS);
         ret.add(msg);
@@ -73,7 +74,7 @@ public class EchoClient
 
     public static class ClientEchoWebSocket extends WebSocketAdapter
     {
-        private static final Logger LOG = Log.getLogger(ClientEchoWebSocket.class);
+        private static final Logger LOG = LoggerFactory.getLogger(ClientEchoWebSocket.class);
         private final LinkedBlockingDeque<String> messageQueue = new LinkedBlockingDeque<>();
         private final CountDownLatch closeLatch = new CountDownLatch(1);
 

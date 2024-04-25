@@ -20,6 +20,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.websocket.server.config.JettyWebSocketServletContainerInitializer;
 
 public class EchoServer
 {
@@ -39,18 +40,19 @@ public class EchoServer
         server.setHandler(context);
 
         // Add websocket servlet
-        ServletHolder wsHolder = new ServletHolder("echo",new EchoWebSocketServlet());
-        context.addServlet(wsHolder,"/echo");
+        JettyWebSocketServletContainerInitializer.configure(context, null);
+        ServletHolder wsHolder = new ServletHolder("echo", new EchoWebSocketServlet());
+        context.addServlet(wsHolder, "/echo");
 
         // Add default servlet (to serve the html/css/js)
         URL urlStatics = Thread.currentThread().getContextClassLoader().getResource("echo-root/index.html");
-        Objects.requireNonNull(urlStatics,"Unable to find index.html in classpath");
-        String urlBase = urlStatics.toExternalForm().replaceFirst("/[^/]*$","/");
+        Objects.requireNonNull(urlStatics, "Unable to find index.html in classpath");
+        String urlBase = urlStatics.toExternalForm().replaceFirst("/[^/]*$", "/");
 
-        ServletHolder defHolder = new ServletHolder("default",new DefaultServlet());
-        defHolder.setInitParameter("resourceBase",urlBase);
-        defHolder.setInitParameter("dirAllowed","true");
-        context.addServlet(defHolder,"/");
+        ServletHolder defHolder = new ServletHolder("default", new DefaultServlet());
+        defHolder.setInitParameter("resourceBase", urlBase);
+        defHolder.setInitParameter("dirAllowed", "true");
+        context.addServlet(defHolder, "/");
 
         return server;
     }

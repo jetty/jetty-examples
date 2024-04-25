@@ -29,6 +29,7 @@ import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.StatusCode;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
+import org.eclipse.jetty.websocket.api.WriteCallback;
 import org.eclipse.jetty.websocket.api.util.WSURI;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 
@@ -61,7 +62,7 @@ public class EchoClient
         ClientEchoWebSocket clientEchoSocket = new ClientEchoWebSocket();
         Future<Session> fut = client.connect(clientEchoSocket, uri);
         Session session = fut.get(5, TimeUnit.SECONDS);
-        session.getRemote().sendStringByFuture("Hello from " + EchoClient.class.getName());
+        session.getRemote().sendString("Hello from " + EchoClient.class.getName(), WriteCallback.NOOP);
 
         String msg = clientEchoSocket.messageQueue.poll(5, TimeUnit.SECONDS);
         ret.add(msg);
