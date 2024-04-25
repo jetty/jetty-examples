@@ -26,9 +26,9 @@ import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 
 @ServerEndpoint("/echo")
-public class EchoSocket
+public class EchoServerEndpoint
 {
-    private static final Logger LOG = Log.getLogger(EchoSocket.class);
+    private static final Logger LOG = Log.getLogger(EchoServerEndpoint.class);
     private Session session;
     private RemoteEndpoint.Async remote;
 

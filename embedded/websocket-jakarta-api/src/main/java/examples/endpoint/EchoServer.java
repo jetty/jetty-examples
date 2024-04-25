@@ -26,7 +26,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer;
 
-public class Main
+public class EchoServer
 {
     public static void main(String[] args) throws Exception
     {
@@ -47,7 +47,7 @@ public class Main
         ServerContainer container = WebSocketServerContainerInitializer.configureContext(context);
 
         // Add echo endpoint to server container
-        ServerEndpointConfig echoConfig = ServerEndpointConfig.Builder.create(EchoSocket.class,"/echo").build();
+        ServerEndpointConfig echoConfig = ServerEndpointConfig.Builder.create(EchoServerEndpoint.class,"/echo").build();
         container.addEndpoint(echoConfig);
 
         // Add default servlet (to serve the html/css/js)
