@@ -18,9 +18,9 @@ import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
 
-public class EchoSocket implements WebSocketListener
+public class EchoWebSocket implements WebSocketListener
 {
-    private static final Logger LOG = Log.getLogger(EchoSocket.class);
+    private static final Logger LOG = Log.getLogger(EchoWebSocket.class);
     private Session outbound;
 
     public void onWebSocketClose(int statusCode, String reason)

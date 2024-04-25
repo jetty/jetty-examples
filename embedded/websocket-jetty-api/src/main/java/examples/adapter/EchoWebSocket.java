@@ -11,55 +11,47 @@
 // ========================================================================
 //
 
-package examples.annotated;
+package examples.adapter;
 
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
-import org.eclipse.jetty.websocket.api.RemoteEndpoint;
 import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
-import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 
-@WebSocket
-public class EchoSocket
+public class EchoWebSocket extends WebSocketAdapter
 {
-    private static final Logger LOG = Log.getLogger(EchoSocket.class);
-    private Session session;
-    private RemoteEndpoint remote;
+    private static final Logger LOG = Log.getLogger(EchoWebSocket.class);
 
-    @OnWebSocketClose
     public void onWebSocketClose(int statusCode, String reason)
     {
-        this.session = null;
-        this.remote = null;
+        super.onWebSocketClose(statusCode,reason);
         LOG.info("WebSocket Close: {} - {}",statusCode,reason);
     }
 
-    @OnWebSocketConnect
     public void onWebSocketConnect(Session session)
     {
-        this.session = session;
-        this.remote = this.session.getRemote();
+        super.onWebSocketConnect(session);
         LOG.info("WebSocket Connect: {}",session);
-        this.remote.sendStringByFuture("You are now connected to " + this.getClass().getName());
+        getRemote().sendStringByFuture("You are now connected to " + this.getClass().getName());
     }
 
-    @OnWebSocketError
     public void onWebSocketError(Throwable cause)
     {
         LOG.warn("WebSocket Error",cause);
     }
 
-    @OnWebSocketMessage
     public void onWebSocketText(String message)
     {
-        if (this.session != null && this.session.isOpen() && this.remote != null)
+        if (isConnected())
         {
             LOG.info("Echoing back text message [{}]",message);
-            this.remote.sendStringByFuture(message);
+            getRemote().sendStringByFuture(message);
         }
+    }
+
+    @Override
+    public void onWebSocketBinary(byte[] arg0, int arg1, int arg2)
+    {
+        /* ignore */
     }
 }

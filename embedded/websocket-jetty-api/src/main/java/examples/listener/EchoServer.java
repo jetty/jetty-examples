@@ -11,7 +11,7 @@
 // ========================================================================
 //
 
-package examples.annotated;
+package examples.listener;
 
 import java.net.URL;
 import java.util.Objects;
@@ -21,11 +21,11 @@ import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-public class Main
+public class EchoServer
 {
     public static void main(String[] args) throws Exception
     {
-        Server server = Main.newServer(8080);
+        Server server = EchoServer.newServer(8080);
         server.start();
         server.join();
     }
@@ -39,7 +39,7 @@ public class Main
         server.setHandler(context);
 
         // Add websocket servlet
-        ServletHolder wsHolder = new ServletHolder("echo",new EchoSocketServlet());
+        ServletHolder wsHolder = new ServletHolder("echo",new EchoWebSocketServlet());
         context.addServlet(wsHolder,"/echo");
 
         // Add default servlet (to serve the html/css/js)
