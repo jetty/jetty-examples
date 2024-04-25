@@ -11,42 +11,41 @@
 // ========================================================================
 //
 
-package examples.listener;
+package examples.adapter;
 
+import org.eclipse.jetty.util.log.Log;
+import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.WebSocketListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 
-public class EchoSocket implements WebSocketListener
+public class EchoWebSocket extends WebSocketAdapter
 {
-    private static final Logger LOG = LoggerFactory.getLogger(EchoSocket.class);
-    private Session outbound;
+    private static final Logger LOG = Log.getLogger(EchoWebSocket.class);
 
     public void onWebSocketClose(int statusCode, String reason)
     {
-        this.outbound = null;
-        LOG.info("WebSocket Close: {} - {}", statusCode, reason);
+        super.onWebSocketClose(statusCode,reason);
+        LOG.info("WebSocket Close: {} - {}",statusCode,reason);
     }
 
     public void onWebSocketConnect(Session session)
     {
-        this.outbound = session;
-        LOG.info("WebSocket Connect: {}", session);
-        this.outbound.getRemote().sendString("You are now connected to " + this.getClass().getName(), null);
+        super.onWebSocketConnect(session);
+        LOG.info("WebSocket Connect: {}",session);
+        getRemote().sendStringByFuture("You are now connected to " + this.getClass().getName());
     }
 
     public void onWebSocketError(Throwable cause)
     {
-        LOG.warn("WebSocket Error", cause);
+        LOG.warn("WebSocket Error",cause);
     }
 
     public void onWebSocketText(String message)
     {
-        if ((outbound != null) && (outbound.isOpen()))
+        if (isConnected())
         {
-            LOG.info("Echoing back text message [{}]", message);
-            outbound.getRemote().sendString(message, null);
+            LOG.info("Echoing back text message [{}]",message);
+            getRemote().sendStringByFuture(message);
         }
     }
 

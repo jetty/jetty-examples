@@ -11,17 +11,16 @@
 // ========================================================================
 //
 
-package examples.listener;
+package examples.adapter;
 
-import org.eclipse.jetty.websocket.server.JettyWebSocketServlet;
-import org.eclipse.jetty.websocket.server.JettyWebSocketServletFactory;
+import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
+import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 
-@SuppressWarnings("serial")
-public class EchoSocketServlet extends JettyWebSocketServlet
+public class EchoWebSocketServlet extends WebSocketServlet
 {
     @Override
-    public void configure(JettyWebSocketServletFactory factory)
+    public void configure(WebSocketServletFactory factory)
     {
-        factory.register(EchoSocket.class);
+        factory.register(EchoWebSocket.class);
     }
 }

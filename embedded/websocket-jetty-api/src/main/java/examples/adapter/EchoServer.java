@@ -11,7 +11,7 @@
 // ========================================================================
 //
 
-package examples.annotated;
+package examples.adapter;
 
 import java.net.URL;
 import java.util.Objects;
@@ -20,13 +20,12 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.websocket.server.config.JettyWebSocketServletContainerInitializer;
 
-public class Main
+public class EchoServer
 {
     public static void main(String[] args) throws Exception
     {
-        Server server = Main.newServer(8080);
+        Server server = EchoServer.newServer(8080);
         server.start();
         server.join();
     }
@@ -40,19 +39,18 @@ public class Main
         server.setHandler(context);
 
         // Add websocket servlet
-        JettyWebSocketServletContainerInitializer.configure(context, null);
-        ServletHolder wsHolder = new ServletHolder("echo", new EchoSocketServlet());
-        context.addServlet(wsHolder, "/echo");
+        ServletHolder wsHolder = new ServletHolder("echo",new EchoWebSocketServlet());
+        context.addServlet(wsHolder,"/echo");
 
         // Add default servlet (to serve the html/css/js)
-        // Figure out where the static files are stored.
         URL urlStatics = Thread.currentThread().getContextClassLoader().getResource("echo-root/index.html");
-        Objects.requireNonNull(urlStatics, "Unable to find index.html in classpath");
-        String urlBase = urlStatics.toExternalForm().replaceFirst("/[^/]*$", "/");
-        ServletHolder defHolder = new ServletHolder("default", new DefaultServlet());
-        defHolder.setInitParameter("resourceBase", urlBase);
-        defHolder.setInitParameter("dirAllowed", "true");
-        context.addServlet(defHolder, "/");
+        Objects.requireNonNull(urlStatics,"Unable to find index.html in classpath");
+        String urlBase = urlStatics.toExternalForm().replaceFirst("/[^/]*$","/");
+
+        ServletHolder defHolder = new ServletHolder("default",new DefaultServlet());
+        defHolder.setInitParameter("resourceBase",urlBase);
+        defHolder.setInitParameter("dirAllowed","true");
+        context.addServlet(defHolder,"/");
 
         return server;
     }
