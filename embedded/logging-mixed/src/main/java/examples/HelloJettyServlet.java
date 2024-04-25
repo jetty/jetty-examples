@@ -19,13 +19,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.jetty.util.log.Log;
-import org.eclipse.jetty.util.log.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("serial")
 public class HelloJettyServlet extends HttpServlet
 {
-    private static final Logger LOG = Log.getLogger(HelloJettyServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HelloJettyServlet.class);
     private final String msg;
 
     public HelloJettyServlet(String msg)
