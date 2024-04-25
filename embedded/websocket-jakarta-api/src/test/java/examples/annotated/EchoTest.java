@@ -15,9 +15,9 @@ package examples.annotated;
 
 import java.net.URI;
 import java.util.List;
-import javax.websocket.ContainerProvider;
-import javax.websocket.WebSocketContainer;
 
+import jakarta.websocket.ContainerProvider;
+import jakarta.websocket.WebSocketContainer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.component.LifeCycle;
 import org.junit.jupiter.api.AfterEach;
