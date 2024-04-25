@@ -15,14 +15,17 @@ package examples.annotated;
 
 import java.net.URL;
 import java.util.Objects;
+import javax.servlet.ServletException;
+import javax.websocket.DeploymentException;
+import javax.websocket.server.ServerContainer;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.websocket.javax.server.config.JavaxWebSocketServletContainerInitializer;
+import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer;
 
-public class Main
+public class EchoServer
 {
     public static void main(String[] args) throws Exception
     {
@@ -31,31 +34,29 @@ public class Main
         server.join();
     }
 
-    public static Server newServer(int port)
+    public static Server newServer(int port) throws ServletException, DeploymentException
     {
         Server server = new Server(port);
 
-        ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        servletContextHandler.setContextPath("/");
-        server.setHandler(servletContextHandler);
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        context.setContextPath("/");
+        server.setHandler(context);
 
         // Add javax.websocket support
-        // Add javax.websocket support
-        JavaxWebSocketServletContainerInitializer.configure(servletContextHandler, (context, container) ->
-        {
-            // Add echo endpoint to server container
-            container.addEndpoint(EchoSocket.class);
-        });
+        ServerContainer container = WebSocketServerContainerInitializer.configureContext(context);
+
+        // Add echo endpoint to server container
+        container.addEndpoint(EchoServerEndpoint.class);
 
         // Add default servlet (to serve the html/css/js)
         // Figure out where the static files are stored.
         URL urlStatics = Thread.currentThread().getContextClassLoader().getResource("echo-root/index.html");
-        Objects.requireNonNull(urlStatics, "Unable to find index.html in classpath");
-        String urlBase = urlStatics.toExternalForm().replaceFirst("/[^/]*$", "/");
-        ServletHolder defHolder = new ServletHolder("default", new DefaultServlet());
-        defHolder.setInitParameter("resourceBase", urlBase);
-        defHolder.setInitParameter("dirAllowed", "true");
-        servletContextHandler.addServlet(defHolder, "/");
+        Objects.requireNonNull(urlStatics,"Unable to find index.html in classpath");
+        String urlBase = urlStatics.toExternalForm().replaceFirst("/[^/]*$","/");
+        ServletHolder defHolder = new ServletHolder("default",new DefaultServlet());
+        defHolder.setInitParameter("resourceBase",urlBase);
+        defHolder.setInitParameter("dirAllowed","true");
+        context.addServlet(defHolder,"/");
 
         return server;
     }

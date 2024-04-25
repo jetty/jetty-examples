@@ -20,12 +20,12 @@ import javax.websocket.MessageHandler;
 import javax.websocket.RemoteEndpoint;
 import javax.websocket.Session;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.eclipse.jetty.util.log.Log;
+import org.eclipse.jetty.util.log.Logger;
 
-public class EchoSocket extends Endpoint implements MessageHandler.Whole<String>
+public class EchoServerEndpoint extends Endpoint implements MessageHandler.Whole<String>
 {
-    private static final Logger LOG = LoggerFactory.getLogger(EchoSocket.class);
+    private static final Logger LOG = Log.getLogger(EchoServerEndpoint.class);
     private Session session;
     private RemoteEndpoint.Async remote;
 

@@ -22,13 +22,13 @@ import javax.websocket.RemoteEndpoint;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.eclipse.jetty.util.log.Log;
+import org.eclipse.jetty.util.log.Logger;
 
 @ServerEndpoint("/echo")
-public class EchoSocket
+public class EchoServerEndpoint
 {
-    private static final Logger LOG = LoggerFactory.getLogger(EchoSocket.class);
+    private static final Logger LOG = Log.getLogger(EchoServerEndpoint.class);
     private Session session;
     private RemoteEndpoint.Async remote;
 
@@ -37,7 +37,7 @@ public class EchoSocket
     {
         this.session = null;
         this.remote = null;
-        LOG.info("WebSocket Close: {} - {}", close.getCloseCode(), close.getReasonPhrase());
+        LOG.info("WebSocket Close: {} - {}",close.getCloseCode(),close.getReasonPhrase());
     }
 
     @OnOpen
@@ -45,20 +45,20 @@ public class EchoSocket
     {
         this.session = session;
         this.remote = this.session.getAsyncRemote();
-        LOG.info("WebSocket Connect: {}", session);
+        LOG.info("WebSocket Connect: {}",session);
         this.remote.sendText("You are now connected to " + this.getClass().getName());
     }
 
     @OnError
     public void onWebSocketError(Throwable cause)
     {
-        LOG.warn("WebSocket Error", cause);
+        LOG.warn("WebSocket Error",cause);
     }
 
     @OnMessage
     public String onWebSocketText(String message)
     {
-        LOG.info("Echoing back text message [{}]", message);
+        LOG.info("Echoing back text message [{}]",message);
         // Using shortcut approach to sending messages.
         // You could use a void method and use remote.sendText()
         return message;
