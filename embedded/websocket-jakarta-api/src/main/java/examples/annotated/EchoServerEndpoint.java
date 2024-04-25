@@ -11,55 +11,56 @@
 // ========================================================================
 //
 
-package examples.endpoint;
+package examples.annotated;
 
 import jakarta.websocket.CloseReason;
-import jakarta.websocket.Endpoint;
-import jakarta.websocket.EndpointConfig;
-import jakarta.websocket.MessageHandler;
+import jakarta.websocket.OnClose;
+import jakarta.websocket.OnError;
+import jakarta.websocket.OnMessage;
+import jakarta.websocket.OnOpen;
 import jakarta.websocket.RemoteEndpoint;
 import jakarta.websocket.Session;
+import jakarta.websocket.server.ServerEndpoint;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EchoSocket extends Endpoint implements MessageHandler.Whole<String>
+@ServerEndpoint("/echo")
+public class EchoServerEndpoint
 {
-    private static final Logger LOG = LoggerFactory.getLogger(EchoSocket.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EchoServerEndpoint.class);
     private Session session;
     private RemoteEndpoint.Async remote;
 
-    @Override
-    public void onClose(Session session, CloseReason close)
+    @OnClose
+    public void onWebSocketClose(CloseReason close)
     {
-        super.onClose(session, close);
         this.session = null;
         this.remote = null;
-        LOG.info("WebSocket Close: {} - {}", close.getCloseCode(), close.getReasonPhrase());
+        LOG.info("WebSocket Close: {} - {}",close.getCloseCode(),close.getReasonPhrase());
     }
 
-    @Override
-    public void onOpen(Session session, EndpointConfig config)
+    @OnOpen
+    public void onWebSocketOpen(Session session)
     {
         this.session = session;
         this.remote = this.session.getAsyncRemote();
-        LOG.info("WebSocket Open: {}", session);
-        // attach echo message handler
-        session.addMessageHandler(this);
+        LOG.info("WebSocket Connect: {}",session);
         this.remote.sendText("You are now connected to " + this.getClass().getName());
     }
 
-    @Override
-    public void onError(Session session, Throwable cause)
+    @OnError
+    public void onWebSocketError(Throwable cause)
     {
-        super.onError(session, cause);
-        LOG.warn("WebSocket Error", cause);
+        LOG.warn("WebSocket Error",cause);
     }
 
-    @Override
-    public void onMessage(String message)
+    @OnMessage
+    public String onWebSocketText(String message)
     {
-        LOG.info("Echoing back text message [{}]", message);
-        this.remote.sendText(message);
+        LOG.info("Echoing back text message [{}]",message);
+        // Using shortcut approach to sending messages.
+        // You could use a void method and use remote.sendText()
+        return message;
     }
 }

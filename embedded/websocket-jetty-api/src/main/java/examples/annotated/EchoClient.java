@@ -13,13 +13,17 @@
 
 package examples.annotated;
 
+import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.util.component.LifeCycle;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.StatusCode;
 import org.eclipse.jetty.websocket.api.WriteCallback;
@@ -30,83 +34,78 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.eclipse.jetty.websocket.api.util.WSURI;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-public class MainTest
+public class EchoClient
 {
-    private Server server;
-    private WebSocketClient wsClient;
-
-    @BeforeEach
-    public void startServerAndClient() throws Exception
+    public static void main(String[] args) throws Exception
     {
-        server = Main.newServer(0);
-        server.start();
-        wsClient = new WebSocketClient();
-        wsClient.start();
+        URI uri = URI.create("ws://localhost:8080/echo");
+
+        if (args.length == 1)
+            uri = WSURI.toWebsocket(new URI(args[0]));
+
+        WebSocketClient client = new WebSocketClient();
+        client.start();
+
+        try
+        {
+            EchoClient.performEcho(client, uri);
+        }
+        finally
+        {
+            client.stop();
+        }
     }
 
-    @AfterEach
-    public void stopAll()
+    public static List<String> performEcho(WebSocketClient client, URI uri) throws IOException, ExecutionException, InterruptedException, TimeoutException
     {
-        LifeCycle.stop(server);
-        LifeCycle.stop(wsClient);
-    }
+        List<String> ret = new ArrayList<>();
 
-    @Test
-    public void testEcho() throws Exception
-    {
-        ClientEchoSocket clientEchoSocket = new ClientEchoSocket();
-        Future<Session> fut = wsClient.connect(clientEchoSocket, WSURI.toWebsocket(server.getURI().resolve("/echo")));
+        ClientEchoWebSocket clientEchoSocket = new ClientEchoWebSocket();
+        Future<Session> fut = client.connect(clientEchoSocket, uri);
         Session session = fut.get(5, TimeUnit.SECONDS);
-        session.getRemote().sendString("Hello from " + this.getClass().getName(), WriteCallback.NOOP);
+        session.getRemote().sendString("Hello from " + EchoClient.class.getName(), WriteCallback.NOOP);
 
         String msg = clientEchoSocket.messageQueue.poll(5, TimeUnit.SECONDS);
-
-        assertThat(msg, is("You are now connected to examples.annotated.EchoSocket"));
-
+        ret.add(msg);
         session.close(StatusCode.NORMAL, "Goodbye");
-        assertTrue(clientEchoSocket.closeLatch.await(5, TimeUnit.SECONDS));
+        if (!clientEchoSocket.closeLatch.await(5, TimeUnit.SECONDS))
+            throw new IOException("Failed to receive WebSocket close");
+        return ret;
     }
 
     @WebSocket
-    public static class ClientEchoSocket
+    public static class ClientEchoWebSocket
     {
-        private static final Logger LOG = LoggerFactory.getLogger(ClientEchoSocket.class);
+        private static final Logger LOG = LoggerFactory.getLogger(ClientEchoWebSocket.class);
         private final LinkedBlockingDeque<String> messageQueue = new LinkedBlockingDeque<>();
         private final CountDownLatch closeLatch = new CountDownLatch(1);
 
         @OnWebSocketClose
         public void onClose(int statusCode, String reason)
         {
-            LOG.info("WebSocket Close: {} - {}", statusCode, reason);
+            LOG.info("WebSocket Close: {} - {}",statusCode,reason);
             closeLatch.countDown();
         }
 
         @OnWebSocketConnect
         public void onConnect(Session session)
         {
-            LOG.info("WebSocket Connect: {}", session);
+            LOG.info("WebSocket Connect: {}",session);
         }
 
         @OnWebSocketError
         public void onError(Throwable cause)
         {
-            LOG.warn("WebSocket Error", cause);
+            LOG.warn("WebSocket Error",cause);
         }
 
         @OnWebSocketMessage
         public void onText(String message)
         {
-            LOG.info("Text Message [{}]", message);
+            LOG.info("Text Message [{}]",message);
             messageQueue.offer(message);
         }
     }

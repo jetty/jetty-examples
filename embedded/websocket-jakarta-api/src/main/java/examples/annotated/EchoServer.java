@@ -15,14 +15,15 @@ package examples.annotated;
 
 import java.net.URL;
 import java.util.Objects;
+import javax.websocket.server.ServerEndpointConfig;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.websocket.jakarta.server.config.JakartaWebSocketServletContainerInitializer;
+import org.eclipse.jetty.websocket.javax.server.config.JavaxWebSocketServletContainerInitializer;
 
-public class Main
+public class EchoServer
 {
     public static void main(String[] args) throws Exception
     {
@@ -39,11 +40,12 @@ public class Main
         servletContextHandler.setContextPath("/");
         server.setHandler(servletContextHandler);
 
-        // Add jakarta.websocket support
-        JakartaWebSocketServletContainerInitializer.configure(servletContextHandler, (context, container) ->
+        // Add javax.websocket support
+        JavaxWebSocketServletContainerInitializer.configure(servletContextHandler, (context, container) ->
         {
             // Add echo endpoint to server container
-            container.addEndpoint(EchoSocket.class);
+            ServerEndpointConfig echoConfig = ServerEndpointConfig.Builder.create(EchoServerEndpoint.class, "/echo").build();
+            container.addEndpoint(echoConfig);
         });
 
         // Add default servlet (to serve the html/css/js)

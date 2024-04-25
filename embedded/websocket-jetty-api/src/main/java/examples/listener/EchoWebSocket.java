@@ -18,35 +18,35 @@ import org.eclipse.jetty.websocket.api.WebSocketListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EchoSocket implements WebSocketListener
+public class EchoWebSocket implements WebSocketListener
 {
-    private static final Logger LOG = LoggerFactory.getLogger(EchoSocket.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EchoWebSocket.class);
     private Session outbound;
 
     public void onWebSocketClose(int statusCode, String reason)
     {
         this.outbound = null;
-        LOG.info("WebSocket Close: {} - {}", statusCode, reason);
+        LOG.info("WebSocket Close: {} - {}",statusCode,reason);
     }
 
     public void onWebSocketConnect(Session session)
     {
         this.outbound = session;
-        LOG.info("WebSocket Connect: {}", session);
-        this.outbound.getRemote().sendString("You are now connected to " + this.getClass().getName(), null);
+        LOG.info("WebSocket Connect: {}",session);
+        this.outbound.getRemote().sendString("You are now connected to " + this.getClass().getName(),null);
     }
 
     public void onWebSocketError(Throwable cause)
     {
-        LOG.warn("WebSocket Error", cause);
+        LOG.warn("WebSocket Error",cause);
     }
 
     public void onWebSocketText(String message)
     {
         if ((outbound != null) && (outbound.isOpen()))
         {
-            LOG.info("Echoing back text message [{}]", message);
-            outbound.getRemote().sendString(message, null);
+            LOG.info("Echoing back text message [{}]",message);
+            outbound.getRemote().sendString(message,null);
         }
     }
 

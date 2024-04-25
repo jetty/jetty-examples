@@ -11,23 +11,22 @@
 // ========================================================================
 //
 
-package examples.endpoint;
+package examples.annotated;
 
 import java.net.URL;
 import java.util.Objects;
-import jakarta.websocket.server.ServerEndpointConfig;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.websocket.jakarta.server.config.JakartaWebSocketServletContainerInitializer;
+import org.eclipse.jetty.websocket.server.config.JettyWebSocketServletContainerInitializer;
 
-public class Main
+public class EchoServer
 {
     public static void main(String[] args) throws Exception
     {
-        Server server = new Server(8080);
+        Server server = EchoServer.newServer(8080);
         server.start();
         server.join();
     }
@@ -36,17 +35,14 @@ public class Main
     {
         Server server = new Server(port);
 
-        ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        servletContextHandler.setContextPath("/");
-        server.setHandler(servletContextHandler);
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        context.setContextPath("/");
+        server.setHandler(context);
 
-        // Add jakarta.websocket support
-        JakartaWebSocketServletContainerInitializer.configure(servletContextHandler, (context, container) ->
-        {
-            // Add echo endpoint to server container
-            ServerEndpointConfig echoConfig = ServerEndpointConfig.Builder.create(EchoSocket.class, "/echo").build();
-            container.addEndpoint(echoConfig);
-        });
+        // Add websocket servlet
+        JettyWebSocketServletContainerInitializer.configure(context, null);
+        ServletHolder wsHolder = new ServletHolder("echo", new EchoWebSocketServlet());
+        context.addServlet(wsHolder, "/echo");
 
         // Add default servlet (to serve the html/css/js)
         // Figure out where the static files are stored.
@@ -56,7 +52,7 @@ public class Main
         ServletHolder defHolder = new ServletHolder("default", new DefaultServlet());
         defHolder.setInitParameter("resourceBase", urlBase);
         defHolder.setInitParameter("dirAllowed", "true");
-        servletContextHandler.addServlet(defHolder, "/");
+        context.addServlet(defHolder, "/");
 
         return server;
     }

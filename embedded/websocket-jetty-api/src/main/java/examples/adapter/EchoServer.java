@@ -22,11 +22,11 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.websocket.server.config.JettyWebSocketServletContainerInitializer;
 
-public class Main
+public class EchoServer
 {
     public static void main(String[] args) throws Exception
     {
-        Server server = Main.newServer(8080);
+        Server server = EchoServer.newServer(8080);
         server.start();
         server.join();
     }
@@ -41,7 +41,7 @@ public class Main
 
         // Add websocket servlet
         JettyWebSocketServletContainerInitializer.configure(context, null);
-        ServletHolder wsHolder = new ServletHolder("echo", new EchoSocketServlet());
+        ServletHolder wsHolder = new ServletHolder("echo", new EchoWebSocketServlet());
         context.addServlet(wsHolder, "/echo");
 
         // Add default servlet (to serve the html/css/js)
