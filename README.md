@@ -18,7 +18,7 @@ Here you will see answers to common questions about how to
 integrate various features of Jetty, and also how to enable features
 of 3rd party libraries within Jetty (such as JSP, REST, and CDI).
 
-See [embedded/README.md]() for a breakdown of embedded examples.
+See [embedded/README.md] for a breakdown of embedded examples.
 
 ## Standalone Examples
 
@@ -26,14 +26,14 @@ The Standalone examples present fully formed `${jetty.base}` directories
 that can be used to understand how to configure the jetty module system
 and its various components to reach an end goal.
 
-See [standalone/README.md]() for a breakdown of standalone examples.
+See [standalone/README.md] for a breakdown of standalone examples.
 
 ## Webapp Examples
 
 A collection of various WAR files that can be used to demonstrate
 how to use web and JVM features in Jetty.
 
-See [webapps/README.md]() for a breakdown of webapp examples.
+See [webapps/README.md] for a breakdown of webapp examples.
 
 ---
 
