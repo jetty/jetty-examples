@@ -16,7 +16,6 @@ package examples;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.InetAddress;
 import java.net.URI;
 
 import org.eclipse.jetty.server.Server;
@@ -76,8 +75,7 @@ public class AppTest
         {
             String response = IO.toString(in);
             assertThat("response",response,containsString("Hello"));
-            String localhostAddr = InetAddress.getLoopbackAddress().getHostAddress();
-            capture.assertContainsRecord("examples.HelloHandler", String.format("Got request from %s", localhostAddr));
+            capture.assertContainsRecord("examples.HelloHandler", String.format("Got request from %s", getURI.getHost()));
         }
         finally
         {
