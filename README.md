@@ -39,14 +39,14 @@ See [webapps/README.md][9] for a breakdown of webapp examples.
 
 ### All Example Branches
 
-| Branch       | Min JDK | EE   | Servlet | Namespace         | Supported            |
-|--------------|---------|------|---------|-------------------|----------------------|
-| [12.0.x][6]  | 17      | EE10 | 6.0     | `jakarta.servlet` | Yes                  |
-| [12.0.x][6]  | 17      | EE9  | 5.0     | `jakarta.servlet` | Yes                  |
-| [12.0.x][6]  | 17      | EE8  | 4.0     | `javax.servlet`   | Yes                  |
-| [11.0.x][1]  | 11      | EE9  | 5.0     | `jakarta.servlet` | [No - See #10485][4] |
-| [10.0.x][2]  | 11      | EE8  | 4.0     | `javax.servlet`   | [No - See #10485][4] |
-| [9.4.x][3]   | 8       | EE7  | 3.1     | `javax.servlet`   | [No - See #7958][5]  |
+| Branch       | Min JDK | EE   | Servlet | Namespace         | Supported                               |
+|--------------|---------|------|---------|-------------------|-----------------------------------------|
+| [12.0.x][6]  | 17      | EE10 | 6.0     | `jakarta.servlet` | Yes                                     |
+| [12.0.x][6]  | 17      | EE9  | 5.0     | `jakarta.servlet` | Yes                                     |
+| [12.0.x][6]  | 17      | EE8  | 4.0     | `javax.servlet`   | Yes                                     |
+| [11.0.x][1]  | 11      | EE9  | 5.0     | `jakarta.servlet` | No (as of January 2024) [See #10485][4] |
+| [10.0.x][2]  | 11      | EE8  | 4.0     | `javax.servlet`   | No (as of January 2024) [See #10485][4] |
+| [9.4.x][3]   | 8       | EE7  | 3.1     | `javax.servlet`   | No (as of June 2022) [See #7958][5]     |
 
 [1]: https://github.com/jetty/jetty-examples/tree/11.0.x
 [2]: https://github.com/jetty/jetty-examples/tree/10.0.x
