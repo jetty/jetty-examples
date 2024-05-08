@@ -20,7 +20,7 @@
     </Arg>
   </Call>
   <!-- tweak what classes from the Server this WebAppContext can see -->
-  <Get name="serverClassMatcher">
+  <Get name="hiddenClassMatcher">
     <Call name="add">
       <!-- needed for all example servlets to actually see LowResourceMonitor -->
       <Arg>-org.eclipse.jetty.server.LowResourceMonitor</Arg>
