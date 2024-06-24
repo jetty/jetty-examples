@@ -13,7 +13,7 @@
   <name>Jetty Examples :: 9.4.x :: WebApp Logging Overlap :: Demo Base</name>
 
   <properties>
-    <dependency.plugin.version>3.7.0</dependency.plugin.version>
+    <dependency.plugin.version>3.7.1</dependency.plugin.version>
     <disruptor.version>3.6.1</disruptor.version>
     <log4j.version>2.23.1</log4j.version>
     <slf4j.version>1.7.36</slf4j.version>
