@@ -18,5 +18,6 @@
     <module>http2-demo</module>
     <module>jaspi-webapp</module>
     <module>logging-overlap</module>
+    <module>loosely-coupled-webapps</module>
   </modules>
 </project>
