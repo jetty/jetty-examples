@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "https://www.eclipse.org/jetty/configure_10_0.dtd">
 
-<Configure class="org.eclipse.jetty.webapp.WebAppContext" id="webappB">
+<Configure class="org.eclipse.jetty.ee10.webapp.WebAppContext" id="webappB">
   <Set name="war"><Property name="jetty.base"/>/webapps-late/webapp-B.war</Set>
   <Set name="contextPath">/appB</Set>
   <!-- add active logging impls to webapp too -->
