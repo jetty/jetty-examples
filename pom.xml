@@ -13,6 +13,7 @@
   <name>Jetty Examples :: Jetty 12.0.x</name>
 
   <modules>
+    <module>checks</module>
     <module>embedded</module>
     <module>standalone</module>
     <module>webapps</module>
