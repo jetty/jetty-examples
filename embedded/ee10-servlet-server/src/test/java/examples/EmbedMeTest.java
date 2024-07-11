@@ -58,4 +58,16 @@ public class EmbedMeTest
         assertThat(response.statusCode(), is(200));
         assertThat(response.body(), containsString("<title>Welcome File</title>"));
     }
+
+    @Test
+    void testGetIndex() throws IOException, InterruptedException {
+        var client = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
+        var request = HttpRequest.newBuilder()
+            .uri(server.getURI().resolve("/test"))
+            .GET()
+            .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+        assertThat(response.statusCode(), is(200));
+        assertThat(response.body(), containsString("<title>Content from WEB-INF/html</title>"));
+    }
 }
