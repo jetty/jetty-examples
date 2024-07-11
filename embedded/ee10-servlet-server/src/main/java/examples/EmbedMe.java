@@ -51,6 +51,7 @@ public class EmbedMe
         context.setBaseResource(baseResource);
         context.setContextPath("/");
         context.setWelcomeFiles(new String[]{"index.html", "welcome.html"});
+        context.setAttribute("org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern", ".*/");
         context.setParentLoaderPriority(true);
         server.setHandler(context);
         return server;
