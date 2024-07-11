@@ -13,13 +13,11 @@
 
 package examples;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 import org.eclipse.jetty.server.Server;
@@ -51,7 +49,7 @@ public class EmbedMe
         context.setBaseResource(baseResource);
         context.setContextPath("/");
         context.setWelcomeFiles(new String[]{"index.html", "welcome.html"});
-        context.setAttribute("org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern", ".*/");
+        context.setAttribute("org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern", ".*/classes/*");
         context.setParentLoaderPriority(true);
         server.setHandler(context);
         return server;

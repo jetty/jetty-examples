@@ -29,25 +29,25 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 
-public class EmbedMeTest
+class EmbedMeTest
 {
     private Server server;
 
     @BeforeEach
-    public void startServer() throws Exception
+    void startServer() throws Exception
     {
         server = EmbedMe.newServer(0);
         server.start();
     }
 
     @AfterEach
-    public void stopServer()
+    void stopServer()
     {
         LifeCycle.stop(server);
     }
 
     @Test
-    public void testGetWelcome() throws IOException, InterruptedException
+    void testGetWelcome() throws IOException, InterruptedException
     {
         HttpClient client = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
         HttpRequest request = HttpRequest.newBuilder()
@@ -61,8 +61,8 @@ public class EmbedMeTest
 
     @Test
     void testGetIndex() throws IOException, InterruptedException {
-        var client = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
-        var request = HttpRequest.newBuilder()
+        HttpClient client = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
+        HttpRequest request = HttpRequest.newBuilder()
             .uri(server.getURI().resolve("/test"))
             .GET()
             .build();
