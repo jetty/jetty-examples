@@ -12,7 +12,7 @@
   <name>Jetty Examples :: Jetty 11.0.x :: Embedded :: JSP</name>
 
   <properties>
-    <logback.version>1.4.14</logback.version>
+    <logback.version>1.5.6</logback.version>
     <maven.exec.plugin.version>3.3.0</maven.exec.plugin.version>
     <slf4j.version>2.0.13</slf4j.version>
   </properties>
