@@ -26,6 +26,7 @@
 * [`form-post/`](form-post/) - Handling forms (query, or `application/x-www-form-urlencoded` or `multipart/form-data`) with Jetty Core
 * [`http-config/`](http-config/) - Using `HttpConfiguration`
 * [`jndi/`](jndi/) - Using `JNDI` from EE10 Servlet environment
+* [`limited-requests/`](limited-requests/) - Creating a `Handler.Wrapper` to limit the number of pipelined requests in a single HTTP/1 connection
 * [`logging-java-util-logging/`](logging-java-util-logging/) - Using `java.util.logging` from Jetty Core
 * [`logging-mixed/`](logging-mixed/) - Using multiple Logging APIs from Jetty Core
 * [`logging-slf4j/`](logging-slf4j/) - Using `org.slf4j` from Jetty Core

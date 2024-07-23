@@ -39,6 +39,7 @@
     <module>form-post</module>
     <module>http-config</module>
     <module>jndi</module>
+    <module>limited-requests</module>
     <module>logging-java-util-logging</module>
     <module>logging-mixed</module>
     <module>logging-slf4j</module>
