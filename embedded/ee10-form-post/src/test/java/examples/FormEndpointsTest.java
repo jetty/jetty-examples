@@ -15,6 +15,9 @@ package examples;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -23,6 +26,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,19 +37,24 @@ import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.StringBody;
+import org.eclipse.jetty.http.HttpTester;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.component.LifeCycle;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FormEndpointsTest
 {
@@ -203,6 +212,88 @@ public class FormEndpointsTest
             HttpResponse<String> response = client.send(request,
                 HttpResponse.BodyHandlers.ofString(UTF_8));
             assertThat(response.statusCode(), is(200));
+        }
+        catch (IOException | InterruptedException e)
+        {
+            Assertions.fail("Unable to submitFormMultipart(" + destURI + ")", e);
+        }
+    }
+
+    @Test
+    public void testFormUrlEncodedPostTooBig() throws IOException
+    {
+        URI uri = server.getURI();
+
+        // Create a big urlencoded form
+        byte[] formcontents = new byte[4_000_000];
+        Arrays.fill(formcontents, (byte)'x');
+        byte[] key = "Member=".getBytes(UTF_8);
+        System.arraycopy(key, 0, formcontents, 0, key.length);
+
+        String rawRequest = """
+            POST /form/post-only HTTP/1.1
+            Host: %s
+            Content-Type: application/x-www-form-urlencoded
+            Content-Length: %d
+            Connection: close
+            
+            """.formatted(uri.getRawAuthority(), formcontents.length);
+        try (Socket socket = new Socket(uri.getHost(), uri.getPort());
+             OutputStream out = socket.getOutputStream();
+             InputStream in = socket.getInputStream())
+        {
+            out.write(rawRequest.getBytes(UTF_8));
+            // send form
+            out.write(formcontents);
+            out.flush();
+
+            HttpTester.Response response = HttpTester.parseResponse(in);
+            System.out.println(response.get());
+            System.out.println(response.getContent());
+            assertEquals(400, response.getStatus());
+            assertThat(response.getContent(), containsString("Unable to parse form content"));
+        }
+    }
+
+    @Test
+    public void testMultipartFormPostTooBig()
+    {
+        HttpClient client = HttpClient.newBuilder().build();
+        URI destURI = server.getURI().resolve("/form/post-only");
+
+        Map<String, String> form = new HashMap<>();
+        // create a large value, something to be bigger than the configured form size, this one should be about 180,000 characters.
+        String membervalue = "Narváez expedition".repeat(10_000);
+        assertThat("Value should be bigger than limits on form size", membervalue.length(), greaterThan(128_000));
+        form.put("Member", membervalue);
+
+        try
+        {
+            // Build multipart form
+            MultipartEntityBuilder multipartBuilder = MultipartEntityBuilder.create();
+
+            form.forEach((key, value) -> multipartBuilder.addPart(key,
+                new StringBody(
+                    value,
+                    ContentType.create("application/x-www-form-urlencoded", StandardCharsets.UTF_8)
+                )
+            ));
+
+            HttpEntity multipartForm = multipartBuilder.build();
+
+            byte[] multipartFormBytes = toByteArray(multipartForm);
+
+            // Send Request
+            HttpRequest request = HttpRequest
+                .newBuilder(destURI)
+                .header("Content-Type", multipartForm.getContentType().getValue())
+                .method("POST", HttpRequest.BodyPublishers.ofByteArray(multipartFormBytes))
+                .build();
+
+            HttpResponse<String> response = client.send(request,
+                HttpResponse.BodyHandlers.ofString(UTF_8));
+            assertThat(response.statusCode(), is(400));
+            assertThat(response.body(), containsString("bad multipart"));
         }
         catch (IOException | InterruptedException e)
         {

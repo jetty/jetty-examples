@@ -51,9 +51,10 @@ public class FormEndpoints
 
         ServletContextHandler servletContextHandler = new ServletContextHandler();
         servletContextHandler.setContextPath("/");
+        servletContextHandler.setMaxFormContentSize(128_000);
 
         Path workDir = Files.createTempDirectory("multipart-work");
-        MultipartConfigElement multipartConfig = new MultipartConfigElement(workDir.toString(), -1, -1, 500_000);
+        MultipartConfigElement multipartConfig = new MultipartConfigElement(workDir.toString(), -1, 128_000, 500_000);
 
         servletContextHandler.addServlet(PostFormOnlyServlet.class, "/form/post-only")
             .getRegistration().setMultipartConfig(multipartConfig);
