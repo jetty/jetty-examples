@@ -13,13 +13,9 @@
 
 package examples;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.rewrite.handler.RewriteHandler;
@@ -29,7 +25,6 @@ import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.Callback;
-import org.eclipse.jetty.util.resource.ResourceFactory;
 
 public class RejectUserAgentRuleExample
 {
@@ -60,20 +55,9 @@ public class RejectUserAgentRuleExample
         rule.setStatusCode(HttpStatus.UNAUTHORIZED_401);
         rewriteHandler.addRule(rule);
 
-        // Setup context
-        Path webRootPath = Paths.get("webapps/alt-root/").toAbsolutePath().normalize();
-        if (!Files.isDirectory(webRootPath))
-        {
-            System.err.println("ERROR: Unable to find " + webRootPath + ".");
-            System.exit(-1);
-        }
-
-        ServletContextHandler context = new ServletContextHandler();
-        handlers.addHandler(context);
-        context.setContextPath("/");
-        context.setBaseResource(ResourceFactory.of(context).newResource(webRootPath));
-        context.setWelcomeFiles(new String[]{"index.html"});
-        context.addServlet(DumpServlet.class, "/dump/*");
+        // Setup handler
+        DumpHandler dumpHandler = new DumpHandler();
+        handlers.addHandler(dumpHandler);
 
         return server;
     }
