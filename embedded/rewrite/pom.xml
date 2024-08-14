@@ -32,5 +32,17 @@
       <artifactId>jetty-ee10-servlet</artifactId>
       <version>${jetty.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.toolchain</groupId>
+      <artifactId>jetty-test-helper</artifactId>
+      <version>${jetty-test-helper.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-slf4j-impl</artifactId>
+      <version>${jetty.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>

@@ -31,7 +31,7 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.Callback;
 import org.eclipse.jetty.util.resource.ResourceFactory;
 
-public class MovedPermanentlyRuleExample
+public class RejectUserAgentRuleExample
 {
     public static void main(String[] args) throws Exception
     {
@@ -55,10 +55,10 @@ public class MovedPermanentlyRuleExample
         handlers.addHandler(rewriteHandler);
 
         // Add rules for Rewrite Handler
-        MovedPermanentlyRule movedRule = new MovedPermanentlyRule();
-        movedRule.setRegex("http://www.example.org/dump/.*");
-        movedRule.setReplacement("https://api.example.org/dump/");
-        rewriteHandler.addRule(movedRule);
+        RejectUserAgentRule rule = new RejectUserAgentRule();
+        rule.setRegex(".*Robot.*");
+        rule.setStatusCode(HttpStatus.UNAUTHORIZED_401);
+        rewriteHandler.addRule(rule);
 
         // Setup context
         Path webRootPath = Paths.get("webapps/alt-root/").toAbsolutePath().normalize();
@@ -78,12 +78,12 @@ public class MovedPermanentlyRuleExample
         return server;
     }
 
-    public static class MovedPermanentlyRule extends Rule
+    public static class RejectUserAgentRule extends Rule
     {
         private Pattern regex;
-        private String replacement;
+        private int statusCode;
 
-        public MovedPermanentlyRule()
+        public RejectUserAgentRule()
         {
             setTerminating(true);
         }
@@ -98,20 +98,21 @@ public class MovedPermanentlyRuleExample
             this.regex = Pattern.compile(regex);
         }
 
-        public String getReplacement()
+        public int getStatusCode()
         {
-            return replacement;
+            return statusCode;
         }
 
-        public void setReplacement(String replacement)
+        public void setStatusCode(int statusCode)
         {
-            this.replacement = replacement;
+            this.statusCode = statusCode;
         }
 
         @Override
         public Handler matchAndApply(Handler input)
         {
-            Matcher matcher = regex.matcher(input.getHttpURI().toString());
+            String userAgent = input.getHeaders().get(HttpHeader.USER_AGENT);
+            Matcher matcher = regex.matcher(userAgent);
             boolean matches = matcher.matches();
             if (matches)
             {
@@ -120,9 +121,7 @@ public class MovedPermanentlyRuleExample
                     @Override
                     protected boolean handle(Response response, Callback callback)
                     {
-                        String location = Response.toRedirectURI(input, replacement);
-                        response.setStatus(HttpStatus.MOVED_TEMPORARILY_302);
-                        response.getHeaders().put(HttpHeader.LOCATION, location);
+                        response.setStatus(getStatusCode());
                         callback.succeeded();
                         return true;
                     }
