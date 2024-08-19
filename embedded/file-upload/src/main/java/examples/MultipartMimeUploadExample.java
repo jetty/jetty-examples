@@ -68,6 +68,9 @@ public class MultipartMimeUploadExample
         Server server = new Server();
         int httpPort = 8080;
         int httpsPort = 8443;
+        boolean enableSSL = false;
+        boolean forceSSL = false;
+        boolean enableSNI = false;
         ResourceFactory resourceFactory = ResourceFactory.of(server);
 
         // Setup HTTP Connector
@@ -81,27 +84,30 @@ public class MultipartMimeUploadExample
         httpConnector.setPort(httpPort);
         server.addConnector(httpConnector);
 
-        // Setup SSL
-        SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-        sslContextFactory.setKeyStoreResource(findKeyStore(resourceFactory));
-        sslContextFactory.setKeyStorePassword("OBF:1vny1zlo1x8e1vnw1vn61x8g1zlu1vn4");
-        sslContextFactory.setKeyManagerPassword("OBF:1u2u1wml1z7s1z7a1wnl1u2g");
-        sslContextFactory.setSniRequired(false);
+        if (enableSSL)
+        {
+            // Setup SSL
+            SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
+            sslContextFactory.setKeyStoreResource(findKeyStore(resourceFactory));
+            sslContextFactory.setKeyStorePassword("OBF:1vny1zlo1x8e1vnw1vn61x8g1zlu1vn4");
+            sslContextFactory.setKeyManagerPassword("OBF:1u2u1wml1z7s1z7a1wnl1u2g");
+            sslContextFactory.setSniRequired(enableSNI);
 
-        // Setup HTTPS Configuration
-        HttpConfiguration httpsConf = new HttpConfiguration(httpConf);
-        SecureRequestCustomizer secureRequestCustomizer = new SecureRequestCustomizer();
-        secureRequestCustomizer.setSniRequired(false); // set to true for production
-        secureRequestCustomizer.setSniHostCheck(false); // allow "localhost" to be used
-        httpsConf.addCustomizer(secureRequestCustomizer); // adds ssl info to request object
+            // Setup HTTPS Configuration
+            HttpConfiguration httpsConf = new HttpConfiguration(httpConf);
+            SecureRequestCustomizer secureRequestCustomizer = new SecureRequestCustomizer();
+            secureRequestCustomizer.setSniRequired(enableSNI);
+            secureRequestCustomizer.setSniHostCheck(enableSNI);
+            httpsConf.addCustomizer(secureRequestCustomizer);
 
-        // Establish the HTTPS ServerConnector
-        ServerConnector httpsConnector = new ServerConnector(server,
-            new SslConnectionFactory(sslContextFactory, "http/1.1"),
-            new HttpConnectionFactory(httpsConf));
-        httpsConnector.setPort(httpsPort);
+            // Establish the HTTPS ServerConnector
+            ServerConnector httpsConnector = new ServerConnector(server,
+                new SslConnectionFactory(sslContextFactory, "http/1.1"),
+                new HttpConnectionFactory(httpsConf));
+            httpsConnector.setPort(httpsPort);
 
-        server.addConnector(httpsConnector);
+            server.addConnector(httpsConnector);
+        }
 
         // Establish output directory
         Path outputDir = Paths.get("target", "upload-dir");
@@ -119,7 +125,8 @@ public class MultipartMimeUploadExample
 
         // Add a Handlers for requests
         Handler.Sequence handlers = new Handler.Sequence();
-        handlers.addHandler(new SecuredRedirectHandler());
+        if (enableSSL && forceSSL)
+            handlers.addHandler(new SecuredRedirectHandler());
         handlers.addHandler(newUploadHandler(outputDir));
         handlers.addHandler(newServletUploadHandler(multipartConfig, outputDir));
         handlers.addHandler(newResourceHandler(resourceFactory));
@@ -285,8 +292,10 @@ public class MultipartMimeUploadExample
             {
                 out.printf("Got Part[%s].length=%s%n", part.getName(), part.getLength());
                 HttpFields headers = part.getHeaders();
-                for (HttpField field: headers)
+                for (HttpField field : headers)
+                {
                     out.printf("Got Part[%s].header[%s]=%s%n", part.getName(), field.getName(), field.getValue());
+                }
                 out.printf("Got Part[%s].fileName=%s%n", part.getName(), part.getFileName());
                 String filename = part.getFileName();
                 if (StringUtil.isNotBlank(filename))
