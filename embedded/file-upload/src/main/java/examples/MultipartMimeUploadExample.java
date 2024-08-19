@@ -86,10 +86,14 @@ public class MultipartMimeUploadExample
         sslContextFactory.setKeyStoreResource(findKeyStore(resourceFactory));
         sslContextFactory.setKeyStorePassword("OBF:1vny1zlo1x8e1vnw1vn61x8g1zlu1vn4");
         sslContextFactory.setKeyManagerPassword("OBF:1u2u1wml1z7s1z7a1wnl1u2g");
+        sslContextFactory.setSniRequired(false);
 
         // Setup HTTPS Configuration
         HttpConfiguration httpsConf = new HttpConfiguration(httpConf);
-        httpsConf.addCustomizer(new SecureRequestCustomizer()); // adds ssl info to request object
+        SecureRequestCustomizer secureRequestCustomizer = new SecureRequestCustomizer();
+        secureRequestCustomizer.setSniRequired(false); // set to true for production
+        secureRequestCustomizer.setSniHostCheck(false); // allow "localhost" to be used
+        httpsConf.addCustomizer(secureRequestCustomizer); // adds ssl info to request object
 
         // Establish the HTTPS ServerConnector
         ServerConnector httpsConnector = new ServerConnector(server,
