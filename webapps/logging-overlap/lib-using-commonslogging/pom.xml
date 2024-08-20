@@ -13,7 +13,7 @@
   <name>Jetty Examples :: 11.0.x :: WebApp Logging Overlap :: Lib w/commons-logging</name>
 
   <properties>
-    <commonslogging.version>1.3.3</commonslogging.version>
+    <commonslogging.version>1.3.4</commonslogging.version>
   </properties>
 
   <dependencies>
