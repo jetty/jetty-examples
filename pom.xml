@@ -17,6 +17,7 @@
     <module>standalone</module>
     <module>webapps</module>
   </modules>
+
   <scm>
     <connection>scm:git:https://github.com/jetty/${jetty.git.repo}.git</connection>
     <developerConnection>scm:git:git@github.com:jetty/${jetty.git.repo}.git</developerConnection>
@@ -29,6 +30,9 @@
     <jetty-test-helper.version>5.9</jetty-test-helper.version>
     <jetty.git.repo>jetty-examples</jetty.git.repo>
     <jetty.version>9.4.55.v20240627</jetty.version>
+
+    <log4j2.version>2.23.1</log4j2.version>
+    <slf4j.version>2.0.15</slf4j.version>
   </properties>
 
   <build>
