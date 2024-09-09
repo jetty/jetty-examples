@@ -15,7 +15,7 @@
     <dependency>
       <groupId>org.eclipse.jetty.toolchain</groupId>
       <artifactId>jetty-test-helper</artifactId>
-      <version>6.2</version>
+      <version>6.3</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
