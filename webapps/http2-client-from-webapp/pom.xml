@@ -13,7 +13,7 @@
 
   <properties>
     <alpn.agent.version>2.0.10</alpn.agent.version>
-    <jetty.version>10.0.23</jetty.version>
+    <jetty.version>10.0.24</jetty.version>
     <log4j2.version>2.24.0</log4j2.version>
     <servlet.api.version>4.0.4</servlet.api.version>
   </properties>
