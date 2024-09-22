@@ -28,7 +28,7 @@
     <jdk.version.minimum>11</jdk.version.minimum>
     <jetty-test-helper.version>6.3</jetty-test-helper.version>
     <jetty.git.repo>jetty-examples</jetty.git.repo>
-    <jetty.version>10.0.23</jetty.version>
+    <jetty.version>10.0.24</jetty.version>
   </properties>
 
   <build>
