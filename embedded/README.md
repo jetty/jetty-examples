@@ -12,6 +12,7 @@
 * [`ee10-jersey-weld/`](ee10-jersey-weld/) - Enable Jersey (REST) and Weld (CDI) in the EE10 Servlet environment
 * [`ee10-jsp/`](ee10-jsp/) - Enable JSP processing from EE10 Servlet environment (with Taglib)
 * [`ee10-metainf-resources/`](ee10-metainf-resources/) - Supporting`META-INF/resources` with a ServletContextHandler
+* [`ee10-servlet-ambiguous-paths/`](ee10-servlet-ambiguous-paths/) - Configuring EE10 Servlet environment to handle Ambiguous URI Paths
 * [`ee10-servlet-config/`](ee10-servlet-config/) - Configuring EE10 Servlet environment (eg: multiple filter mappings)
 * [`ee10-servlet-security/`](ee10-servlet-security/) - EE10 Servlet transport guarantee security constraint 
 * [`ee10-servlet-server/`](ee10-servlet-server/) - Simple EE10 Servlet environment
