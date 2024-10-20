@@ -39,5 +39,4 @@
 * [`rewrite/`](rewrite/) - Using `RewriteHandler` using Jetty Core
 * [`simple-server/`](simple-server/) - Simple Server using Jetty Core
 * [`virtual-hosts/`](virtual-hosts/) - Using Virtual Hosts with Contexts in Jetty Core
-* [`websocket-jetty-api/`](websocket-jetty-api/) - Using the Jetty WebSocket API in Jetty Core
 * [`xml/`](xml/) - Using Jetty `XmlConfiguration` to separate configuration from code

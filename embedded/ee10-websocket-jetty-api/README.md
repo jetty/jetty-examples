@@ -9,4 +9,4 @@ See src/main/java for the code examples.
 Jetty WebSocket Native API Examples
 
 * examples.annotated - create a WebSocket using @WebSocket annotation
-* examples.time - a WebSocket server periodically posing messages to connected clients
+* examples.time - a WebSocket server periodically posting messages to connected clients
