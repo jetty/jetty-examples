@@ -47,17 +47,4 @@
       </plugins>
     </pluginManagement>
   </build>
-
-  <profiles>
-    <profile>
-      <id>staging-repo</id>
-      <repositories>
-        <repository>
-          <id>oss-staging-repo</id>
-          <name>oss staging repo</name>
-          <url>https://oss.sonatype.org/content/groups/jetty-with-staging/</url>
-        </repository>
-      </repositories>
-    </profile>
-  </profiles>
 </project>
