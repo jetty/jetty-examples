@@ -28,15 +28,18 @@ now `$HOME/tmp/jetty-home-12.0.22/`
 
 ``` shell
 $ mvn clean install
+$ cd demobase
+$ java -jar $JETTY_HOME/start.jar --create-files
 ```
 
-The result is a webapp in `/webapps/root.war`
+The result is a `$JETTY_BASE` in `demobase/` directory.  
+With a compiled webapp in `demobase/webapps/logging-webapp.war`
 
 ## To run webapp
 
 ``` shell
 $ cd demobase
-$ java -jar $JETTY_HOME/start.jar 
+$ java -jar $JETTY_HOME/start.jar
 ```
 
 ## To test webapp
@@ -57,14 +60,11 @@ that war file into `demobase/webapps/logging-webapp.war`, so that the `jetty.bas
 can use it. 
 
 * `logging-webapp/src/main/webapp/WEB-INF/web.xml` - this contains the servlets + error handling definition
-* `demobase/start.ini` - this contains the `jetty.base` configuration for this instance of jetty
- (it has modules for `http`, `deploy`, and `resources` along with manual lib entries for slf4j and log4j2)
-* `demobase/lib/slf4j/` - this is the `jetty.base` server libs for slf4j, Using a version newer then what the
- webapp has. 
-* `demobase/lib/log4j/` - this is the `jetty.base` server libs for log4j, Using a version newer then what the
- webapp has.
-* `demobase/webapps/normal.xml` - this is the configuration used to control the classloader for the
+* `demobase/start.d/` - this contains the `jetty.base` configurations for this instance of jetty
+ (it has modules for `logging-log4j2`, `logging-jcl-capture`, `logging-jul-capture`, `http`, `ee10-deploy`, and `resources` enabled)
+* `demobase/lib/logging/` - this is the `jetty.base` server libs for the various logging libraries. 
+* `demobase/webapps/logging-webapp.xml` - this is the configuration used to control the classloader for the
  deployed webapp at the root context (context-path of `/`).
-* `demobase/resources/logback.xml` - this is the server logback configuration
+* `demobase/resources/log4j2.xml` - this is the server log4j2 configuration
 * `logging-webapp/src/main/resources/log4j2.xml` - this is the webapp log4j2 configuration
  (also found within the `webapps/logging-webapp.war` when compiled)
