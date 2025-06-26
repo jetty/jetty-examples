@@ -58,7 +58,7 @@ public class WebAppsHotDeployExample
         Path jettyBase = Path.of(jettyBaseProp).toAbsolutePath();
 
         DeploymentScanner deploymentScanner = new DeploymentScanner(server, deployer);
-        deploymentScanner.addMonitoredDirectory(jettyBase.resolve("webapps"));
+        deploymentScanner.addWebappsDirectory(jettyBase.resolve("webapps"));
         deploymentScanner.configureEnvironment("ee10");
         deployer.addBean(deploymentScanner);
 

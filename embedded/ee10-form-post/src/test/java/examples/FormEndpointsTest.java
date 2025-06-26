@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -243,9 +244,20 @@ public class FormEndpointsTest
              InputStream in = socket.getInputStream())
         {
             out.write(rawRequest.getBytes(UTF_8));
-            // send form
-            out.write(formcontents);
-            out.flush();
+            try
+            {
+                // send form
+                out.write(formcontents);
+                out.flush();
+            }
+            catch (SocketException e)
+            {
+                // Valid exception in this test.
+                // The server side closed the request half of the stream.
+                // Leaving the connection in a half-closed state.
+                // We expect to be able to read the response from
+                // the InputStream (which is still open), indicating the error.
+            }
 
             HttpTester.Response response = HttpTester.parseResponse(in);
             System.out.println(response.get());

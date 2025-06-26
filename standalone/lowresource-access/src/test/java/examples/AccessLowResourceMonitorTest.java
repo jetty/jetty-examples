@@ -74,7 +74,7 @@ public class AccessLowResourceMonitorTest
         server.addBean(deployer);
 
         DeploymentScanner deploymentScanner = new DeploymentScanner(server, deployer);
-        deploymentScanner.addMonitoredDirectory(jettyBase.resolve("webapps"));
+        deploymentScanner.addWebappsDirectory(jettyBase.resolve("webapps"));
         deploymentScanner.setScanInterval(0);
         DeploymentScanner.EnvironmentConfig environmentConfig = deploymentScanner.configureEnvironment("ee10");
         environmentConfig.setExtractWars(true);
