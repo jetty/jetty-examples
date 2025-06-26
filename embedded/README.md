@@ -12,6 +12,7 @@
 * [`ee10-file-server/`](ee10-file-server/) - Serve static files in EE10 Servlet environment using one or more DefaultServlet
 * [`ee10-form-post/`](ee10-form-post/) - Form submission in EE10 Servlet environment
 * [`ee10-jersey-weld/`](ee10-jersey-weld/) - Enable Jersey (REST) and Weld (CDI) in the EE10 Servlet environment
+* [`ee10-jndi/`](ee10-jndi/) - Declare and use JNDI from Jetty Embedded
 * [`ee10-jsp/`](ee10-jsp/) - Enable JSP processing in EE10 Servlet environment (with Taglib)
 * [`ee10-metainf-resources/`](ee10-metainf-resources/) - Supporting`META-INF/resources` with a ServletContextHandler
 * [`ee10-servlet-ambiguous-paths/`](ee10-servlet-ambiguous-paths/) - Configuring EE10 Servlet environment to handle Ambiguous URI Paths

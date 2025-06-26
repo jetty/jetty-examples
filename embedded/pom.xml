@@ -25,6 +25,7 @@
     <module>ee10-file-server</module>
     <module>ee10-form-post</module>
     <module>ee10-jersey-weld</module>
+    <module>ee10-jndi</module>
     <module>ee10-jsp</module>
     <module>ee10-metainf-resources</module>
     <module>ee10-servlet-ambiguous-paths</module>
