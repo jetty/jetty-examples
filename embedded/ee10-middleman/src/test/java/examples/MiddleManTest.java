@@ -46,7 +46,7 @@ public class MiddleManTest
 {
     private static final Logger LOG = LoggerFactory.getLogger(MiddleManTest.class);
     private RemoteTestServer remoteTestServer;
-    private Server server;
+    private Server proxyServer;
 
     @BeforeEach
     public void startRemoteServer() throws Exception
@@ -60,7 +60,7 @@ public class MiddleManTest
         // Stop "remote" server
         IO.close(remoteTestServer);
         // Stop proxy server
-        LifeCycle.stop(server);
+        LifeCycle.stop(proxyServer);
     }
 
     @Test
@@ -69,15 +69,15 @@ public class MiddleManTest
         HashMap<String, String> initParams = new HashMap<>();
         initParams.put("proxyTo", remoteTestServer.getURI().toASCIIString());
 
-        server = MiddleManMain.createServer(0, initParams);
-        server.start();
+        proxyServer = MiddleManMain.createServer(0, initParams);
+        proxyServer.start();
 
         LOG.info("Remote Server: {}", remoteTestServer.getURI());
-        LOG.info("Proxy Server: {}", server.getURI());
+        LOG.info("Proxy Server: {}", proxyServer.getURI());
 
         HttpClient httpClient = HttpClient.newBuilder().build();
         HttpRequest httpRequest = HttpRequest.newBuilder()
-            .uri(server.getURI().resolve("/deep/index.html"))
+            .uri(proxyServer.getURI().resolve("/deep/index.html"))
             .GET()
             .build();
         HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString(UTF_8));
@@ -115,18 +115,18 @@ public class MiddleManTest
         HashMap<String, String> initParams = new HashMap<>();
         initParams.put("proxyTo", remoteTestServer.getURI().toASCIIString());
 
-        server = MiddleManMain.createServer(0, initParams);
-        server.start();
+        proxyServer = MiddleManMain.createServer(0, initParams);
+        proxyServer.start();
 
         if (LOG.isDebugEnabled())
         {
             LOG.debug("Remote Server: {}", remoteTestServer.getURI());
-            LOG.debug("Proxy Server: {}", server.getURI());
+            LOG.debug("Proxy Server: {}", proxyServer.getURI());
         }
 
         // Using a raw Socket to avoid cleanup of the Request performed by various
         // HttpClient implementations.
-        URI uri = server.getURI();
+        URI uri = proxyServer.getURI();
         try (Socket socket = new Socket(uri.getHost(), uri.getPort());
              OutputStream out = socket.getOutputStream();
              InputStream in = socket.getInputStream())
