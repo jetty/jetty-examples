@@ -27,6 +27,7 @@
     <module>ee10-jersey-weld</module>
     <module>ee10-jsp</module>
     <module>ee10-metainf-resources</module>
+    <module>ee10-middleman</module>
     <module>ee10-servlet-ambiguous-paths</module>
     <module>ee10-servlet-config</module>
     <module>ee10-servlet-security</module>

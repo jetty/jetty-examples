@@ -18,7 +18,7 @@
     <module>hello-servlet-5</module>
     <module>http2-demo</module>
     <module>jaspi-webapp</module>
-    <module>logging-overlap</module>
+    <module>logging-log4j2</module>
     <module>loosely-coupled-webapps</module>
   </modules>
 </project>
