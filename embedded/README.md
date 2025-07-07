@@ -5,15 +5,16 @@
 * [`compressed-encoding/`](compressed-encoding/) - GzipHandler support on Jetty Server for dynamically compressing responses
 * [`connectors/`](connectors/) - Using Connector names and virtual hosts on webapps to bind specific webapps to specific connectors
 * [`deploying/`](deploying/) - Setup a delayed webapp hot deployment.
-* [`error-handling/`](error-handling/) - How to customize the ErrorHandler in core Jetty
+* [`error-handling/`](error-handling/) - How to customize the `ErrorHandler` in core Jetty
 * [`ee8-jsp/`](ee8-jsp/) - Enable JSP processing in EE8 Servlet environment (with Taglib)
-* [`ee8-webapp-context/`](ee8-webapp-context/) - Setup an EE8 WebAppContext from File System or Classpath
+* [`ee8-webapp-context/`](ee8-webapp-context/) - Setup an EE8 `WebAppContext` from File System or Classpath
 * [`ee10-error-handling/`](ee10-error-handling/) - Setup and configure EE10 Servlet / WebApp Error Handling
-* [`ee10-file-server/`](ee10-file-server/) - Serve static files in EE10 Servlet environment using one or more DefaultServlet
+* [`ee10-file-server/`](ee10-file-server/) - Serve static files in EE10 Servlet environment using one or more `DefaultServlet`
 * [`ee10-form-post/`](ee10-form-post/) - Form submission in EE10 Servlet environment
 * [`ee10-jersey-weld/`](ee10-jersey-weld/) - Enable Jersey (REST) and Weld (CDI) in the EE10 Servlet environment
 * [`ee10-jsp/`](ee10-jsp/) - Enable JSP processing in EE10 Servlet environment (with Taglib)
 * [`ee10-metainf-resources/`](ee10-metainf-resources/) - Supporting`META-INF/resources` with a ServletContextHandler
+* [`ee10-middleman/`](ee10-middleman/) - EE10 `AsyncMiddleManServlet` Example
 * [`ee10-servlet-ambiguous-paths/`](ee10-servlet-ambiguous-paths/) - Configuring EE10 Servlet environment to handle Ambiguous URI Paths
 * [`ee10-servlet-config/`](ee10-servlet-config/) - Configuring EE10 Servlet environment (eg: multiple filter mappings)
 * [`ee10-servlet-security/`](ee10-servlet-security/) - EE10 Servlet transport guarantee security constraint 
@@ -21,7 +22,7 @@
 * [`ee10-servlet-with-cdi/`](ee10-servlet-with-cdi/) - EE10 Servlet environment with CDI support
 * [`ee10-uber-jar/`](ee10-uber-jar/) - Building a uber-jar with all dependencies integrated for Jetty Server
 * [`ee10-uber-war/`](ee10-uber-war/) - Building an uber-WAR that can run as a deployed WebApp/WAR or as a standalone uber-jar with all dependencies integrated for Jetty Server.
-* [`ee10-webapp-context/`](ee10-webapp-context/) - Setup an EE10 WebAppContext from a File System or ClassPath
+* [`ee10-webapp-context/`](ee10-webapp-context/) - Setup an EE10 `WebAppContext` from a File System or ClassPath
 * [`ee10-websocket-jakarta-api/`](ee10-websocket-jakarta-api/) - Using `jakarta.websocket` API from `ServletContextHandler`
 * [`ee10-websocket-jetty-api/`](ee10-websocket-jetty-api/) - Using Jetty WebSocket API from `ServletContextHandler`
 * [`file-server/`](file-server/) - Serving static files with `ResourceHandler`
