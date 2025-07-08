@@ -25,6 +25,6 @@ public class LambdaJspTest extends AbstractMainTest
     {
         String expected = String.format("<dt>os.version</dt><dd>%s</dd>", System.getProperty("os.version"));
 
-        assertThat(resourceWithUrl("http://localhost:8080/test/lambda.jsp"), containsString(expected));
+        assertThat(resourceWithUrl(serverURI.resolve("/test/lambda.jsp").toASCIIString()), containsString(expected));
     }
 }

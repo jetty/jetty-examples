@@ -12,10 +12,6 @@
   <packaging>jar</packaging>
   <name>Jetty Examples :: Jetty 9.4.x :: Embedded :: Logging with a mix of Logging APIs</name>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>

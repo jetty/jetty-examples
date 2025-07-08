@@ -15,6 +15,7 @@ package examples;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 
 import org.junit.jupiter.api.AfterEach;
@@ -23,12 +24,14 @@ import org.junit.jupiter.api.BeforeEach;
 public abstract class AbstractMainTest
 {
     private Main main;
+    protected URI serverURI;
 
     @BeforeEach
     public void startServer() throws Exception
     {
-        main = new Main(8080);
+        main = new Main(0);
         main.start();
+        serverURI = main.getURI();
     }
 
     @AfterEach

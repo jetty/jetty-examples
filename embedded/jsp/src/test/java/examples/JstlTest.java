@@ -23,6 +23,6 @@ public class JstlTest extends AbstractMainTest
     @Test
     public void canServeJspWithTaglib() throws Exception
     {
-        assertThat(resourceWithUrl("http://localhost:8080/test/jstl.jsp"), containsString("10"));
+        assertThat(resourceWithUrl(serverURI.resolve("/test/jstl.jsp").toASCIIString()), containsString("10"));
     }
 }

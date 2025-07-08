@@ -67,6 +67,7 @@ public class Main
 
     private int port;
     private Server server;
+    private URI uri;
 
     public Main(int port)
     {
@@ -118,6 +119,13 @@ public class Main
         // Start Server
         // server.setDumpAfterStart(true);
         server.start();
+
+        uri = server.getURI().resolve("/");
+    }
+
+    public URI getURI()
+    {
+        return uri;
     }
 
     /**

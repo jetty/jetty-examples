@@ -19,20 +19,22 @@
   </modules>
 
   <scm>
-    <connection>scm:git:https://github.com/jetty/${jetty.git.repo}.git</connection>
-    <developerConnection>scm:git:git@github.com:jetty/${jetty.git.repo}.git</developerConnection>
+    <connection>scm:git:https://github.com/jetty/jetty-examples.git</connection>
+    <developerConnection>scm:git:git@github.com:jetty/jetty-examples.git</developerConnection>
     <tag>HEAD</tag>
-    <url>https://github.com/jetty/${jetty.git.repo}</url>
+    <url>https://github.com/jetty/jetty-examples</url>
   </scm>
 
   <properties>
+    <alpn.agent.version>2.0.10</alpn.agent.version>
     <jdk.version.minimum>8</jdk.version.minimum>
     <jetty-test-helper.version>5.9</jetty-test-helper.version>
-    <jetty.git.repo>jetty-examples</jetty.git.repo>
     <jetty.version>9.4.57.v20241219</jetty.version>
-
     <log4j2.version>2.25.0</log4j2.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <servlet.api.version>3.1.0</servlet.api.version>
     <slf4j.version>2.0.17</slf4j.version>
+    <websocket.api.version>1.0</websocket.api.version>
   </properties>
 
   <build>

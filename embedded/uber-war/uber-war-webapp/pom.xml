@@ -9,9 +9,6 @@
   <artifactId>uber-war-webapp</artifactId>
   <packaging>war</packaging>
   <name>Jetty Examples :: Jetty 9.4.x :: Embedded :: Uber War :: Standalone WebApp</name>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>javax.servlet</groupId>

@@ -9,9 +9,6 @@
   <artifactId>uber-war-server</artifactId>
   <packaging>jar</packaging>
   <name>Jetty Examples :: Jetty 9.4.x :: Embedded :: Uber War :: Server Classes</name>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>javax.servlet</groupId>

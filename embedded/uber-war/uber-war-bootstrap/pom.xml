@@ -9,9 +9,6 @@
   <artifactId>uber-war-bootstrap</artifactId>
   <packaging>jar</packaging>
   <name>Jetty Examples :: Jetty 9.4.x :: Embedded :: Uber War :: Bootstrap</name>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
   <build>
     <plugins>
       <plugin>
