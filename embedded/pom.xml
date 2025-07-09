@@ -36,6 +36,7 @@
     <module>ee10-uber-jar</module>
     <module>ee10-uber-war</module>
     <module>ee10-webapp-context</module>
+    <module>ee10-webapp-isolated-logging</module>
     <module>ee10-websocket-jakarta-api</module>
     <module>ee10-websocket-jetty-api</module>
     <module>file-server</module>

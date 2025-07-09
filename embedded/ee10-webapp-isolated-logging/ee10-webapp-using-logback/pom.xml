@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.eclipse.jetty.examples.embedded</groupId>
+    <artifactId>ee10-webapp-isolated-logging</artifactId>
+    <version>12.0.x</version>
+  </parent>
+  <artifactId>ee10-webapp-using-logback</artifactId>
+  <version>12.0.x</version>
+  <packaging>war</packaging>
+  <name>Jetty Examples :: Jetty 12.0.x :: Embedded :: EE10 WebApp Isolated Logging :: WebApp using Logback</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.5.18</version>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>6.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+</project>
