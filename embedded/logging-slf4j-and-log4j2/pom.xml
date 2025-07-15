@@ -13,9 +13,7 @@
   <name>Jetty Examples :: Jetty 12.0.x :: Embedded :: Logging with SLF4J and Log4j2</name>
 
   <properties>
-    <log4j2.version>2.25.0</log4j2.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <slf4j.version>2.0.17</slf4j.version>
   </properties>
 
   <dependencyManagement>
