@@ -8,6 +8,7 @@ This is a collection of examples of how to use various features
 present in the Eclipse Jetty server and Eclipse Jetty client.
 
 There are a few major categories of examples.
+
 ## Embedded Examples
 
 Using Embedded Jetty is extremely powerful way to include Jetty
@@ -41,9 +42,13 @@ See [webapps/README.md][9] for a breakdown of webapp examples.
 
 | Branch       | Min JDK | EE   | Servlet | Namespace         | Supported                               |
 |--------------|---------|------|---------|-------------------|-----------------------------------------|
-| [12.1.x][6]  | 17      | EE10 | 6.0     | `jakarta.servlet` | Yes                                     |
-| [12.1.x][6]  | 17      | EE9  | 5.0     | `jakarta.servlet` | Yes                                     |
-| [12.1.x][6]  | 17      | EE8  | 4.0     | `javax.servlet`   | Yes                                     |
+| [12.1.x][10] | 17      | EE11 | 6.1     | `jakarta.servlet` | Yes                                     |
+| [12.1.x][10] | 17      | EE10 | 6.0     | `jakarta.servlet` | Yes                                     |
+| [12.1.x][10] | 17      | EE9  | 5.0     | `jakarta.servlet` | Yes                                     |
+| [12.1.x][10] | 17      | EE8  | 4.0     | `javax.servlet`   | Yes                                     |
+| [12.0.x][6]  | 17      | EE10 | 6.0     | `jakarta.servlet` | Yes                                     |
+| [12.0.x][6]  | 17      | EE9  | 5.0     | `jakarta.servlet` | Yes                                     |
+| [12.0.x][6]  | 17      | EE8  | 4.0     | `javax.servlet`   | Yes                                     |
 | [11.0.x][1]  | 11      | EE9  | 5.0     | `jakarta.servlet` | No (as of January 2024) [See #10485][4] |
 | [10.0.x][2]  | 11      | EE8  | 4.0     | `javax.servlet`   | No (as of January 2024) [See #10485][4] |
 | [9.4.x][3]   | 8       | EE7  | 3.1     | `javax.servlet`   | No (as of June 2022) [See #7958][5]     |
@@ -53,7 +58,8 @@ See [webapps/README.md][9] for a breakdown of webapp examples.
 [3]: https://github.com/jetty/jetty-examples/tree/9.4.x
 [4]: https://github.com/jetty/jetty.project/issues/10485
 [5]: https://github.com/jetty/jetty.project/issues/7958
-[6]: https://github.com/jetty/jetty-examples/tree/12.1.x
+[6]: https://github.com/jetty/jetty-examples/tree/12.0.x
 [7]: embedded/README.md
 [8]: standalone/README.md
 [9]: webapps/README.md
+[10]: https://github.com/jetty/jetty-examples/tree/12.1.x
