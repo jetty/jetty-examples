@@ -4,12 +4,12 @@
   <parent>
     <groupId>org.eclipse.jetty.examples.embedded</groupId>
     <artifactId>ee10-webapp-isolated-logging</artifactId>
-    <version>12.0.x</version>
+    <version>12.1.x</version>
   </parent>
   <artifactId>ee10-server</artifactId>
-  <version>12.0.x</version>
+  <version>12.1.x</version>
   <packaging>jar</packaging>
-  <name>Jetty Examples :: Jetty 12.0.x :: Embedded :: EE10 WebApp Isolated Logging :: Server</name>
+  <name>Jetty Examples :: Jetty 12.1.x :: Embedded :: EE10 WebApp Isolated Logging :: Server</name>
 
   <dependencies>
     <dependency>
