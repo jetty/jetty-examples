@@ -36,6 +36,10 @@ how to use web and JVM features in Jetty.
 
 | Branch       | Min JDK | EE   | Servlet | Namespace         | Supported                               |
 |--------------|---------|------|---------|-------------------|-----------------------------------------|
+| [12.1.x][10] | 17      | EE11 | 6.1     | `jakarta.servlet` | Yes                                     |
+| [12.1.x][10] | 17      | EE10 | 6.0     | `jakarta.servlet` | Yes                                     |
+| [12.1.x][10] | 17      | EE9  | 5.0     | `jakarta.servlet` | Yes                                     |
+| [12.1.x][10] | 17      | EE8  | 4.0     | `javax.servlet`   | Yes                                     |
 | [12.0.x][6]  | 17      | EE10 | 6.0     | `jakarta.servlet` | Yes                                     |
 | [12.0.x][6]  | 17      | EE9  | 5.0     | `jakarta.servlet` | Yes                                     |
 | [12.0.x][6]  | 17      | EE8  | 4.0     | `javax.servlet`   | Yes                                     |
@@ -52,3 +56,4 @@ how to use web and JVM features in Jetty.
 [7]: embedded/README.md
 [8]: standalone/README.md
 [9]: webapps/README.md
+[10]: https://github.com/jetty/jetty-examples/tree/12.1.x
