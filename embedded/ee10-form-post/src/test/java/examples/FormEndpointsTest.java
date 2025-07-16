@@ -257,6 +257,10 @@ public class FormEndpointsTest
                 // Leaving the connection in a half-closed state.
                 // We expect to be able to read the response from
                 // the InputStream (which is still open), indicating the error.
+
+                // We allow for "Broken pipe" on write
+                if (!e.getMessage().contains("Broken pipe"))
+                    throw e;
             }
 
             HttpTester.Response response = HttpTester.parseResponse(in);

@@ -13,15 +13,15 @@
 
 package examples;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.stream.Stream;
 
 import org.eclipse.jetty.ee10.webapp.WebAppContext;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.util.TypeUtil;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.resource.ResourceFactory;
 import org.slf4j.Logger;
@@ -39,77 +39,45 @@ public class EmbedMe
         server.join();
     }
 
-    public static Server newServer(int port)
+    public static Server newServer(int port) throws IOException
     {
         Server server = new Server(port);
 
         WebAppContext context = new WebAppContext();
-        Resource baseResource = findBaseResource(context);
-        LOG.info("Using BaseResource: {}", baseResource);
-        context.setBaseResource(baseResource);
         context.setContextPath("/");
         context.setWelcomeFiles(new String[]{"index.html", "welcome.html"});
-        context.setParentLoaderPriority(true);
-        server.setHandler(context);
-        return server;
-    }
 
-    private static Resource findBaseResource(WebAppContext context)
-    {
+        StringBuilder containerIncludeJarPattern = new StringBuilder();
+        // Allow discovery of Jakarta Servlet API (needed for annotation scanning)
+        containerIncludeJarPattern.append(".*/jakarta.servlet-api-[^/]*\\.jar$");
+
         ResourceFactory resourceFactory = ResourceFactory.of(context);
+        URI location = TypeUtil.getLocationOfClass(TestServlet.class);
+        if (location != null)
+        {
+            Path path = Path.of(location);
 
-        try
-        {
-            // Look for resource in classpath (this is the best choice when working with a jar/war archive)
-            ClassLoader classLoader = context.getClass().getClassLoader();
-            URL webXml = classLoader.getResource("/WEB-INF/web.xml");
-            if (webXml != null)
-            {
-                URI uri = webXml.toURI().resolve("../..").normalize();
-                LOG.info("Found WebResourceBase (Using ClassLoader reference) {}", uri);
-                return resourceFactory.newResource(uri);
-            }
-        }
-        catch (URISyntaxException e)
-        {
-            throw new RuntimeException("Bad ClassPath reference for: WEB-INF", e);
-        }
+            // Allow discovery of application specific servlet annotations
+            containerIncludeJarPattern.append("|.*/").append(path.getFileName());
+            if (Files.isDirectory(path))
+                containerIncludeJarPattern.append("/.*");
+            containerIncludeJarPattern.append("$");
 
-        // Look for resource in common file system paths
-        try
-        {
-            Path pwd = Path.of(System.getProperty("user.dir")).toAbsolutePath();
-            Path targetDir = pwd.resolve("target");
-            if (Files.isDirectory(targetDir))
-            {
-                try (Stream<Path> listing = Files.list(targetDir))
-                {
-                    Path embeddedServletServerDir = listing
-                        .filter(Files::isDirectory)
-                        .filter((path) -> path.getFileName().toString().startsWith("embedded-servlet-server-"))
-                        .findFirst()
-                        .orElse(null);
-                    if (embeddedServletServerDir != null)
-                    {
-                        LOG.info("Found WebResourceBase (Using /target/ Path) {}", embeddedServletServerDir);
-                        return resourceFactory.newResource(embeddedServletServerDir);
-                    }
-                }
-            }
-
-            // Try the source path next
-            Path srcWebapp = pwd.resolve("src/main/webapp/");
-            if (Files.exists(srcWebapp))
-            {
-                LOG.info("WebResourceBase (Using /src/main/webapp/ Path) {}", srcWebapp);
-                return resourceFactory.newResource(srcWebapp);
-            }
+            Resource warResource = resourceFactory.newResource(location);
+            LOG.info("Using Base Resource: {}", warResource);
+            context.setBaseResource(warResource);
         }
-        catch (Throwable t)
+        else
         {
-            throw new RuntimeException("Unable to find web resource in file system", t);
+            throw new FileNotFoundException("Unable to locate WAR Base");
         }
 
-        throw new RuntimeException("Unable to find web resource ref");
+        context.setAttribute("org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern", containerIncludeJarPattern.toString());
+        context.setParentLoaderPriority(true);
+
+        server.setHandler(context);
+        // Uncomment to see dump of server configuration
+        // server.setDumpAfterStart(true);
+        return server;
     }
 }

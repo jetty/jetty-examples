@@ -26,6 +26,12 @@
 
     <dependency>
       <groupId>org.eclipse.jetty.ee10</groupId>
+      <artifactId>jetty-ee10-annotations</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty.ee10</groupId>
       <artifactId>jetty-ee10-webapp</artifactId>
       <version>${jetty.version}</version>
     </dependency>
@@ -36,6 +42,7 @@
       <version>${jetty.version}</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.eclipse.jetty.toolchain</groupId>
       <artifactId>jetty-test-helper</artifactId>
