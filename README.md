@@ -8,6 +8,7 @@ This is a collection of examples of how to use various features
 present in the Eclipse Jetty server and Eclipse Jetty client.
 
 There are a few major categories of examples.
+
 ## Embedded Examples
 
 Using Embedded Jetty is extremely powerful way to include Jetty
@@ -41,6 +42,10 @@ See [webapps/README.md][9] for a breakdown of webapp examples.
 
 | Branch       | Min JDK | EE   | Servlet | Namespace         | Supported                               |
 |--------------|---------|------|---------|-------------------|-----------------------------------------|
+| [12.1.x][10] | 17      | EE11 | 6.1     | `jakarta.servlet` | Yes                                     |
+| [12.1.x][10] | 17      | EE10 | 6.0     | `jakarta.servlet` | Yes                                     |
+| [12.1.x][10] | 17      | EE9  | 5.0     | `jakarta.servlet` | Yes                                     |
+| [12.1.x][10] | 17      | EE8  | 4.0     | `javax.servlet`   | Yes                                     |
 | [12.0.x][6]  | 17      | EE10 | 6.0     | `jakarta.servlet` | Yes                                     |
 | [12.0.x][6]  | 17      | EE9  | 5.0     | `jakarta.servlet` | Yes                                     |
 | [12.0.x][6]  | 17      | EE8  | 4.0     | `javax.servlet`   | Yes                                     |
@@ -57,3 +62,4 @@ See [webapps/README.md][9] for a breakdown of webapp examples.
 [7]: embedded/README.md
 [8]: standalone/README.md
 [9]: webapps/README.md
+[10]: https://github.com/jetty/jetty-examples/tree/12.1.x
