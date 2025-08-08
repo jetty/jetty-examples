@@ -13,12 +13,14 @@
 
 package examples;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
+import jakarta.servlet.ServletContext;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.SimpleInstanceManager;
 import org.eclipse.jetty.ee10.jsp.JettyJspServlet;
@@ -89,7 +91,7 @@ public class Main
         servletContextHandler.setBaseResource(baseResource);
 
         // Since this is a ServletContextHandler we must manually configure JSP support.
-        enableEmbeddedJspSupport(servletContextHandler);
+        enableEmbeddedJspSupport(servletContextHandler, false);
 
         // Add Application Servlets
         servletContextHandler.addServlet(DateServlet.class, "/date/");
@@ -118,22 +120,28 @@ public class Main
      * </p>
      *
      * @param servletContextHandler the ServletContextHandler to configure
+     * @param usingPrecompiledJsps true if using Precompiled JSPs
      * @throws IOException if unable to configure
      */
-    private void enableEmbeddedJspSupport(ServletContextHandler servletContextHandler) throws IOException
+    private void enableEmbeddedJspSupport(ServletContextHandler servletContextHandler, boolean usingPrecompiledJsps) throws IOException
     {
-        // Establish Scratch directory for the servlet context (used by JSP compilation)
-        File tempDir = new File(System.getProperty("java.io.tmpdir"));
-        File scratchDir = new File(tempDir.toString(), "embedded-jetty-jsp");
+        // For JSP, you MUST have a Temp Directory, even if you use precompiled JSPs
+        Path webappTempDir = Files.createTempDirectory("ee10-embedded-jsp");
+        if (!Files.isDirectory(webappTempDir))
+            Files.createDirectories(webappTempDir);
+        servletContextHandler.setAttribute(ServletContext.TEMPDIR, webappTempDir.toFile());
 
-        if (!scratchDir.exists())
+        // If you don't use Precompiled JSPs then the Apache Jasper JSP implementation
+        // requires a defined scratch directory for JSP compilation.
+        Path scratchDir = null;
+
+        if (!usingPrecompiledJsps)
         {
-            if (!scratchDir.mkdirs())
-            {
-                throw new IOException("Unable to create scratch directory: " + scratchDir);
-            }
+            scratchDir = webappTempDir.resolve("scratch");
+
+            if (!Files.isDirectory(scratchDir))
+                Files.createDirectory(scratchDir);
         }
-        servletContextHandler.setAttribute("javax.servlet.context.tempdir", scratchDir);
 
         // Set Classloader of Context to be sane (needed for JSTL)
         // JSP requires a non-System classloader, this simply wraps the
@@ -148,7 +156,8 @@ public class Main
         // Create / Register JSP Servlet (must be named "jsp" per spec)
         ServletHolder holderJsp = new ServletHolder("jsp", JettyJspServlet.class);
         holderJsp.setInitOrder(0);
-        holderJsp.setInitParameter("scratchdir", scratchDir.toString());
+        if (scratchDir != null)
+            holderJsp.setInitParameter("scratchdir", scratchDir.toString());
         holderJsp.setInitParameter("logVerbosityLevel", "DEBUG");
         holderJsp.setInitParameter("fork", "false");
         holderJsp.setInitParameter("xpoweredBy", "false");
