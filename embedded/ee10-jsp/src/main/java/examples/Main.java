@@ -125,22 +125,23 @@ public class Main
      */
     private void enableEmbeddedJspSupport(ServletContextHandler servletContextHandler, boolean usingPrecompiledJsps) throws IOException
     {
-        Path webappTempDir = null;
+        // For JSP, you MUST have a Temp Directory, even if you use precompiled JSPs
+        Path webappTempDir = Files.createTempDirectory("ee10-embedded-jsp");
+        if (!Files.isDirectory(webappTempDir))
+            Files.createDirectories(webappTempDir);
+        servletContextHandler.setAttribute(ServletContext.TEMPDIR, webappTempDir.toFile());
+
+        // If you don't use Precompiled JSPs then the Apache Jasper JSP implementation
+        // requires a defined scratch directory for JSP compilation.
         Path scratchDir = null;
 
-        // Optional behavior (if you don't use precompiled JSPs, this is good practice)
         if (!usingPrecompiledJsps)
         {
-            // Establish Scratch directory for the servlet context (used by JSP compilation)
-            webappTempDir = Files.createTempDirectory("ee10-embedded-jsp");
             scratchDir = webappTempDir.resolve("scratch");
 
             if (!Files.isDirectory(scratchDir))
                 Files.createDirectory(scratchDir);
         }
-
-        if (webappTempDir != null)
-            servletContextHandler.setAttribute(ServletContext.TEMPDIR, webappTempDir.toFile());
 
         // Set Classloader of Context to be sane (needed for JSTL)
         // JSP requires a non-System classloader, this simply wraps the
