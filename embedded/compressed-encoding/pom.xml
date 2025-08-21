@@ -9,7 +9,7 @@
   <artifactId>compressed-encoding</artifactId>
   <version>12.1.x</version>
   <packaging>jar</packaging>
-  <name>Jetty Examples :: Jetty 12.1.x :: Embedded :: HTML Compressed Encoding</name>
+  <name>Jetty Examples :: Jetty 12.1.x :: Embedded :: Compressed Encoding</name>
 
   <dependencies>
     <dependency>
@@ -19,9 +19,34 @@
     </dependency>
 
     <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-slf4j-impl</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty.compression</groupId>
+      <artifactId>jetty-compression-gzip</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty.compression</groupId>
+      <artifactId>jetty-compression-server</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.eclipse.jetty.ee10</groupId>
       <artifactId>jetty-ee10-servlet</artifactId>
       <version>${jetty.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty.toolchain</groupId>
+      <artifactId>jetty-test-helper</artifactId>
+      <version>${jetty-test-helper.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
