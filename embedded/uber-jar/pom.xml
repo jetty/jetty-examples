@@ -14,7 +14,7 @@
   <name>Jetty Examples :: Jetty 9.4.x :: Embedded :: Uber Jar</name>
 
   <properties>
-    <maven.shade.plugin.version>3.6.0</maven.shade.plugin.version>
+    <maven.shade.plugin.version>3.6.1</maven.shade.plugin.version>
   </properties>
 
   <dependencies>
