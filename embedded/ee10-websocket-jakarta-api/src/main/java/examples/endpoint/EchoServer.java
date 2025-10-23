@@ -15,8 +15,8 @@ package examples.endpoint;
 
 import java.net.URL;
 import java.util.Objects;
-import jakarta.websocket.server.ServerEndpointConfig;
 
+import jakarta.websocket.server.ServerEndpointConfig;
 import org.eclipse.jetty.ee10.servlet.DefaultServlet;
 import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.ee10.servlet.ServletHolder;
@@ -27,7 +27,7 @@ public class EchoServer
 {
     public static void main(String[] args) throws Exception
     {
-        Server server = new Server(8080);
+        Server server = newServer(8080);
         server.start();
         server.join();
     }
