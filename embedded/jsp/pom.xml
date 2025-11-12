@@ -13,7 +13,7 @@
 
   <properties>
     <logback.version>1.5.18</logback.version>
-    <maven.exec.plugin.version>3.5.1</maven.exec.plugin.version>
+    <maven.exec.plugin.version>3.6.2</maven.exec.plugin.version>
   </properties>
 
   <dependencies>
