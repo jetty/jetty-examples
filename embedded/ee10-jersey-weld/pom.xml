@@ -17,7 +17,7 @@
     <jetty-test-helper.version>6.4</jetty-test-helper.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <slf4j.version>2.0.17</slf4j.version>
-    <weld.version>5.1.6.Final</weld.version>
+    <weld.version>5.1.7.Final</weld.version>
   </properties>
 
   <dependencyManagement>
