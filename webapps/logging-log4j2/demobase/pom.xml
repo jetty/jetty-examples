@@ -13,7 +13,7 @@
   <name>Jetty Examples :: 12.0.x :: WebApp Logging Log4j2 :: Demo Base</name>
 
   <properties>
-    <dependency.plugin.version>3.9.0</dependency.plugin.version>
+    <dependency.plugin.version>3.10.0</dependency.plugin.version>
   </properties>
 
   <dependencies>
