@@ -18,8 +18,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Duration;
-import jakarta.servlet.ServletException;
 
+import jakarta.servlet.ServletException;
 import org.eclipse.jetty.ee10.servlet.DefaultServlet;
 import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.ee10.servlet.ServletHolder;
@@ -27,16 +27,9 @@ import org.eclipse.jetty.ee10.websocket.server.JettyServerUpgradeRequest;
 import org.eclipse.jetty.ee10.websocket.server.JettyServerUpgradeResponse;
 import org.eclipse.jetty.ee10.websocket.server.JettyWebSocketCreator;
 import org.eclipse.jetty.ee10.websocket.server.config.JettyWebSocketServletContainerInitializer;
-import org.eclipse.jetty.server.HttpConfiguration;
-import org.eclipse.jetty.server.HttpConnectionFactory;
-import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.SslConnectionFactory;
-import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.resource.ResourceFactory;
-import org.eclipse.jetty.util.resource.Resources;
-import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 public class WebSocketTimeServer
 {
@@ -62,34 +55,6 @@ public class WebSocketTimeServer
         ServerConnector connector = new ServerConnector(server);
         connector.setPort(port);
         server.addConnector(connector);
-        return server;
-    }
-
-    public static Server newSecureServer(int httpsPort) throws MalformedURLException, URISyntaxException, ServletException
-    {
-        Server server = newServerNoConnector();
-
-        ResourceFactory resourceFactory = ResourceFactory.of(server);
-
-        // Setup SSL
-        SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-        sslContextFactory.setKeyStoreResource(findKeyStore(resourceFactory));
-        sslContextFactory.setKeyStorePassword("OBF:1vny1zlo1x8e1vnw1vn61x8g1zlu1vn4");
-        sslContextFactory.setKeyManagerPassword("OBF:1u2u1wml1z7s1z7a1wnl1u2g");
-
-        // Setup HTTPS Configuration
-        HttpConfiguration httpsConf = new HttpConfiguration();
-        httpsConf.setSecurePort(httpsPort);
-        httpsConf.setSecureScheme("https");
-        httpsConf.addCustomizer(new SecureRequestCustomizer()); // adds ssl info to request object
-
-        // Establish the Secure ServerConnector
-        ServerConnector httpsConnector = new ServerConnector(server,
-            new SslConnectionFactory(sslContextFactory, "http/1.1"),
-            new HttpConnectionFactory(httpsConf));
-        httpsConnector.setPort(httpsPort);
-
-        server.addConnector(httpsConnector);
         return server;
     }
 
@@ -132,16 +97,5 @@ public class WebSocketTimeServer
         contextHandler.addServlet(holderDefault, "/");
 
         return server;
-    }
-
-    private static Resource findKeyStore(ResourceFactory resourceFactory)
-    {
-        String resourceName = "ssl/keystore";
-        Resource resource = resourceFactory.newClassLoaderResource(resourceName);
-        if (!Resources.isReadableFile(resource))
-        {
-            throw new RuntimeException("Unable to read " + resourceName);
-        }
-        return resource;
     }
 }
