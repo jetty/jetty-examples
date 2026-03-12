@@ -17,6 +17,7 @@
     <module>hello-servlet-3</module>
     <module>hello-servlet-5</module>
     <module>http2-demo</module>
+    <module>jakarta-websocket-webapp</module>
     <module>jaspi-webapp</module>
     <module>logging-log4j2</module>
     <module>loosely-coupled-webapps</module>
