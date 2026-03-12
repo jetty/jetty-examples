@@ -24,8 +24,10 @@
 * [`ee10-uber-war/`](ee10-uber-war/) - Building an uber-WAR that can run as a deployed WebApp/WAR or as a standalone uber-jar with all dependencies integrated for Jetty Server.
 * [`ee10-webapp-context/`](ee10-webapp-context/) - Setup an EE10 `WebAppContext` from a File System or ClassPath
 * [`ee10-webapp-isolated-logging/`](ee10-webapp-isolated-logging/) - Setup an EE10 `WebAppContext` that has a different logging library than the server.
-* [`ee10-websocket-jakarta-api/`](ee10-websocket-jakarta-api/) - Using `jakarta.websocket` API from `ServletContextHandler`
-* [`ee10-websocket-jetty-api/`](ee10-websocket-jetty-api/) - Using Jetty WebSocket API from `ServletContextHandler`
+* [`ee10-websocket-jakarta-api/`](ee10-websocket-jakarta-api/) - EE10 Using `jakarta.websocket` API from `ServletContextHandler`
+* [`ee10-websocket-jetty-api/`](ee10-websocket-jetty-api/) - EE10 Using Jetty WebSocket API from `ServletContextHandler`
+* [`ee11-websocket-jakarta-api/`](ee10-websocket-jakarta-api/) - EE11 Using `jakarta.websocket` API from `ServletContextHandler`
+* [`ee11-websocket-jetty-api/`](ee10-websocket-jetty-api/) - EE11 Using Jetty WebSocket API from `ServletContextHandler`
 * [`file-server/`](file-server/) - Serving static files with `ResourceHandler`
 * [`file-upload/`](file-upload/) - Handling `multipart/form-data` Form File Uploads via Jetty Core or Servlet APIs
 * [`form-post/`](form-post/) - Handling forms (query, or `application/x-www-form-urlencoded` or `multipart/form-data`) with Jetty Core

@@ -39,6 +39,8 @@
     <module>ee10-webapp-isolated-logging</module>
     <module>ee10-websocket-jakarta-api</module>
     <module>ee10-websocket-jetty-api</module>
+    <module>ee11-websocket-jakarta-api</module>
+    <module>ee11-websocket-jetty-api</module>
     <module>file-server</module>
     <module>file-upload</module>
     <module>form-post</module>
