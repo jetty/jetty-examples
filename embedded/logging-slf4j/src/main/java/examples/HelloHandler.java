@@ -33,9 +33,9 @@ public class HelloHandler extends Handler.Abstract
     }
 
     @Override
-    public boolean handle(Request request, Response response, Callback callback) throws Exception
+    public boolean handle(Request request, Response response, Callback callback)
     {
-        LOG.info("Got request from {} for {}",Request.getRemoteAddr(request), request.getHttpURI().toString());
+        LOG.info("Got request for {}", request.getHttpURI().toString());
         response.getHeaders().put(HttpHeader.CONTENT_TYPE, "text/plain; charset=utf-8");
         Content.Sink.write(response, true, String.format("%s%n", msg), callback);
         return true;

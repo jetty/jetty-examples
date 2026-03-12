@@ -75,7 +75,7 @@ public class AppTest
         {
             String response = IO.toString(in);
             assertThat("response",response,containsString("Hello"));
-            capture.assertContainsRecord("examples.HelloHandler", String.format("Got request from %s", getURI.getHost()));
+            capture.assertContainsRecord("examples.HelloHandler", String.format("Got request for %s", getURI));
         }
         finally
         {
