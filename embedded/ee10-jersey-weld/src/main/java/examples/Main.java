@@ -78,19 +78,6 @@ public class Main
         // Setup Jetty weld integration
         switch (mode)
         {
-            /* These two modes are not supported in Jetty 12, and are meant for older versions of Jetty.
-            case FALLBACK:
-                // Expect:INFO: WELD-ENV-001201: Jetty 7.2+ detected, CDI injection will be available in Servlets and Filters. Injection into Listeners is not supported.
-                context.getServletHandler().addListener(new ListenerHolder(org.jboss.weld.environment.servlet.Listener.class));
-                break;
-
-            case DECORATING_LISTENER:
-                // Expect:INFO: WELD-ENV-001212: Jetty CdiDecoratingListener support detected, CDI injection will be available in Listeners, Servlets and Filters.
-                context.addEventListener(new org.eclipse.jetty.ee10.webapp.DecoratingListener(context));
-                context.getServletHandler().addListener(new ListenerHolder(org.jboss.weld.environment.servlet.Listener.class));
-                break;
-             */
-
             case CDI_DECORATING_LISTENER:
                 // Expect:INFO: WELD-ENV-001212: Jetty CdiDecoratingListener support detected, CDI injection will be available in Listeners, Servlets and Filters.
                 context.addEventListener(new CdiDecoratingListener(context));
