@@ -15,7 +15,7 @@ updates:
       - dependency-name: "*"
         update-types: [ "version-update:semver-major" ]
       - dependency-name: "org.eclipse.jetty:*"
-        update-types: [ "version-update:semver-minor" ]
+        update-types: [ "version-update:semver-patch" ]
       # Restrict updates in this branch to jetty in the 12.0.x space
       - dependency-name: "org.jboss.weld.servlet:*"
         update-types: [ "version-update:semver-minor" ]
@@ -34,7 +34,7 @@ updates:
         update-types: [ "version-update:semver-major" ]
       # Restrict updates in this branch to jetty in the 12.1.x space
       - dependency-name: "org.eclipse.jetty:*"
-        update-types: [ "version-update:semver-minor" ]
+        update-types: [ "version-update:semver-patch" ]
       - dependency-name: "org.jboss.weld.servlet:*"
         update-types: [ "version-update:semver-minor" ]
       - dependency-name: "jakarta.websocket:*"
