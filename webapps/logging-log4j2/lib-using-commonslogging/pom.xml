@@ -13,7 +13,7 @@
   <name>Jetty Examples :: 12.1.x :: WebApp Logging Log4j2 :: Lib w/commons-logging</name>
 
   <properties>
-    <commonslogging.version>1.3.6</commonslogging.version>
+    <commonslogging.version>1.4.0</commonslogging.version>
   </properties>
 
   <dependencies>
