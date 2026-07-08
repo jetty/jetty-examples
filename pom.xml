@@ -30,7 +30,7 @@
     <jdk.version.minimum>17</jdk.version.minimum>
     <jetty-test-helper.version>6.4</jetty-test-helper.version>
     <jetty.git.repo>jetty-examples</jetty.git.repo>
-    <jetty.version>12.1.10</jetty.version>
+    <jetty.version>12.1.11</jetty.version>
     <junit.version>5.14.4</junit.version>
     <log4j2.version>2.26.0</log4j2.version>
     <slf4j.version>2.0.18</slf4j.version>
